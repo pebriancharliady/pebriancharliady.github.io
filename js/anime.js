@@ -16,7 +16,7 @@ var textWrapper = document.querySelector('.ml11 .letters');
                 translateX: [0, document.querySelector('.ml11 .letters').getBoundingClientRect().width + 10],
                 easing: "easeOutExpo",
                 duration: 700,
-                delay: 80
+                delay: 200
             }).add({
                 targets: '.ml11 .letter',
                 opacity: [0, 1],
@@ -29,5 +29,5 @@ var textWrapper = document.querySelector('.ml11 .letters');
                 opacity: 1,
                 duration: 1000,
                 easing: "easeOutExpo",
-                delay: 1000
+                delay: 10000
             });

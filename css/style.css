@@ -222,7 +222,8 @@ header {
     position: absolute;
     width: 14rem;
     bottom: -13rem;
-    left: -55rem; }
+    left: -55rem;
+    animation: animrotate 10s infinite linear; }
   header #circle-container img:nth-child(1) {
     width: 8rem;
     position: absolute;
