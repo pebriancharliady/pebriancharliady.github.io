@@ -11,4 +11,15 @@ document.querySelector(".toggler").addEventListener('change', (e) => {
         document.body.style.overflow = 'unset';
     }
 })
-    
+
+window.addEventListener('scroll',(e) => {
+    var scroll = document.documentElement.scrollTop;
+    // console.log(scroll)
+    if (scroll > 500) {
+      document.getElementById('back-top').style.opacity = 1;
+    }else{
+        document.getElementById('back-top').style.opacity = 0;
+    }
+})
+
+document.getElementById('rotate-fixed').setAttribute('draggable',false)
