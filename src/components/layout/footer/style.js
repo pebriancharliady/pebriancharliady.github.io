@@ -15,7 +15,7 @@ export const FooterStyle = styled.footer`
     text-align: center;
   }
   .quote {
-    font-size: 4rem;
+    font-size: 2rem;
     font-family: "GT-Walsheim-Pro-Bold";
     line-height: 1.2;
     color: ${variables.primary};

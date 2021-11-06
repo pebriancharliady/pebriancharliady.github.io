@@ -1,10 +1,10 @@
 ---
-title: League of Legends
-tags: ['Adobe xd', 'css', 'js', 'dashboard']
-category: mobile-ui
+title: Sponsorlytix
+tags: ['React JS', 'Typescript', 'Material UI']
+category: Frontend Development
 image: './salty_egg.jpg'
-date: "2015-05-01T22:12:03.284Z"
-description: "League of Legends is a multiplayer online battle arena video game developed and published by Riot Games for Microsoft Windows and macOS. Inspired by Defense of the Ancients, the game follows a freemium model. The game was released on October 27, 2009"
+date: "2021-10-04T22:12:03.284Z"
+description: "Breakthrough R&D in sports analytics throgh AI, Web Robotics, Machine Learning, Deep Learning with Predictive Modeling and Computer Vision technologies."
 ---
 
 
