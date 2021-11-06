@@ -29,6 +29,7 @@ export const Avatar = styled.div`
 export const RepoContent = styled.div`
   border-radius: .5rem;
   border: 1px solid #e1e4e8;
+  background: #f7f7f7;
   margin-bottom: 2rem;
   padding: 1rem;
   font-size: 16;
@@ -48,6 +49,9 @@ export const Title = styled.h2`
   font-family: "GT-Walsheim-Pro-Bold";
   @media(max-width: ${variables.breakpointPhone}) {
     font-size: 1rem;
+  }
+  a {
+    color: ${variables.darkGrey}; 
   }
 `
 export const RepoHead = styled.div`

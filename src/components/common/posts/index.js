@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import variables from '../../../data/variables';
 
 export const Intro = styled.div`
-  padding: 8rem 0 4rem 0;
+  padding: 6rem 0 4rem 0;
   font-family: "GT-Walsheim-Pro-Regular";
 `;
 export const HeaderIntro = styled.header`

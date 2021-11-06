@@ -3,7 +3,7 @@ module.exports = {
   Sitelogo: '#',
   SiteLogoText: 'Peb',
   SiteAuthor: 'Pebrian Charliady',
-  SiteDescription: 'Self Taught Developer',
+  SiteDescription: 'Self Taught Software Developer',
   defaultDescription: 'Software engineer!', 
   githubApiQuery: `query ($number_of_repos: Int!) {
     viewer {
@@ -42,19 +42,18 @@ module.exports = {
     number_of_repos: 12,
   }, 
   SiteSocialLinks: {
-    twitter: 'https://twitter.com/AbdaliDahir',
-    github: 'https://github.com/AbdaliDahir',
-    linkedin: 'https://www.linkedin.com/in/abdelali-dahir-0b5344111/',
+    github: 'https://github.com/pebriancharliady',
+    linkedin: 'https://www.linkedin.com/in/pebrian-charliady-191a8a173/',
   },
   SiteAddress: {
-    city: 'Casablanca',
-    region: 'CurvaSud',
-    country: 'Morocco',
+    city: 'Bandung',
+    region: 'Jawa Barat',
+    country: 'Indonesia',
     zipCode: 'ZipCode',
   },
   SiteContact: {
-    email: 'abdali.dahir@gmail.com',
+    email: 'pebriancharliady@gmail.com',
     phone: 'phone number',
   },
-  SiteCopyright: '2020',
+  SiteCopyright: '2021',
 };

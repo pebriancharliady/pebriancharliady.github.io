@@ -25,6 +25,9 @@ export const GlobalStyle = createGlobalStyle`
     h1 {
       font-size: 2em;
       margin: 0.67em 0;
+      span.main-title {
+        font-size:8rem;
+      }
     }
     hr {
       box-sizing: content-box; /* 1 */

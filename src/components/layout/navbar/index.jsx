@@ -12,7 +12,7 @@ const Navbar = ({ siteTitle }) => (
           <NavbarLogo>
             <h3>
               <Link to="/">
-                <Moon className="align-middle"/> <span className="align-middle"> {siteTitle} </span> <Moon className="align-middle"/>
+                <Moon className="align-middle text-primary"/> <span className="align-middle"> {siteTitle} </span> <Moon className="align-middle text-primary"/>
               </Link>
             </h3>
           </NavbarLogo> 

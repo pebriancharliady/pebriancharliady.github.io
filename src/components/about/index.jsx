@@ -1,6 +1,6 @@
 import React from "react"
 import { useStaticQuery, graphql } from "gatsby"
-import { AboutSection, Avatar, Title, Text, SubTitle } from "./style"
+import { AboutSection, Avatar, TitleMain, Text, Content } from "./style"
 import { SectionIntro, ContainerLayout, ResumeButton } from "../common"
 
 const About = () => {
@@ -8,7 +8,7 @@ const About = () => {
     query {
       placeholderImage: file(relativePath: { eq: "header-me.png" }) {
         childImageSharp {
-          fluid(maxWidth: 300) {
+          fluid(maxWidth: 450) {
             ...GatsbyImageSharpFluid
           }
         }
@@ -25,28 +25,29 @@ const About = () => {
                 fluid={data.placeholderImage.childImageSharp.fluid}
                 alt="user photo"
               />
-              <SubTitle> Self-Taught Software Developer</SubTitle>
+              {/* <SubTitle> Self-Taught Software Developer</SubTitle> */}
             </div>
-            <div>
-              <Title> Hi, I’m Pebrian Charliady</Title>
+            <Content>
+              <TitleMain>
+                <span className="text-primary main-title">P</span>ebrian
+                Charliady
+              </TitleMain>
               <Text>
-                I'm a Self-Taught Software Developer from {" "}
-                <b className="text-primary lined-link">Indonesia</b> living in
-                Bandung.
+                I'm a Self-Taught Software Developer from{" "}
+                <b className="text-primary lined-link">Indonesia</b>
               </Text>
-              {/* <Text> I love working with modern technologies, building and designing awesome projects. I prefer minimalistic & clean designs with strong user experience.</Text> */}
-              {/* <Text>
+              <Text>
+                Focused on <b className="text-primary lined-link">solving problem</b> instead of mastering technology
+              </Text>
+              <Text>
                 {" "}
-                behind the word mountains, far from the countries Vokalia and
-                Consonantia, there live the blind texts. Separated they live in
-                Bookmarksgrove right at the coast of the Semantics, a large
-                language ocean. A small river named Duden flows by their place
-                and supplies it with the necessary regelialia.
-              </Text> */}
-              <ResumeButton href="resume.pdf" target="_blank">
-                Check out my resume
+                Experienced building Web and Mobile App using many different
+                technologies, but currently love working with <b className="text-primary lined-link"> React & Typescript </b> 
+              </Text>
+              <ResumeButton to="/works">
+                Check out my work
               </ResumeButton>
-            </div>
+            </Content>
           </AboutSection>
         </ContainerLayout>
       </SectionIntro>
