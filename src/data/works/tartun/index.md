@@ -9,11 +9,8 @@ projectLink: "https://tartun.explorewisata.id"
 ---
 
 
-<!-- ![Tartun Header](./salty_egg.jpg) -->
-
 
 ## Project Description
-Visit Project : [tartun.explorewisata.id](https://tartun.explorewisata.id)
 
 **Tartun ( Tarik Tunai )** is a software to allow you to withdraw money from _MPOS Cashlez Device_ and anyone also can open their own money-withdrawal business in their home or place it in their existing business as a mPOS device.
 

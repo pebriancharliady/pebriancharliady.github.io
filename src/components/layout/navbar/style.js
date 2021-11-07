@@ -26,7 +26,8 @@ export const NavbarElement = styled.div`
 export const NavbarList = styled.ul`
   padding-left: 0;
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 0fr);
+  justify-content:end;
   list-style: none;
   > li a {
     font-size: 1.2rem;
@@ -42,7 +43,6 @@ export const NavbarList = styled.ul`
     span, 
     svg {
       display: block;
-      vertical-align: middle;
     }
     @media(max-width: ${variables.breakpointPhone}) {
       font-size: 1rem;

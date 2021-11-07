@@ -14,13 +14,11 @@ import {
   HeaderImage,
   ProjectLink,
 } from "../../components/styled/posts"
-import { ContainerLayout } from "../../components/common"
+import { ContainerLayout, Modal } from "../../components/common"
 
 const portfolioWork = ({ data, pageContext, location }) => {
   const work = data.markdownRemark
   const siteTitle = data.site.siteMetadata.title
-
-  console.log(work)
 
   return (
     <Layout location={location} title={siteTitle}>
@@ -47,10 +45,31 @@ const portfolioWork = ({ data, pageContext, location }) => {
                     </strong>{" "}
                   </span>
                 </SmallText>
-                <HeaderImage
-                  fluid={work.frontmatter.image.childImageSharp.fluid}
-                  title="work title"
-                />
+                <figure style={{ position: "relative" }}>
+                  <HeaderImage
+                    fluid={work.frontmatter.image.childImageSharp.fluid}
+                    title={work.frontmatter.title}
+                  />
+                  <Modal
+                    content={toggle => (
+                      <img
+                        src={work.frontmatter.image.childImageSharp.fluid.src}
+                        alt={work.frontmatter.title}
+                      />
+                    )}
+                  >
+                    {toggle => (
+                      <span
+                        onClick={toggle}
+                        onKeyDown={toggle}
+                        role="button"
+                        className="link-wrapped"
+                        aria-label="open modal"
+                        tabIndex="-1"
+                      ></span>
+                    )}
+                  </Modal>
+                </figure>
 
                 <ProjectLink
                   href={work.frontmatter.projectLink}
@@ -99,7 +118,7 @@ export const data = graphql`
         date(formatString: "MMMM DD, YYYY")
         image {
           childImageSharp {
-            fluid(maxWidth: 450, quality: 100) {
+            fluid(maxWidth: 1000, quality: 100) {
               ...GatsbyImageSharpFluid
             }
           }

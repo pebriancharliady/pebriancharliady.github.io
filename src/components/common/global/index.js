@@ -1,6 +1,6 @@
-import { createGlobalStyle } from 'styled-components';
-import variables from "../../../data/variables";
-import './fonts.css';
+import { createGlobalStyle } from "styled-components"
+import variables from "../../../data/variables"
+import "./fonts.css"
 
 export const GlobalStyle = createGlobalStyle`
   // normalize
@@ -107,10 +107,13 @@ export const GlobalStyle = createGlobalStyle`
     }
     
     .text-dark {
-      color: ${variables.black};
+      color: ${variables.darkGrey}
     }
     .text-primary {
       color: ${variables.primary};
+    }
+    .text-dark-grey {
+      color: ${variables.darkGrey}
     }
     .align-middle {
       vertical-align: middle;
@@ -159,5 +162,18 @@ export const GlobalStyle = createGlobalStyle`
 
 .error__emoji {
   width: 30vw;
+}
+
+.link-wrapped {
+  &:before{
+    content: "";
+    cursor:pointer;
+    z-index:100;
+    position:absolute;
+    left:0;
+    right:0;
+    top:0;
+    bottom:0;
+  }
 }
 `

@@ -6,3 +6,4 @@ export * from './sectionIntro';
 export * from './tags';
 export * from './underLink';
 export * from './global';
+export * from './modal';

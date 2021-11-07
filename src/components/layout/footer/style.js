@@ -54,6 +54,7 @@ export const FooterSocialMedia = styled.ul`
     display: flex;
     align-items: center;
     justify-content: space-between;
+    padding: 0 1rem;
   }
   li {
     margin-bottom: 1.5rem;

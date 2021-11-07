@@ -24,9 +24,9 @@ export const Avatar =styled(Img)`
 export const Content = styled.div`
   @media(max-width: ${variables.breakpointPhone}) {
     position: absolute;
-    bottom: 0;
+    bottom: 130px;
     z-index:999;
-    margin: 8rem 0;
+    /* margin: 8rem 0; */
   }
 `
 
@@ -44,7 +44,7 @@ export const TitleMain = styled.h1`
   font-family: "PermanentMarker-Regular";
   color: #212529;
   @media(max-width: ${variables.breakpointPhone}) {
-    font-size: 2rem;
+    font-size: 1.75rem;
   }
 `
 
