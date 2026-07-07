@@ -97,13 +97,17 @@ export const FileRow = styled(Link)`
   .media {
     position: relative;
     overflow: hidden;
-    aspect-ratio: 16 / 9;
+    height: 0;
+    padding-bottom: 58%;
     border: 1px solid ${v.lineFaint};
     background: ${v.panel};
 
     .gatsby-image-wrapper {
       position: absolute !important;
-      inset: 0;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
       filter: grayscale(1) contrast(1.08) brightness(0.95);
       transform: scale(1.01);
       transition: filter 0.5s ease, transform 1.2s var(--ease-out);

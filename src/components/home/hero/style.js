@@ -6,8 +6,25 @@ export const HeroSection = styled.section`
   min-height: clamp(540px, calc(100vh - 260px), 860px);
   padding-top: clamp(2.5rem, 6vh, 4rem);
 
+  /* the wireframe cube drifting behind the copy */
+  .cube {
+    position: absolute;
+    top: -2%;
+    left: -8%;
+    width: min(620px, 52vw);
+    height: min(620px, 52vw);
+    z-index: 0;
+    pointer-events: none;
+  }
+
   @media (max-width: ${v.breakpointTablet}) {
     min-height: 0;
+
+    .cube {
+      width: 78vw;
+      height: 78vw;
+      left: -18%;
+    }
   }
 `
 
@@ -59,15 +76,47 @@ export const HeroName = styled.h1`
   }
 `
 
-export const HeroLede = styled.p`
+/* the censored bio — bars of redacted text, then the standard notice */
+export const Redaction = styled.div`
   margin-top: clamp(1.75rem, 4vh, 2.5rem);
   max-width: min(31em, 55%);
-  font-size: var(--text-body);
-  line-height: 1.85;
-  color: ${v.dim};
 
-  b {
-    color: ${v.text};
+  .bar {
+    display: block;
+    height: 0.85em;
+    background: ${v.darkGrey};
+    opacity: 0.5;
+    margin-bottom: 0.55em;
+  }
+
+  .bar-1 {
+    width: 76%;
+  }
+
+  .bar-2 {
+    width: 52%;
+  }
+
+  .note {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.7em;
+    margin-top: 0.9em;
+    font-family: ${v.fontMono};
+    font-size: var(--text-mono);
+    letter-spacing: var(--track-mid);
+    text-transform: uppercase;
+    color: ${v.dim};
+
+    &::before {
+      content: "[";
+      color: ${v.signal};
+    }
+
+    &::after {
+      content: "]";
+      color: ${v.signal};
+    }
   }
 
   @media (max-width: ${v.breakpointTablet}) {
@@ -87,27 +136,39 @@ export const CtaRow = styled.div`
 export const ScanPortrait = styled.div`
   position: relative;
 
+  /* static orbit is the mobile fallback — desktop gets the voyager */
   .orbit {
+    display: none;
     position: absolute;
     top: -18%;
     right: -16%;
-    width: min(340px, 74%);
-    aspect-ratio: 1 / 1;
+    width: min(320px, 64vw);
+    height: min(320px, 64vw);
     z-index: 2;
     pointer-events: none;
+  }
+
+  @media (max-width: ${v.breakpointPhone}) {
+    .orbit {
+      display: block;
+    }
   }
 
   .portrait {
     position: relative;
     z-index: 1;
-    aspect-ratio: 3 / 4;
+    height: 0;
+    padding-bottom: 133%;
     border: 1px solid ${v.line};
     background: ${v.panel};
     overflow: hidden;
 
     .gatsby-image-wrapper {
       position: absolute !important;
-      inset: 0;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
     }
 
     img {

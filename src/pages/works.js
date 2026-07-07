@@ -109,17 +109,12 @@ const WorkIndex = ({ data }) => {
                           ))}
                         </ChipRow>
                       </span>
-                      <Reveal
-                        as="span"
-                        variant="clip"
-                        delay={150 + i * 90}
-                        className="media"
-                      >
+                      <span className="media clip-on-reveal">
                         <Img
                           fluid={f.image.childImageSharp.fluid}
                           alt={f.title}
                         />
-                      </Reveal>
+                      </span>
                     </span>
                   </FileRow>
                 </Reveal>

@@ -7,12 +7,15 @@ import React, { useEffect, useRef } from "react"
  * empty — it is purely decorative. Reduced-motion users get a single
  * static frame.
  */
-const ShellScene = ({ className }) => {
+const ShellScene = ({ className, media }) => {
   const mountRef = useRef(null)
 
   useEffect(() => {
     const mount = mountRef.current
     if (!mount || typeof window === "undefined") return undefined
+    if (media && window.matchMedia && !window.matchMedia(media).matches) {
+      return undefined
+    }
 
     let disposed = false
     let visible = true

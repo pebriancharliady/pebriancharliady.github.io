@@ -14,7 +14,7 @@ import {
 } from "./style"
 
 const Footer = () => (
-  <FooterRoot>
+  <FooterRoot data-shell-anchor="footer">
     <Parallax
       speed={0.08}
       style={{

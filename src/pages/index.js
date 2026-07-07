@@ -17,6 +17,7 @@ import {
   FormTag,
 } from "../components/common"
 import { Reveal, Parallax } from "../components/fx"
+import ShellVoyager from "../components/three/shellVoyager"
 import { FileList, FileRow } from "../components/works/style"
 import {
   SectionInner,
@@ -64,13 +65,15 @@ const IndexPage = ({ data: query }) => {
     <Layout>
       <SEO title={`${data.SiteAuthor} — ${data.SiteRole}`} />
 
+      <ShellVoyager />
+
       <StickyHero>
         <Hero />
       </StickyHero>
 
       <PageBody>
         {/* the printed file slides up over the HUD */}
-        <PaperSlab>
+        <PaperSlab data-shell-anchor="works">
           <SlabTicker
             tone="paper"
             jp="選ばれた作品"
@@ -145,17 +148,12 @@ const IndexPage = ({ data: query }) => {
                             ))}
                           </ChipRow>
                         </span>
-                        <Reveal
-                          as="span"
-                          variant="clip"
-                          delay={150 + i * 90}
-                          className="media"
-                        >
+                        <span className="media clip-on-reveal">
                           <Img
                             fluid={f.image.childImageSharp.fluid}
                             alt={f.title}
                           />
-                        </Reveal>
+                        </span>
                       </span>
                     </FileRow>
                   </Reveal>
@@ -170,7 +168,7 @@ const IndexPage = ({ data: query }) => {
           </SectionInner>
         </PaperSlab>
 
-        <Section>
+        <Section data-shell-anchor="caps">
           <SectionInner>
             <Reveal>
               <SectionHead jp="技術" title="Capabilities" aside="What I ship" />

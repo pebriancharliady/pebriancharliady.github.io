@@ -74,8 +74,12 @@ const BlogPost = ({ data, pageContext }) => {
                   </FormTag>
 
                   {f.image && (
-                    <Reveal variant="clip" delay={200}>
-                      <FigViewer $paper style={{ marginTop: "1.5rem" }}>
+                    <div>
+                      <FigViewer
+                        $paper
+                        className="clip-on-reveal"
+                        style={{ marginTop: "1.5rem" }}
+                      >
                         <span className="bk bk-tl" aria-hidden="true" />
                         <span className="bk bk-tr" aria-hidden="true" />
                         <span className="bk bk-bl" aria-hidden="true" />
@@ -97,7 +101,7 @@ const BlogPost = ({ data, pageContext }) => {
                           )}
                         </figcaption>
                       </FigViewer>
-                    </Reveal>
+                    </div>
                   )}
 
                   <ArticleBody

@@ -5,11 +5,12 @@ import data from "../../../data/data"
 import { Wrap, Eyebrow, ButtonLink, ButtonA } from "../../common"
 import { Decode, Reveal } from "../../fx"
 import ShellScene from "../../three/shellScene"
+import CubeScene from "../../three/cubeScene"
 import {
   HeroSection,
   HeroCopy,
   HeroName,
-  HeroLede,
+  Redaction,
   CtaRow,
   PortraitZone,
   ScanPortrait,
@@ -46,6 +47,8 @@ const Hero = () => {
   return (
     <Wrap>
       <HeroSection>
+        <CubeScene className="cube" />
+
         <HeroCopy>
           <Reveal delay={150}>
             <Eyebrow jp={data.SiteRoleJa}>{data.SiteRole}</Eyebrow>
@@ -59,12 +62,13 @@ const Hero = () => {
             </span>
           </HeroName>
           <Reveal delay={550}>
-            <HeroLede>
-              Self-taught software developer based in Bandung, Indonesia —
-              building web and mobile products end to end. Most days that means{" "}
-              <b>React and TypeScript</b>; every day it means solving the
-              problem before reaching for the tool.
-            </HeroLede>
+            <Redaction>
+              <span className="bar bar-1" aria-hidden="true" />
+              <span className="bar bar-2" aria-hidden="true" />
+              <span className="note">
+                This section intentionally left blank
+              </span>
+            </Redaction>
           </Reveal>
           <Reveal delay={750}>
             <CtaRow>
@@ -78,8 +82,8 @@ const Hero = () => {
 
         <PortraitZone>
           <Reveal delay={400}>
-            <ScanPortrait>
-              <ShellScene className="orbit" />
+            <ScanPortrait data-shell-anchor="portrait">
+              <ShellScene className="orbit" media="(max-width: 850px)" />
               <figure className="portrait">
                 <span className="bk bk-tl" aria-hidden="true" />
                 <span className="bk bk-tr" aria-hidden="true" />
@@ -94,7 +98,9 @@ const Hero = () => {
                 <span className="scan" aria-hidden="true" />
                 <span className="subject-id" aria-hidden="true">
                   <span>FIG. 00 — SHELL</span>
-                  <span className="id-code">{data.SiteDossier.coordinates}</span>
+                  <span className="id-code">
+                    {data.SiteDossier.coordinates}
+                  </span>
                 </span>
               </figure>
             </ScanPortrait>

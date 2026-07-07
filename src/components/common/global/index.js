@@ -168,6 +168,16 @@ export const GlobalStyle = createGlobalStyle`
     transform: scale(1) rotate(0deg);
   }
 
+  /* clip wipe driven by the nearest revealed ancestor */
+  .clip-on-reveal {
+    clip-path: inset(0 100% 0 0);
+    transition: clip-path 1.1s var(--ease-out) 0.18s;
+    will-change: clip-path;
+  }
+  [data-reveal].is-in .clip-on-reveal {
+    clip-path: inset(0 0 0 0);
+  }
+
   /* ------------------------------------------------------------------
      shared keyframes
   ------------------------------------------------------------------ */
@@ -248,7 +258,8 @@ export const GlobalStyle = createGlobalStyle`
       scroll-behavior: auto;
     }
     [data-reveal],
-    [data-reveal="clip"] {
+    [data-reveal="clip"],
+    .clip-on-reveal {
       opacity: 1;
       transform: none;
       clip-path: none;
