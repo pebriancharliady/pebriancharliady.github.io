@@ -55,5 +55,5 @@ module.exports = {
     email: 'pebriancharliady@gmail.com',
     phone: 'phone number',
   },
-  SiteCopyright: '2021',
+  SiteCopyright: '2026',
 };

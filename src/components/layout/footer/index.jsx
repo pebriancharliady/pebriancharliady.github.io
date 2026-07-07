@@ -47,7 +47,7 @@ const Footer = () => {
             <SubRight>just do</SubRight>
             <CopyRight className="text-dark">
               ©
-              Copyright 2021 by {data.SiteAuthor}{" "}
+              Copyright {new Date().getFullYear()} by {data.SiteAuthor}{" "}
             </CopyRight>
           </div>
         </ContainerLayout>
