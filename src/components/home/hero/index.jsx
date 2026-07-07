@@ -11,11 +11,12 @@ import {
   HeroName,
   HeroLede,
   CtaRow,
+  PortraitZone,
   ScanPortrait,
-  ReadoutList,
+  Mrz,
 } from "./style"
 
-const READOUT_BASE_DELAY = 1100
+const MRZ_BASE_DELAY = 1000
 
 const Hero = () => {
   const { portrait } = useStaticQuery(graphql`
@@ -50,9 +51,12 @@ const Hero = () => {
             <Eyebrow jp={data.SiteRoleJa}>{data.SiteRole}</Eyebrow>
           </Reveal>
           <HeroName>
-            <Decode text="PEBRIAN" delay={300} duration={800} />
-            <br />
-            <Decode text="CHARLIADY" delay={520} duration={800} />
+            <span className="l1">
+              <Decode text="PEBRIAN" delay={300} duration={800} />
+            </span>
+            <span className="l2">
+              <Decode text="CHARLIADY" delay={520} duration={800} />
+            </span>
           </HeroName>
           <Reveal delay={550}>
             <HeroLede>
@@ -72,48 +76,57 @@ const Hero = () => {
           </Reveal>
         </HeroCopy>
 
-        <Reveal delay={400}>
-          <ScanPortrait>
-            <ShellScene className="orbit" />
-            <figure className="portrait">
-              <span className="bk bk-tl" aria-hidden="true" />
-              <span className="bk bk-tr" aria-hidden="true" />
-              <span className="bk bk-bl" aria-hidden="true" />
-              <span className="bk bk-br" aria-hidden="true" />
-              {portrait && (
-                <Img
-                  fluid={portrait.childImageSharp.fluid}
-                  alt={`Portrait of ${data.SiteAuthor}`}
-                />
-              )}
-              <span className="scan" aria-hidden="true" />
-            </figure>
-            <ReadoutList>
-              {readouts.map(([label, value], i) => (
-                <div key={label}>
-                  <dt>{label}</dt>
-                  <dd>
-                    <Decode
-                      text={value}
-                      delay={READOUT_BASE_DELAY + i * 160}
-                      duration={520}
-                    />
-                  </dd>
-                </div>
-              ))}
-              <div className="status">
-                <dt>STATUS</dt>
+        <PortraitZone>
+          <Reveal delay={400}>
+            <ScanPortrait>
+              <ShellScene className="orbit" />
+              <figure className="portrait">
+                <span className="bk bk-tl" aria-hidden="true" />
+                <span className="bk bk-tr" aria-hidden="true" />
+                <span className="bk bk-bl" aria-hidden="true" />
+                <span className="bk bk-br" aria-hidden="true" />
+                {portrait && (
+                  <Img
+                    fluid={portrait.childImageSharp.fluid}
+                    alt={`Portrait of ${data.SiteAuthor}`}
+                  />
+                )}
+                <span className="scan" aria-hidden="true" />
+                <span className="subject-id" aria-hidden="true">
+                  <span>FIG. 00 — SHELL</span>
+                  <span className="id-code">{data.SiteDossier.coordinates}</span>
+                </span>
+              </figure>
+            </ScanPortrait>
+          </Reveal>
+        </PortraitZone>
+
+        <Reveal delay={900}>
+          <Mrz>
+            {readouts.map(([label, value], i) => (
+              <div key={label}>
+                <dt>{label}</dt>
                 <dd>
-                  <span className="dot" aria-hidden="true" />
                   <Decode
-                    text={data.SiteDossier.status.toUpperCase()}
-                    delay={READOUT_BASE_DELAY + readouts.length * 160}
-                    duration={520}
+                    text={value}
+                    delay={MRZ_BASE_DELAY + i * 140}
+                    duration={500}
                   />
                 </dd>
               </div>
-            </ReadoutList>
-          </ScanPortrait>
+            ))}
+            <div className="status">
+              <dt>STATUS</dt>
+              <dd>
+                <span className="dot" aria-hidden="true" />
+                <Decode
+                  text={data.SiteDossier.status.toUpperCase()}
+                  delay={MRZ_BASE_DELAY + readouts.length * 140}
+                  duration={500}
+                />
+              </dd>
+            </div>
+          </Mrz>
         </Reveal>
       </HeroSection>
     </Wrap>

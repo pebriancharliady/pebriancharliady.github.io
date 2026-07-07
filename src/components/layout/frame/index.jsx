@@ -1,6 +1,7 @@
 import React from "react"
 import { Link } from "gatsby"
 import data from "../../../data/data"
+import { useScrollProgress } from "../../fx"
 import StatusClock from "./clock"
 import {
   FrameRoot,
@@ -66,6 +67,7 @@ const Frame = () => (
         LOC {data.SiteDossier.coordinates} — {data.SiteDossier.base}
       </span>
       <span className="status">
+        <ScrollReadout />
         <span className="dot" aria-hidden="true" />
         {data.SiteDossier.status} ·{" "}
         <StatusClock
@@ -76,5 +78,14 @@ const Frame = () => (
     </BottomBar>
   </FrameRoot>
 )
+
+const ScrollReadout = () => {
+  const pct = useScrollProgress()
+  return (
+    <span className="scr" aria-hidden="true">
+      SCR {String(pct).padStart(3, "0")}% ·
+    </span>
+  )
+}
 
 export default Frame

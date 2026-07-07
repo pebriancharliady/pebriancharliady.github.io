@@ -93,12 +93,13 @@ exports.createPages = async ({ graphql, actions }) => {
       })
   })
   })
-  works.forEach((work) => {
+  works.forEach((work, index) => {
     createPage({
       path: work.node.fields.slug,
       component: portfolioWork,
       context: {
-        slug: work.node.fields.slug
+        slug: work.node.fields.slug,
+        fileNo: works.length - index,
       },
     })
   })

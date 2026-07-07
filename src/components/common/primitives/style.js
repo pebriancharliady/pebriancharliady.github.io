@@ -15,6 +15,117 @@ export const Section = styled.section`
   padding: clamp(3.5rem, 9vh, 6.5rem) 0;
 `
 
+/* full-canvas wrapper for archive pages — content reaches toward the frame */
+export const WideWrap = styled.div`
+  width: 100%;
+  max-width: 100rem;
+  margin: 0 auto;
+  padding-left: ${v.gutter};
+  padding-right: ${v.gutter};
+`
+
+/* ------------------------------------------------------------------
+   dossier spread — sticky marginalia spine + asymmetric field
+------------------------------------------------------------------ */
+export const Spread = styled.div`
+  display: grid;
+  grid-template-columns: minmax(200px, 250px) minmax(0, 1fr);
+  gap: clamp(2rem, 5vw, 4.5rem);
+  align-items: start;
+
+  @media (max-width: ${v.breakpointTablet}) {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2.25rem;
+  }
+`
+
+export const Spine = styled.aside`
+  position: sticky;
+  top: calc(${v.frameInset} + 52px + 28px);
+
+  @media (max-width: ${v.breakpointTablet}) {
+    position: static;
+    border: 1px solid ${v.lineFaint};
+    background: rgba(12, 13, 20, 0.5);
+    padding: 1.25rem 1.25rem 1.5rem;
+  }
+`
+
+export const Field = styled.div`
+  min-width: 0;
+`
+
+/* one labelled block inside the spine */
+export const SpineBlock = styled.div`
+  padding: 1.1rem 0;
+  border-top: 1px solid ${v.lineFaint};
+
+  &:first-child {
+    padding-top: 0;
+    border-top: 0;
+  }
+
+  .sp-label {
+    display: block;
+    font-family: ${v.fontMono};
+    font-size: var(--text-mono-s);
+    letter-spacing: var(--track-mid);
+    text-transform: uppercase;
+    color: ${v.faint};
+  }
+
+  .sp-value {
+    display: block;
+    margin-top: 0.5rem;
+    font-family: ${v.fontMono};
+    font-size: var(--text-mono);
+    letter-spacing: 0.06em;
+    color: ${v.text};
+    overflow-wrap: anywhere;
+
+    a {
+      color: ${v.text};
+      border-bottom: 1px solid ${v.signal};
+      transition: color 0.2s ease;
+
+      &:hover,
+      &:focus-visible {
+        color: ${v.signal};
+      }
+    }
+  }
+
+  .sp-big {
+    font-family: ${v.fontDisplay};
+    font-size: 1.6rem;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: ${v.signal};
+  }
+
+  .sp-list {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.4rem;
+    margin-top: 0.6rem;
+
+    a {
+      font-family: ${v.fontMono};
+      font-size: var(--text-mono-s);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: ${v.dim};
+      transition: color 0.2s ease;
+
+      &:hover,
+      &:focus-visible {
+        color: ${v.signal};
+      }
+    }
+  }
+`
+
 export const HairRule = styled.hr`
   border: 0;
   border-top: 1px solid ${v.line};
@@ -53,6 +164,20 @@ export const EyebrowRoot = styled.div`
     color: ${v.faint};
     letter-spacing: 0;
   }
+
+  ${p =>
+    p.$paper &&
+    css`
+      color: ${v.inkDim};
+
+      .jp {
+        color: ${v.ink};
+      }
+
+      .sep {
+        color: ${v.inkFaint};
+      }
+    `}
 `
 
 export const SectionHeadRow = styled.div`
@@ -72,6 +197,16 @@ export const SectionHeadRow = styled.div`
     color: ${v.faint};
     text-align: right;
   }
+
+  ${p =>
+    p.$paper &&
+    css`
+      border-bottom-color: ${v.lineInk};
+
+      .aside {
+        color: ${v.inkFaint};
+      }
+    `}
 `
 
 export const DisplayTitle = styled.h2`
@@ -164,6 +299,25 @@ const buttonBase = css`
       transform: translateX(3px);
     }
   }
+
+  ${p =>
+    p.$paper &&
+    css`
+      color: ${v.ink};
+      border-color: ${v.lineInk};
+
+      &::before,
+      &::after {
+        color: ${v.signalDeep};
+      }
+
+      &:hover,
+      &:focus-visible {
+        border-color: ${v.signalDeep};
+        background: rgba(127, 19, 36, 0.08);
+        color: ${v.crimson};
+      }
+    `}
 `
 
 export const ButtonLink = styled(Link)`
@@ -214,6 +368,11 @@ export const PageHeadRoot = styled.header`
     text-transform: uppercase;
     color: ${v.text};
     overflow-wrap: anywhere;
+
+    .outline {
+      color: transparent;
+      -webkit-text-stroke: 1.5px ${v.text};
+    }
   }
 
   .pg-aside {
@@ -242,4 +401,26 @@ export const KanjiMark = styled.span`
   -webkit-text-stroke: 1px rgba(237, 238, 243, 0.08);
   user-select: none;
   pointer-events: none;
+
+  /* let a Parallax wrapper carry the absolute placement */
+  ${p =>
+    p.$flow &&
+    css`
+      position: static;
+      display: block;
+    `}
+
+  ${p =>
+    p.$paper &&
+    css`
+      color: rgba(16, 17, 24, 0.02);
+      -webkit-text-stroke: 1px rgba(16, 17, 24, 0.14);
+    `}
+
+  ${p =>
+    p.$crimson &&
+    css`
+      color: rgba(255, 255, 255, 0.02);
+      -webkit-text-stroke: 1px rgba(255, 255, 255, 0.2);
+    `}
 `

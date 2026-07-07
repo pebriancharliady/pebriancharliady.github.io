@@ -13,9 +13,11 @@ export const Eyebrow = ({ jp, children, ...rest }) => (
   </EyebrowRoot>
 )
 
-export const SectionHead = ({ jp, title, aside, ...rest }) => (
-  <SectionHeadRow {...rest}>
-    <Eyebrow jp={jp}>{title}</Eyebrow>
+export const SectionHead = ({ jp, title, aside, $paper, ...rest }) => (
+  <SectionHeadRow $paper={$paper} {...rest}>
+    <Eyebrow jp={jp} $paper={$paper}>
+      {title}
+    </Eyebrow>
     {aside && <span className="aside">{aside}</span>}
   </SectionHeadRow>
 )

@@ -1,34 +1,51 @@
 import React from "react"
 import socialMedia from "../../../data/socialMedia.json"
 import data from "../../../data/data"
-import { Wrap, HairRule, Eyebrow, MonoLink } from "../../common"
-import { Reveal } from "../../fx"
+import { Wrap, KanjiMark } from "../../common"
+import { Reveal, Parallax } from "../../fx"
 import {
   FooterRoot,
-  ContactBlock,
+  FooterEyebrow,
   BigMail,
   FooterMeta,
   SocialRow,
+  CrimsonLink,
   CopyLine,
 } from "./style"
 
 const Footer = () => (
   <FooterRoot>
-    <Wrap>
-      <HairRule />
-      <ContactBlock>
-        <Reveal>
-          <Eyebrow jp="接続">Make contact</Eyebrow>
-          <BigMail href={`mailto:${data.SiteContact.email}`}>
-            {data.SiteContact.email}
-          </BigMail>
-        </Reveal>
-      </ContactBlock>
+    <Parallax
+      speed={0.08}
+      style={{
+        position: "absolute",
+        top: "-2rem",
+        right: "3vw",
+        zIndex: 0,
+      }}
+    >
+      <KanjiMark $flow $crimson aria-hidden="true">
+        接続
+      </KanjiMark>
+    </Parallax>
+    <Wrap style={{ position: "relative", zIndex: 1 }}>
+      <Reveal>
+        <FooterEyebrow>
+          <span className="jp" lang="ja" aria-hidden="true">
+            接続
+          </span>
+          <span className="sep">/</span>
+          <span>Make contact</span>
+        </FooterEyebrow>
+        <BigMail href={`mailto:${data.SiteContact.email}`}>
+          {data.SiteContact.email}
+        </BigMail>
+      </Reveal>
       <FooterMeta>
         <SocialRow>
           {socialMedia.map(({ id, name, url }) => (
             <li key={id}>
-              <MonoLink
+              <CrimsonLink
                 href={url}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -38,7 +55,7 @@ const Footer = () => (
                 <span className="arrow" aria-hidden="true">
                   ↗
                 </span>
-              </MonoLink>
+              </CrimsonLink>
             </li>
           ))}
         </SocialRow>

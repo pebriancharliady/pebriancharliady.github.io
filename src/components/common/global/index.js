@@ -131,8 +131,9 @@ export const GlobalStyle = createGlobalStyle`
 
   /* ------------------------------------------------------------------
      scroll reveal machinery — <Reveal/> toggles .is-in
+     variants: up (default) · clip (wipe from left) · stamp (hanko hit)
   ------------------------------------------------------------------ */
-  [data-reveal] {
+  [data-reveal="up"] {
     opacity: 0;
     transform: translateY(18px);
     transition:
@@ -140,9 +141,31 @@ export const GlobalStyle = createGlobalStyle`
       transform 0.9s var(--ease-out) var(--reveal-delay, 0ms);
     will-change: opacity, transform;
   }
-  [data-reveal].is-in {
+  [data-reveal="up"].is-in {
     opacity: 1;
     transform: none;
+  }
+
+  [data-reveal="clip"] {
+    clip-path: inset(0 100% 0 0);
+    transition: clip-path 1.1s var(--ease-out) var(--reveal-delay, 0ms);
+    will-change: clip-path;
+  }
+  [data-reveal="clip"].is-in {
+    clip-path: inset(0 0 0 0);
+  }
+
+  [data-reveal="stamp"] {
+    opacity: 0;
+    transform: scale(1.8) rotate(-16deg);
+    transition:
+      opacity 0.16s ease-out var(--reveal-delay, 0ms),
+      transform 0.34s cubic-bezier(0.34, 1.56, 0.64, 1) var(--reveal-delay, 0ms);
+    will-change: opacity, transform;
+  }
+  [data-reveal="stamp"].is-in {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
   }
 
   /* ------------------------------------------------------------------
@@ -224,9 +247,11 @@ export const GlobalStyle = createGlobalStyle`
     html {
       scroll-behavior: auto;
     }
-    [data-reveal] {
+    [data-reveal],
+    [data-reveal="clip"] {
       opacity: 1;
       transform: none;
+      clip-path: none;
       transition: none;
     }
     *, *::before, *::after {

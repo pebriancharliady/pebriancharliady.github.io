@@ -8,10 +8,10 @@ export const LogList = styled.div`
 
 export const LogRow = styled(Link)`
   display: grid;
-  grid-template-columns: 120px minmax(0, 1fr) minmax(150px, auto);
-  gap: 1.5rem;
+  grid-template-columns: 100px minmax(0, 1fr) minmax(140px, auto);
+  gap: 1.4rem;
   align-items: baseline;
-  padding: 1.6rem 0;
+  padding: 1.55rem 0;
   border-bottom: 1px solid ${v.lineFaint};
   color: inherit;
 
@@ -37,7 +37,7 @@ export const LogRow = styled(Link)`
     font-size: 0.95rem;
     line-height: 1.7;
     color: ${v.dim};
-    max-width: 60ch;
+    max-width: 58ch;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
@@ -81,62 +81,75 @@ export const LogRow = styled(Link)`
   }
 `
 
-export const TagCloud = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  margin: 0 0 clamp(2rem, 5vh, 3rem);
+/* ------------------------------------------------------------------
+   spine identity block for the log pages
+------------------------------------------------------------------ */
+export const LogSpineHead = styled.div`
+  .log-title {
+    margin: 0.9rem 0 0;
+    font-family: ${v.fontDisplay};
+    font-weight: normal;
+    font-size: clamp(2.2rem, 4vw, 3.2rem);
+    line-height: 0.95;
+    text-transform: uppercase;
+    color: ${v.text};
+    overflow-wrap: anywhere;
+  }
+
+  .log-title.is-tag {
+    color: ${v.signal};
+  }
+
+  .log-count {
+    display: block;
+    margin-top: 0.9rem;
+    font-family: ${v.fontMono};
+    font-size: var(--text-mono-s);
+    letter-spacing: var(--track-mid);
+    text-transform: uppercase;
+    color: ${v.faint};
+  }
 `
 
-export const TagChip = styled(Link)`
-  display: inline-block;
+/* ------------------------------------------------------------------
+   facet list — tag filters as a terminal file tree
+------------------------------------------------------------------ */
+export const FacetList = styled.ul`
+  list-style: none;
+  margin: 0.75rem 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+`
+
+export const FacetRow = styled(Link)`
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  padding: 0.42em 0.7em 0.42em 0.75em;
+  margin-left: -0.75em;
+  border-left: 2px solid
+    ${p => (p.$active ? v.signal : "transparent")};
   font-family: ${v.fontMono};
   font-size: var(--text-mono-s);
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: ${p => (p.$active ? v.inverse : v.dim)};
-  background: ${p => (p.$active ? v.crimson : "transparent")};
-  border: 1px solid ${p => (p.$active ? v.crimson : v.lineFaint)};
-  padding: 0.35em 0.75em;
-  white-space: nowrap;
-  transition: color 0.2s ease, border-color 0.2s ease,
-    background-color 0.2s ease;
+  color: ${p => (p.$active ? v.text : v.dim)};
+  background: ${p => (p.$active ? "rgba(127, 19, 36, 0.18)" : "transparent")};
+  transition: color 0.2s ease, background-color 0.2s ease,
+    border-color 0.2s ease;
 
   .count {
-    color: ${p => (p.$active ? "rgba(255,255,255,0.7)" : v.faint)};
+    color: ${p => (p.$active ? v.signal : v.faint)};
   }
 
   &:hover,
   &:focus-visible {
-    color: ${p => (p.$active ? v.inverse : v.text)};
-    border-color: ${v.signal};
-  }
-`
-
-/* post header meta line */
-export const PostMeta = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 0.75em 1.75em;
-  margin-top: 1.4rem;
-  font-family: ${v.fontMono};
-  font-size: var(--text-mono-s);
-  letter-spacing: var(--track-mid);
-  text-transform: uppercase;
-  color: ${v.faint};
-
-  .k {
     color: ${v.signal};
   }
 
-  a {
-    color: ${v.dim};
-    transition: color 0.2s ease;
-
-    &:hover,
-    &:focus-visible {
-      color: ${v.signal};
-    }
+  @media (max-width: ${v.breakpointTablet}) {
+    margin-left: 0;
   }
 `

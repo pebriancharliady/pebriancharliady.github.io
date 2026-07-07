@@ -1,13 +1,54 @@
 import styled from "styled-components"
 import v from "../../../data/variables"
 
+/* the crimson field — every page closes on the brand color */
 export const FooterRoot = styled.footer`
   position: relative;
-  padding: clamp(3.5rem, 9vh, 6rem) 0 2.5rem;
+  z-index: 1;
+  overflow: hidden;
+  background-color: ${v.crimson};
+  background-image: radial-gradient(rgba(0, 0, 0, 0.18) 1px, transparent 1px);
+  background-size: 56px 56px;
+  color: ${v.inverse};
+  padding: clamp(4rem, 10vh, 6.5rem) 0 3.25rem;
+
+  *::selection {
+    background: ${v.ink};
+    color: ${v.inverse};
+  }
 `
 
-export const ContactBlock = styled.div`
-  padding-top: clamp(2rem, 5vh, 3rem);
+export const FooterEyebrow = styled.div`
+  display: flex;
+  align-items: baseline;
+  gap: 0.8em;
+  font-family: ${v.fontMono};
+  font-size: var(--text-mono-s);
+  font-weight: 500;
+  letter-spacing: var(--track-wide);
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.78);
+
+  &::before {
+    content: "";
+    align-self: center;
+    flex: none;
+    width: 8px;
+    height: 8px;
+    background: ${v.inverse};
+  }
+
+  .jp {
+    font-family: ${v.fontJa};
+    font-size: 1.1em;
+    letter-spacing: 0.25em;
+    color: ${v.inverse};
+  }
+
+  .sep {
+    color: rgba(255, 255, 255, 0.5);
+    letter-spacing: 0;
+  }
 `
 
 export const BigMail = styled.a`
@@ -18,7 +59,7 @@ export const BigMail = styled.a`
   line-height: 1.05;
   letter-spacing: 0.01em;
   text-transform: uppercase;
-  color: ${v.text};
+  color: ${v.inverse};
   overflow-wrap: anywhere;
   position: relative;
   transition: color 0.25s ease;
@@ -30,7 +71,7 @@ export const BigMail = styled.a`
     right: 0;
     bottom: -6px;
     height: 2px;
-    background: ${v.crimson};
+    background: rgba(255, 255, 255, 0.9);
     transform: scaleX(0);
     transform-origin: right center;
     transition: transform 0.6s var(--ease-out);
@@ -38,7 +79,7 @@ export const BigMail = styled.a`
 
   &:hover,
   &:focus-visible {
-    color: ${v.signal};
+    color: ${v.paper};
 
     &::after {
       transform: scaleX(1);
@@ -55,7 +96,7 @@ export const FooterMeta = styled.div`
   gap: 1.25rem 2rem;
   margin-top: clamp(2.5rem, 6vh, 4rem);
   padding-top: 1.5rem;
-  border-top: 1px solid ${v.lineFaint};
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
 `
 
 export const SocialRow = styled.ul`
@@ -67,10 +108,37 @@ export const SocialRow = styled.ul`
   list-style: none;
 `
 
+export const CrimsonLink = styled.a`
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.5em;
+  font-family: ${v.fontMono};
+  font-size: var(--text-mono);
+  letter-spacing: var(--track-mid);
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.75);
+  transition: color 0.2s ease;
+
+  .arrow {
+    color: ${v.inverse};
+    display: inline-block;
+    transition: transform 0.25s var(--ease-out);
+  }
+
+  &:hover,
+  &:focus-visible {
+    color: ${v.inverse};
+
+    .arrow {
+      transform: translate(2px, -2px);
+    }
+  }
+`
+
 export const CopyLine = styled.p`
   font-family: ${v.fontMono};
   font-size: var(--text-mono-s);
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: ${v.faint};
+  color: rgba(255, 255, 255, 0.62);
 `

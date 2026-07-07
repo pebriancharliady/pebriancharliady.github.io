@@ -3,44 +3,75 @@ import v from "../../../data/variables"
 
 export const HeroSection = styled.section`
   position: relative;
-  display: grid;
-  grid-template-columns: minmax(0, 6.5fr) minmax(0, 5.5fr);
-  gap: clamp(2.5rem, 6vw, 5.5rem);
-  align-items: center;
-  min-height: clamp(520px, calc(100vh - 220px), 880px);
-  padding: clamp(3rem, 7vh, 4.5rem) 0;
+  min-height: clamp(540px, calc(100vh - 260px), 860px);
+  padding-top: clamp(2.5rem, 6vh, 4rem);
 
   @media (max-width: ${v.breakpointTablet}) {
-    grid-template-columns: 1fr;
-    gap: 3.5rem;
-    align-items: start;
+    min-height: 0;
+  }
+`
+
+/* portrait anchored to the top-right; the name runs over it */
+export const PortraitZone = styled.div`
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: min(430px, 42%);
+  z-index: 1;
+
+  @media (max-width: ${v.breakpointTablet}) {
+    position: static;
+    width: min(420px, 88%);
+    margin: 2.5rem 0 0;
   }
 `
 
 export const HeroCopy = styled.div`
   position: relative;
-  z-index: 1;
+  z-index: 2;
 `
 
 export const HeroName = styled.h1`
-  margin: 1.6rem 0 1.9rem;
+  margin: clamp(1.25rem, 4vh, 2.5rem) 0 0;
   font-family: ${v.fontDisplay};
   font-weight: normal;
-  font-size: var(--text-hero);
-  line-height: 0.92;
+  font-size: clamp(3rem, 10.5vw, 8.75rem);
+  line-height: 0.9;
   letter-spacing: -0.005em;
   text-transform: uppercase;
   color: ${v.text};
+
+  .l1,
+  .l2 {
+    display: block;
+  }
+
+  .l2 {
+    margin-left: clamp(1.5rem, 13vw, 11.5rem);
+  }
+
+  @media (max-width: ${v.breakpointTablet}) {
+    font-size: clamp(2.75rem, 12vw, 5rem);
+
+    .l2 {
+      margin-left: clamp(1rem, 6vw, 3rem);
+    }
+  }
 `
 
 export const HeroLede = styled.p`
+  margin-top: clamp(1.75rem, 4vh, 2.5rem);
+  max-width: min(31em, 55%);
   font-size: var(--text-body);
   line-height: 1.85;
   color: ${v.dim};
-  max-width: 33em;
 
   b {
     color: ${v.text};
+  }
+
+  @media (max-width: ${v.breakpointTablet}) {
+    max-width: 34em;
   }
 `
 
@@ -48,7 +79,9 @@ export const CtaRow = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 0.9rem;
-  margin-top: 2.4rem;
+  margin-top: 2.25rem;
+  position: relative;
+  z-index: 2;
 `
 
 export const ScanPortrait = styled.div`
@@ -56,9 +89,9 @@ export const ScanPortrait = styled.div`
 
   .orbit {
     position: absolute;
-    top: -16%;
-    right: -13%;
-    width: min(370px, 68%);
+    top: -18%;
+    right: -16%;
+    width: min(340px, 74%);
     aspect-ratio: 1 / 1;
     z-index: 2;
     pointer-events: none;
@@ -67,10 +100,15 @@ export const ScanPortrait = styled.div`
   .portrait {
     position: relative;
     z-index: 1;
-    margin-left: 9%;
+    aspect-ratio: 3 / 4;
     border: 1px solid ${v.line};
     background: ${v.panel};
     overflow: hidden;
+
+    .gatsby-image-wrapper {
+      position: absolute !important;
+      inset: 0;
+    }
 
     img {
       filter: saturate(0.85) contrast(1.06);
@@ -138,48 +176,73 @@ export const ScanPortrait = styled.div`
     border-right-width: 1px;
   }
 
-  @media (max-width: ${v.breakpointTablet}) {
-    max-width: 460px;
+  /* subject tag pinned to the portrait frame */
+  .subject-id {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    z-index: 3;
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.45rem 0.8rem;
+    background: rgba(5, 5, 7, 0.82);
+    border-bottom: 1px solid ${v.lineFaint};
+    font-family: ${v.fontMono};
+    font-size: var(--text-mono-s);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: ${v.dim};
 
-    .orbit {
-      top: -12%;
-      right: -4%;
+    .id-code {
+      color: ${v.signal};
     }
   }
 `
 
-export const ReadoutList = styled.dl`
+/* ------------------------------------------------------------------
+   machine-readable zone — the recruitment data as a document band
+------------------------------------------------------------------ */
+export const Mrz = styled.dl`
+  display: grid;
+  grid-template-columns: 1.3fr 1.1fr 1.5fr 1.3fr auto;
+  margin: clamp(3rem, 8vh, 5rem) 0 0;
+  border-top: 1px solid ${v.line};
+  border-bottom: 1px solid ${v.line};
   position: relative;
-  z-index: 1;
-  margin: 1.4rem 0 0 9%;
-  border: 1px solid ${v.lineFaint};
-  border-top: 0;
-  background: rgba(12, 13, 20, 0.8);
+  z-index: 2;
+  background: rgba(5, 5, 7, 0.55);
+  backdrop-filter: blur(10px);
 
   > div {
-    display: flex;
-    align-items: baseline;
-    gap: 1.1em;
-    padding: 0.52em 0.95em;
-    border-top: 1px solid ${v.lineFaint};
+    padding: 0.95rem 1.2rem 1.05rem;
+    border-left: 1px solid ${v.lineFaint};
+    min-width: 0;
+
+    &:first-child {
+      border-left: 0;
+      padding-left: 0;
+    }
   }
 
   dt {
-    flex: none;
-    min-width: 7ch;
     font-family: ${v.fontMono};
     font-size: var(--text-mono-s);
-    letter-spacing: 0.18em;
+    letter-spacing: var(--track-mid);
+    text-transform: uppercase;
     color: ${v.faint};
   }
 
   dd {
-    margin: 0;
+    margin: 0.5rem 0 0;
     font-family: ${v.fontMono};
-    font-size: var(--text-mono-s);
-    letter-spacing: 0.08em;
+    font-size: var(--text-mono);
+    letter-spacing: 0.06em;
     color: ${v.text};
-    overflow-wrap: anywhere;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .status dd {
@@ -187,6 +250,7 @@ export const ReadoutList = styled.dl`
     align-items: center;
     gap: 0.6em;
     color: ${v.signal};
+    overflow: visible;
   }
 
   .dot {
@@ -196,5 +260,29 @@ export const ReadoutList = styled.dl`
     border-radius: 50%;
     background: ${v.signal};
     animation: pulse 2.4s ease-out infinite;
+  }
+
+  @media (max-width: ${v.breakpointTablet}) {
+    grid-template-columns: 1fr 1fr;
+    border: 1px solid ${v.lineFaint};
+
+    > div {
+      border-top: 1px solid ${v.lineFaint};
+      padding: 0.8rem 1rem 0.9rem;
+
+      &:first-child {
+        padding-left: 1rem;
+      }
+      &:nth-child(-n + 2) {
+        border-top: 0;
+      }
+      &:nth-child(odd) {
+        border-left: 0;
+      }
+    }
+
+    dd {
+      white-space: normal;
+    }
   }
 `

@@ -1,4 +1,4 @@
-import styled from "styled-components"
+import styled, { css } from "styled-components"
 import { Link } from "gatsby"
 import v from "../../data/variables"
 
@@ -31,67 +31,6 @@ export const BackLink = styled(Link)`
 
 export const ArticleShell = styled.article`
   padding: clamp(2rem, 6vh, 4rem) 0;
-`
-
-/* dossier metadata strip on work files */
-export const MetaGrid = styled.dl`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-  margin: clamp(1.75rem, 4vh, 2.5rem) 0 0;
-  border: 1px solid ${v.line};
-  background: rgba(12, 13, 20, 0.6);
-
-  > div {
-    padding: 0.9rem 1.1rem;
-    border-left: 1px solid ${v.lineFaint};
-
-    &:first-child {
-      border-left: 0;
-    }
-  }
-
-  dt {
-    font-family: ${v.fontMono};
-    font-size: var(--text-mono-s);
-    letter-spacing: var(--track-mid);
-    text-transform: uppercase;
-    color: ${v.faint};
-  }
-
-  dd {
-    margin: 0.45rem 0 0;
-    font-family: ${v.fontMono};
-    font-size: var(--text-mono);
-    letter-spacing: 0.06em;
-    color: ${v.text};
-    overflow-wrap: anywhere;
-
-    a {
-      color: ${v.text};
-      border-bottom: 1px solid ${v.signal};
-      transition: color 0.2s ease;
-
-      &:hover,
-      &:focus-visible {
-        color: ${v.signal};
-      }
-    }
-  }
-
-  @media (max-width: ${v.breakpointPhone}) {
-    grid-template-columns: 1fr 1fr;
-
-    > div {
-      border-top: 1px solid ${v.lineFaint};
-
-      &:nth-child(-n + 2) {
-        border-top: 0;
-      }
-      &:nth-child(odd) {
-        border-left: 0;
-      }
-    }
-  }
 `
 
 /* framed figure with corner brackets; click opens the modal */
@@ -167,12 +106,39 @@ export const FigViewer = styled.figure`
       }
     }
   }
+
+  ${p =>
+    p.$paper &&
+    css`
+      border-color: ${v.lineInk};
+      background: transparent;
+
+      .bk {
+        border-color: ${v.signalDeep};
+      }
+
+      figcaption {
+        border-top-color: ${v.lineInkFaint};
+        color: ${v.inkFaint};
+
+        a {
+          color: ${v.inkDim};
+
+          &:hover,
+          &:focus-visible {
+            color: ${v.crimson};
+          }
+        }
+      }
+    `}
 `
 
-/* markdown body — content stays as-is, chrome goes dark */
+/* markdown body — content stays as-is, chrome goes dark.
+   h2s become numbered dossier sections via CSS counters. */
 export const ArticleBody = styled.div`
   max-width: 70ch;
   margin-top: clamp(2.5rem, 6vh, 4rem);
+  counter-reset: dossier;
   font-size: 1.0625rem;
   line-height: 1.85;
   color: #c9cbd6;
@@ -207,12 +173,15 @@ export const ArticleBody = styled.div`
     letter-spacing: 0.04em;
 
     &::before {
-      content: "";
-      display: inline-block;
-      width: 9px;
-      height: 9px;
-      margin-right: 0.7em;
-      background: ${v.crimson};
+      counter-increment: dossier;
+      content: counter(dossier, decimal-leading-zero) " / ";
+      font-family: ${v.fontMono};
+      font-size: 0.72em;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      color: ${v.signal};
+      margin-right: 0.35em;
+      vertical-align: 0.08em;
     }
   }
 
@@ -297,6 +266,62 @@ export const ArticleBody = styled.div`
       color: ${v.dim};
     }
   }
+
+  /* printed variant — ink on paper; code blocks stay dark terminal slabs */
+  ${p =>
+    p.$paper &&
+    css`
+      color: ${v.inkDim};
+
+      a {
+        color: ${v.ink};
+        border-bottom-color: ${v.signalDeep};
+
+        &:hover,
+        &:focus-visible {
+          color: ${v.crimson};
+        }
+      }
+
+      h2,
+      h3 {
+        color: ${v.ink};
+      }
+
+      h2::before {
+        color: ${v.signalDeep};
+      }
+
+      h4 {
+        color: ${v.inkDim};
+      }
+
+      li::before {
+        color: ${v.signalDeep};
+      }
+
+      blockquote {
+        border-left-color: ${v.crimson};
+        color: ${v.inkFaint};
+      }
+
+      img {
+        border-color: ${v.lineInk};
+      }
+
+      hr {
+        border-top-color: ${v.lineInk};
+      }
+
+      table th,
+      table td {
+        border-color: ${v.lineInk};
+      }
+
+      table th {
+        color: ${v.inkDim};
+      }
+    `}
 `
 
 /* prev / next terminal nav */

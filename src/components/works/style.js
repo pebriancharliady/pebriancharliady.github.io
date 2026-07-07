@@ -1,34 +1,48 @@
-import styled from "styled-components"
+import styled, { css } from "styled-components"
 import { Link } from "gatsby"
 import v from "../../data/variables"
 
 export const FileList = styled.div`
-  border-top: 1px solid ${v.line};
+  border-top: 1px solid ${p => (p.$paper ? v.lineInk : v.line)};
 `
 
+/*
+  T-composition file row:
+  ┌ FILE 03 · 2021.10 · CATEGORY ────────────── (rule runs out) ┐
+  │ TITLE SPANNING THE FULL CANVAS                              │
+  │ [ description + chips ]        [ image reaching the edge ]  │
+  └─────────────────────────────────────────────────────────────┘
+*/
 export const FileRow = styled(Link)`
   position: relative;
-  display: grid;
-  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
-  gap: clamp(1.75rem, 4vw, 4rem);
-  align-items: center;
-  padding: clamp(2.25rem, 6vh, 4rem) 0;
+  display: block;
+  padding: clamp(2rem, 5vh, 3.25rem) 0;
   border-bottom: 1px solid ${v.line};
   color: inherit;
 
-  .meta {
+  .metaline {
     display: flex;
-    flex-wrap: wrap;
-    gap: 0.6em 1.5em;
+    align-items: center;
+    gap: 1.4em;
     font-family: ${v.fontMono};
     font-size: var(--text-mono-s);
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: ${v.faint};
+    white-space: nowrap;
 
     .code {
       color: ${v.signal};
       font-weight: 600;
+    }
+
+    /* the rule runs out to the canvas edge */
+    &::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: ${v.lineFaint};
+      min-width: 2rem;
     }
   }
 
@@ -36,11 +50,11 @@ export const FileRow = styled(Link)`
     display: flex;
     align-items: baseline;
     gap: 0.55em;
-    margin-top: 1.1rem;
+    margin: 1.15rem 0 0;
     font-family: ${v.fontDisplay};
     font-weight: normal;
-    font-size: clamp(1.9rem, 4vw, 3.4rem);
-    line-height: 0.98;
+    font-size: clamp(2rem, 5.2vw, 4.25rem);
+    line-height: 0.95;
     text-transform: uppercase;
     color: ${v.text};
     transition: color 0.25s ease;
@@ -48,7 +62,7 @@ export const FileRow = styled(Link)`
     .arrow {
       flex: none;
       font-family: ${v.fontMono};
-      font-size: 0.5em;
+      font-size: 0.45em;
       color: ${v.signal};
       opacity: 0;
       transform: translateX(-8px);
@@ -56,9 +70,17 @@ export const FileRow = styled(Link)`
     }
   }
 
+  .grid {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: clamp(1.5rem, 4vw, 4.5rem);
+    align-items: start;
+    margin-top: clamp(1.4rem, 3.5vh, 2.25rem);
+  }
+
   .desc {
-    margin-top: 1.2rem;
-    max-width: 52ch;
+    margin: 0;
+    max-width: 44ch;
     font-size: 1rem;
     line-height: 1.8;
     color: ${v.dim};
@@ -75,10 +97,13 @@ export const FileRow = styled(Link)`
   .media {
     position: relative;
     overflow: hidden;
+    aspect-ratio: 16 / 9;
     border: 1px solid ${v.lineFaint};
     background: ${v.panel};
 
     .gatsby-image-wrapper {
+      position: absolute !important;
+      inset: 0;
       filter: grayscale(1) contrast(1.08) brightness(0.95);
       transform: scale(1.01);
       transition: filter 0.5s ease, transform 1.2s var(--ease-out);
@@ -97,6 +122,7 @@ export const FileRow = styled(Link)`
       pointer-events: none;
     }
 
+    /* scanline sweep, fired on row hover */
     &::before {
       content: "";
       position: absolute;
@@ -139,11 +165,70 @@ export const FileRow = styled(Link)`
   }
 
   @media (max-width: ${v.breakpointPhone}) {
-    grid-template-columns: 1fr;
-    gap: 1.25rem;
+    .grid {
+      grid-template-columns: 1fr;
+      gap: 1.25rem;
+    }
 
     .media {
       order: 2;
     }
+
+    .metaline {
+      flex-wrap: wrap;
+      white-space: normal;
+
+      &::after {
+        display: none;
+      }
+    }
   }
+
+  /* printed-on-paper variant */
+  ${p =>
+    p.$paper &&
+    css`
+      border-bottom-color: ${v.lineInk};
+
+      .metaline {
+        color: ${v.inkFaint};
+
+        .code {
+          color: ${v.signalDeep};
+        }
+
+        &::after {
+          background: ${v.lineInk};
+        }
+      }
+
+      .title {
+        color: ${v.ink};
+
+        .arrow {
+          color: ${v.signalDeep};
+        }
+      }
+
+      .desc {
+        color: ${v.inkDim};
+      }
+
+      .chips > * {
+        color: ${v.inkDim};
+        border-color: ${v.lineInk};
+      }
+
+      .media {
+        border-color: ${v.lineInk};
+        background: ${v.paper};
+      }
+
+      &:hover,
+      &:focus-visible {
+        .title {
+          color: ${v.crimson};
+        }
+      }
+    `}
 `

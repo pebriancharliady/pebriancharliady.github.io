@@ -27,6 +27,15 @@ export default {
   line: "rgba(237, 238, 243, 0.16)",
   lineFaint: "rgba(237, 238, 243, 0.07)",
 
+  // paper mode — the printed page of the dossier (inverted palette)
+  paper: "#e9eaf0",
+  ink: "#101118",
+  inkDim: "#3a3c4e",
+  inkFaint: "#70738a",
+  lineInk: "rgba(16, 17, 24, 0.25)",
+  lineInkFaint: "rgba(16, 17, 24, 0.12)",
+  signalDeep: "#c21f35",
+
   // type
   fontDisplay: "'GT-Walsheim-Pro-Bold', 'Helvetica Neue', Arial, sans-serif",
   fontMedium: "'GT-Walsheim-Pro-Medium', 'Helvetica Neue', Arial, sans-serif",

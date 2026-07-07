@@ -50,11 +50,17 @@ export const Decode = ({ text, delay = 0, duration = 900, ...rest }) => {
 }
 
 /**
- * Fades content up once it enters the viewport. The CSS lives in
- * GlobalStyle under [data-reveal]; reduced-motion users see everything
- * immediately.
+ * Fades content in once it enters the viewport. Variants (see
+ * GlobalStyle): "up" rise-fade · "clip" wipe from the left · "stamp"
+ * hanko hit. Reduced-motion users see everything immediately.
  */
-export const Reveal = ({ as: Tag = "div", delay = 0, children, ...rest }) => {
+export const Reveal = ({
+  as: Tag = "div",
+  delay = 0,
+  variant = "up",
+  children,
+  ...rest
+}) => {
   const ref = useRef(null)
 
   useEffect(() => {
@@ -80,7 +86,7 @@ export const Reveal = ({ as: Tag = "div", delay = 0, children, ...rest }) => {
   return (
     <Tag
       ref={ref}
-      data-reveal
+      data-reveal={variant}
       style={{ "--reveal-delay": `${delay}ms` }}
       {...rest}
     >
@@ -88,3 +94,5 @@ export const Reveal = ({ as: Tag = "div", delay = 0, children, ...rest }) => {
     </Tag>
   )
 }
+
+export * from "./scrollfx"

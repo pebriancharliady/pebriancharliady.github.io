@@ -84,6 +84,10 @@ export const BottomBar = styled.div`
     color: ${v.faint};
   }
 
+  .scr {
+    color: ${v.faint};
+  }
+
   @media (max-width: ${v.breakpointPhone}) {
     bottom: ${v.frameInsetMobile};
 
@@ -91,6 +95,10 @@ export const BottomBar = styled.div`
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
+    }
+
+    .scr {
+      display: none;
     }
   }
 `

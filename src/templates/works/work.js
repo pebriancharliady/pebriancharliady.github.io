@@ -3,19 +3,31 @@ import { graphql } from "gatsby"
 import Img from "gatsby-image"
 import Layout from "../../components/layout"
 import SEO from "../../components/seo"
-import { Wrap, PageHead, Chip, ChipRow, Modal } from "../../components/common"
+import {
+  Wrap,
+  PageHead,
+  Chip,
+  ChipRow,
+  Modal,
+  Spread,
+  Spine,
+  Field,
+  SpineBlock,
+  PaperPanel,
+  FormTag,
+} from "../../components/common"
 import { Reveal } from "../../components/fx"
 import {
   BackLink,
   ArticleShell,
-  MetaGrid,
   FigViewer,
   ArticleBody,
 } from "../../components/article/style"
 
-const WorkTemplate = ({ data }) => {
+const WorkTemplate = ({ data, pageContext }) => {
   const work = data.markdownRemark
   const f = work.frontmatter
+  const fileNo = String(pageContext.fileNo || 0).padStart(2, "0")
 
   return (
     <Layout>
@@ -33,19 +45,23 @@ const WorkTemplate = ({ data }) => {
             <PageHead jp="作品" kicker="Work file" title={f.title} />
           </Reveal>
 
-          <Reveal delay={100}>
-            <MetaGrid>
-              <div>
-                <dt>Date</dt>
-                <dd>{f.date}</dd>
-              </div>
-              <div>
-                <dt>Category</dt>
-                <dd>{f.category}</dd>
-              </div>
-              <div>
-                <dt>Deployment</dt>
-                <dd>
+          <Spread>
+            <Spine>
+              <SpineBlock>
+                <span className="sp-label">File</span>
+                <span className="sp-value sp-big">{fileNo}</span>
+              </SpineBlock>
+              <SpineBlock>
+                <span className="sp-label">Date</span>
+                <span className="sp-value">{f.date}</span>
+              </SpineBlock>
+              <SpineBlock>
+                <span className="sp-label">Category</span>
+                <span className="sp-value">{f.category}</span>
+              </SpineBlock>
+              <SpineBlock>
+                <span className="sp-label">Deployment</span>
+                <span className="sp-value">
                   {f.projectLink ? (
                     <a
                       href={f.projectLink}
@@ -57,53 +73,70 @@ const WorkTemplate = ({ data }) => {
                   ) : (
                     "Offline / private"
                   )}
-                </dd>
-              </div>
-            </MetaGrid>
-          </Reveal>
+                </span>
+              </SpineBlock>
+              <SpineBlock>
+                <span className="sp-label">Stack</span>
+                <ChipRow style={{ marginTop: "0.6rem" }}>
+                  {f.tags.map(tag => (
+                    <Chip key={tag}>{tag}</Chip>
+                  ))}
+                </ChipRow>
+              </SpineBlock>
+            </Spine>
 
-          <Reveal delay={160}>
-            <ChipRow style={{ marginTop: "1.25rem" }}>
-              {f.tags.map(tag => (
-                <Chip key={tag}>{tag}</Chip>
-              ))}
-            </ChipRow>
-          </Reveal>
+            <Field>
+              <Reveal delay={100}>
+                <PaperPanel>
+                  <FormTag style={{ top: "0.9rem", right: "3.25rem" }}>
+                    File {fileNo} / Dossier
+                  </FormTag>
 
-          {f.image && (
-            <Reveal delay={220}>
-              <FigViewer>
-                <span className="bk bk-tl" aria-hidden="true" />
-                <span className="bk bk-tr" aria-hidden="true" />
-                <span className="bk bk-bl" aria-hidden="true" />
-                <span className="bk bk-br" aria-hidden="true" />
-                <Img fluid={f.image.childImageSharp.fluid} alt={f.title} />
-                <Modal
-                  content={() => (
-                    <img
-                      src={f.image.childImageSharp.fluid.src}
-                      alt={f.title}
-                    />
+                  {f.image && (
+                    <Reveal variant="clip" delay={200}>
+                      <FigViewer $paper style={{ marginTop: "1.5rem" }}>
+                        <span className="bk bk-tl" aria-hidden="true" />
+                        <span className="bk bk-tr" aria-hidden="true" />
+                        <span className="bk bk-bl" aria-hidden="true" />
+                        <span className="bk bk-br" aria-hidden="true" />
+                        <Img
+                          fluid={f.image.childImageSharp.fluid}
+                          alt={f.title}
+                        />
+                        <Modal
+                          content={() => (
+                            <img
+                              src={f.image.childImageSharp.fluid.src}
+                              alt={f.title}
+                            />
+                          )}
+                        >
+                          {toggle => (
+                            <button
+                              type="button"
+                              className="expand"
+                              onClick={toggle}
+                              aria-label="Enlarge image"
+                            />
+                          )}
+                        </Modal>
+                        <figcaption>
+                          <span>FIG. 01 — {f.title}</span>
+                          <span>CLICK TO ENLARGE</span>
+                        </figcaption>
+                      </FigViewer>
+                    </Reveal>
                   )}
-                >
-                  {toggle => (
-                    <button
-                      type="button"
-                      className="expand"
-                      onClick={toggle}
-                      aria-label="Enlarge image"
-                    />
-                  )}
-                </Modal>
-                <figcaption>
-                  <span>FIG. 01 — {f.title}</span>
-                  <span>CLICK TO ENLARGE</span>
-                </figcaption>
-              </FigViewer>
-            </Reveal>
-          )}
 
-          <ArticleBody dangerouslySetInnerHTML={{ __html: work.html }} />
+                  <ArticleBody
+                    $paper
+                    dangerouslySetInnerHTML={{ __html: work.html }}
+                    style={{ marginTop: "clamp(1.75rem, 4vh, 2.5rem)" }}
+                  />
+                </PaperPanel>
+              </Reveal>
+            </Field>
+          </Spread>
         </ArticleShell>
       </Wrap>
     </Layout>

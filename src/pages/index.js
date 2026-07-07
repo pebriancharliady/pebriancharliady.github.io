@@ -12,16 +12,24 @@ import {
   Chip,
   ChipRow,
   KanjiMark,
+  PaperSlab,
+  Hanko,
+  FormTag,
 } from "../components/common"
-import { Reveal } from "../components/fx"
+import { Reveal, Parallax } from "../components/fx"
+import { FileList, FileRow } from "../components/works/style"
 import {
   SectionInner,
-  WorkList,
-  WorkRow,
   SectionFoot,
-  CapGrid,
+  SpecList,
+  SpecRow,
   NoteList,
   NoteRow,
+  StickyHero,
+  PageBody,
+  SlabTicker,
+  EndTicker,
+  HankoSpot,
 } from "../components/home/style"
 
 const CAPABILITIES = [
@@ -56,112 +64,169 @@ const IndexPage = ({ data: query }) => {
     <Layout>
       <SEO title={`${data.SiteAuthor} — ${data.SiteRole}`} />
 
-      <Hero />
+      <StickyHero>
+        <Hero />
+      </StickyHero>
 
-      <Section>
-        <KanjiMark aria-hidden="true" style={{ top: "1rem", right: "1.5vw" }}>
-          作品
-        </KanjiMark>
-        <SectionInner>
-          <Reveal>
-            <SectionHead
-              jp="作品"
-              title="Selected work"
-              aside={`${String(works.length).padStart(2, "0")} files on record`}
-            />
-          </Reveal>
-          <WorkList>
-            {works.map(({ node }, i) => {
-              const f = node.frontmatter
-              return (
-                <Reveal key={node.fields.slug} delay={i * 90}>
-                  <WorkRow to={node.fields.slug}>
-                    <span className="meta">
-                      <span className="code">
-                        FILE {String(works.length - i).padStart(2, "0")}
+      <PageBody>
+        {/* the printed file slides up over the HUD */}
+        <PaperSlab>
+          <SlabTicker
+            tone="paper"
+            jp="選ばれた作品"
+            text="Selected work — File archive — 2021"
+            speed={0.5}
+          />
+          <FormTag
+            style={{
+              top: "auto",
+              bottom: "2.4rem",
+              right: "auto",
+              left: "clamp(1.25rem, 4vw, 3.5rem)",
+            }}
+          >
+            Form 09-A / Selected work
+          </FormTag>
+          <HankoSpot>
+            <Reveal variant="stamp" delay={250}>
+              <Hanko lang="ja" aria-hidden="true">
+                認
+              </Hanko>
+            </Reveal>
+          </HankoSpot>
+          <Parallax
+            speed={0.09}
+            style={{
+              position: "absolute",
+              top: "9rem",
+              right: "1.5vw",
+              zIndex: 0,
+            }}
+          >
+            <KanjiMark $flow $paper aria-hidden="true">
+              作品
+            </KanjiMark>
+          </Parallax>
+
+          <SectionInner>
+            <Reveal>
+              <SectionHead
+                $paper
+                jp="作品"
+                title="Selected work"
+                aside={`${String(works.length).padStart(2, "0")} files on record`}
+              />
+            </Reveal>
+            <FileList $paper>
+              {works.map(({ node }, i) => {
+                const f = node.frontmatter
+                return (
+                  <Reveal key={node.fields.slug} delay={i * 90}>
+                    <FileRow $paper to={node.fields.slug}>
+                      <span className="metaline">
+                        <span className="code">
+                          FILE {String(works.length - i).padStart(2, "0")}
+                        </span>
+                        <span>{f.date}</span>
+                        <span>{f.category}</span>
                       </span>
-                      <span>{f.date}</span>
-                      <span>{f.category}</span>
-                    </span>
-                    <span>
                       <h3 className="title">
                         {f.title}
                         <span className="arrow" aria-hidden="true">
                           →
                         </span>
                       </h3>
-                      <p className="desc">{f.description}</p>
-                      <ChipRow className="chips">
-                        {f.tags.slice(0, 4).map(tag => (
-                          <Chip key={tag}>{tag}</Chip>
-                        ))}
-                      </ChipRow>
-                    </span>
-                    <span className="media">
-                      <Img
-                        fluid={f.image.childImageSharp.fluid}
-                        alt={f.title}
-                      />
-                    </span>
-                  </WorkRow>
-                </Reveal>
-              )
-            })}
-          </WorkList>
-          <SectionFoot>
-            <ButtonLink to="/works">All work files</ButtonLink>
-          </SectionFoot>
-        </SectionInner>
-      </Section>
+                      <span className="grid">
+                        <span>
+                          <p className="desc">{f.description}</p>
+                          <ChipRow className="chips">
+                            {f.tags.slice(0, 4).map(tag => (
+                              <Chip key={tag}>{tag}</Chip>
+                            ))}
+                          </ChipRow>
+                        </span>
+                        <Reveal
+                          as="span"
+                          variant="clip"
+                          delay={150 + i * 90}
+                          className="media"
+                        >
+                          <Img
+                            fluid={f.image.childImageSharp.fluid}
+                            alt={f.title}
+                          />
+                        </Reveal>
+                      </span>
+                    </FileRow>
+                  </Reveal>
+                )
+              })}
+            </FileList>
+            <SectionFoot>
+              <ButtonLink $paper to="/works">
+                All work files
+              </ButtonLink>
+            </SectionFoot>
+          </SectionInner>
+        </PaperSlab>
 
-      <Section>
-        <SectionInner>
-          <Reveal>
-            <SectionHead jp="技術" title="Capabilities" aside="What I ship" />
-          </Reveal>
-          <Reveal delay={120}>
-            <CapGrid>
-              {CAPABILITIES.map(cap => (
-                <div key={cap.title}>
-                  <span className="kanji" lang="ja" aria-hidden="true">
-                    {cap.kanji}
-                  </span>
-                  <h3>{cap.title}</h3>
-                  <p>{cap.body}</p>
-                  <div className="stack">{cap.stack}</div>
-                </div>
+        <Section>
+          <SectionInner>
+            <Reveal>
+              <SectionHead jp="技術" title="Capabilities" aside="What I ship" />
+            </Reveal>
+            <SpecList>
+              {CAPABILITIES.map((cap, i) => (
+                <Reveal key={cap.title} delay={i * 80}>
+                  <SpecRow>
+                    <span className="kanji" lang="ja" aria-hidden="true">
+                      {cap.kanji}
+                    </span>
+                    <h3>{cap.title}</h3>
+                    <p>{cap.body}</p>
+                    <div className="stack">{cap.stack}</div>
+                  </SpecRow>
+                </Reveal>
               ))}
-            </CapGrid>
-          </Reveal>
-        </SectionInner>
-      </Section>
+            </SpecList>
+          </SectionInner>
+        </Section>
 
-      <Section>
-        <SectionInner>
-          <Reveal>
-            <SectionHead jp="記事" title="Field notes" aside="From the blog" />
-          </Reveal>
-          <NoteList>
-            {posts.map(({ node }, i) => {
-              const f = node.frontmatter
-              return (
-                <Reveal key={node.fields.slug} delay={i * 80}>
-                  <NoteRow to={node.fields.slug}>
-                    <span className="date">{f.date}</span>
-                    <span className="title">{f.title}</span>
-                    <span className="meta">
-                      {f.categories.slice(0, 2).join(" · ")} — {f.time} min
-                    </span>
-                  </NoteRow>
-                </Reveal>
-              )
-            })}
-          </NoteList>
-          <SectionFoot>
-            <ButtonLink to="/blog">All entries</ButtonLink>
-          </SectionFoot>
-        </SectionInner>
-      </Section>
+        <Section>
+          <SectionInner>
+            <Reveal>
+              <SectionHead jp="記事" title="Field notes" aside="From the blog" />
+            </Reveal>
+            <NoteList>
+              {posts.map(({ node }, i) => {
+                const f = node.frontmatter
+                return (
+                  <Reveal key={node.fields.slug} delay={i * 80}>
+                    <NoteRow to={node.fields.slug}>
+                      <span className="date">{f.date}</span>
+                      <span className="title">{f.title}</span>
+                      <span className="meta">
+                        {f.categories.slice(0, 2).join(" · ")} — {f.time} min
+                      </span>
+                    </NoteRow>
+                  </Reveal>
+                )
+              })}
+            </NoteList>
+            <SectionFoot>
+              <ButtonLink to="/blog">All entries</ButtonLink>
+            </SectionFoot>
+          </SectionInner>
+        </Section>
+
+        <EndTicker
+          tone="dark"
+          reverse
+          jp="接続"
+          text={`Make contact — ${data.SiteDossier.status} — Bandung ID`}
+          speed={0.4}
+        />
+      </PageBody>
     </Layout>
   )
 }
