@@ -1,130 +1,137 @@
 import React from "react"
 import { graphql } from "gatsby"
+import Img from "gatsby-image"
 import Layout from "../../components/layout"
 import SEO from "../../components/seo"
-import { Calendar, ExternalLink } from "react-feather"
-
+import { Wrap, PageHead, Chip, ChipRow, Modal } from "../../components/common"
+import { Reveal } from "../../components/fx"
 import {
-  Intro,
-  Title,
-  ArticlePost,
-  SmallText,
+  BackLink,
+  ArticleShell,
+  MetaGrid,
+  FigViewer,
   ArticleBody,
-  Header,
-  HeaderImage,
-  ProjectLink,
-} from "../../components/styled/posts"
-import { ContainerLayout, Modal } from "../../components/common"
+} from "../../components/article/style"
 
-const portfolioWork = ({ data, pageContext, location }) => {
+const WorkTemplate = ({ data }) => {
   const work = data.markdownRemark
-  const siteTitle = data.site.siteMetadata.title
+  const f = work.frontmatter
 
   return (
-    <Layout location={location} title={siteTitle}>
-      <SEO
-        title={work.frontmatter.title}
-        description={work.frontmatter.description || work.excerpt}
-      />
-      <Intro>
-        <ContainerLayout>
-          <div>
-            <ArticlePost>
-              <Header>
-                <Title>{work.frontmatter.title}</Title>
-                <SmallText>
-                  <Calendar
-                    className="align-middle text-primary"
-                    width="18"
-                    height="18"
-                  />
-                  <span className="align-middle">
-                    {" "}
-                    Date published : <strong>
-                      {work.frontmatter.date}
-                    </strong>{" "}
-                  </span>
-                </SmallText>
-                <figure style={{ position: "relative" }}>
-                  <HeaderImage
-                    fluid={work.frontmatter.image.childImageSharp.fluid}
-                    title={work.frontmatter.title}
-                  />
-                  <Modal
-                    content={toggle => (
-                      <img
-                        src={work.frontmatter.image.childImageSharp.fluid.src}
-                        alt={work.frontmatter.title}
-                      />
-                    )}
-                  >
-                    {toggle => (
-                      <span
-                        onClick={toggle}
-                        onKeyDown={toggle}
-                        role="button"
-                        className="link-wrapped"
-                        aria-label="open modal"
-                        tabIndex="-1"
-                      ></span>
-                    )}
-                  </Modal>
-                </figure>
+    <Layout>
+      <SEO title={f.title} description={f.description || work.excerpt} />
+      <Wrap>
+        <ArticleShell>
+          <BackLink to="/works">
+            <span className="arrow" aria-hidden="true">
+              ←
+            </span>
+            All work files
+          </BackLink>
 
-                <ProjectLink
-                  href={work.frontmatter.projectLink}
-                  className="lined-link"
-                  target="_blank"
-                >
-                  <span className="align-middle">
-                    {work.frontmatter.projectLink
-                      ? "Visit Project"
-                      : "Project URL not provided"}{" "}
-                  </span>
-                  {work.frontmatter.projectLink && (
-                    <ExternalLink
-                      className="align-middle text-primary"
-                      width="18"
-                      height="18"
+          <Reveal>
+            <PageHead jp="作品" kicker="Work file" title={f.title} />
+          </Reveal>
+
+          <Reveal delay={100}>
+            <MetaGrid>
+              <div>
+                <dt>Date</dt>
+                <dd>{f.date}</dd>
+              </div>
+              <div>
+                <dt>Category</dt>
+                <dd>{f.category}</dd>
+              </div>
+              <div>
+                <dt>Deployment</dt>
+                <dd>
+                  {f.projectLink ? (
+                    <a
+                      href={f.projectLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Visit project ↗
+                    </a>
+                  ) : (
+                    "Offline / private"
+                  )}
+                </dd>
+              </div>
+            </MetaGrid>
+          </Reveal>
+
+          <Reveal delay={160}>
+            <ChipRow style={{ marginTop: "1.25rem" }}>
+              {f.tags.map(tag => (
+                <Chip key={tag}>{tag}</Chip>
+              ))}
+            </ChipRow>
+          </Reveal>
+
+          {f.image && (
+            <Reveal delay={220}>
+              <FigViewer>
+                <span className="bk bk-tl" aria-hidden="true" />
+                <span className="bk bk-tr" aria-hidden="true" />
+                <span className="bk bk-bl" aria-hidden="true" />
+                <span className="bk bk-br" aria-hidden="true" />
+                <Img fluid={f.image.childImageSharp.fluid} alt={f.title} />
+                <Modal
+                  content={() => (
+                    <img
+                      src={f.image.childImageSharp.fluid.src}
+                      alt={f.title}
                     />
                   )}
-                </ProjectLink>
-              </Header>
-              <ArticleBody dangerouslySetInnerHTML={{ __html: work.html }} />
-            </ArticlePost>
-          </div>
-        </ContainerLayout>
-      </Intro>
+                >
+                  {toggle => (
+                    <button
+                      type="button"
+                      className="expand"
+                      onClick={toggle}
+                      aria-label="Enlarge image"
+                    />
+                  )}
+                </Modal>
+                <figcaption>
+                  <span>FIG. 01 — {f.title}</span>
+                  <span>CLICK TO ENLARGE</span>
+                </figcaption>
+              </FigViewer>
+            </Reveal>
+          )}
+
+          <ArticleBody dangerouslySetInnerHTML={{ __html: work.html }} />
+        </ArticleShell>
+      </Wrap>
     </Layout>
   )
 }
 
-export default portfolioWork
+export default WorkTemplate
 
-export const data = graphql`
+export const pageQuery = graphql`
   query portfolioWorkBySlug($slug: String!) {
-    site {
-      siteMetadata {
-        title
-      }
-    }
     markdownRemark(fields: { slug: { eq: $slug } }) {
       id
       excerpt
-      rawMarkdownBody
       html
       frontmatter {
         title
-        date(formatString: "MMMM DD, YYYY")
+        category
+        tags
+        description
+        projectLink
+        date(formatString: "YYYY.MM.DD")
         image {
           childImageSharp {
-            fluid(maxWidth: 1000, quality: 100) {
+            fluid(maxWidth: 1200, quality: 90) {
               ...GatsbyImageSharpFluid
             }
           }
         }
-        description
-        projectLink
       }
     }
   }

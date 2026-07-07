@@ -1,16 +1,36 @@
 @font-face {
-  font-family: 'GT-Walsheim-Pro-Regular';
-  src: url('../../../assets/fonts/GT-Walsheim-Pro-Regular.woff2') format('woff2'); /* Super Modern Browsers */
+  font-family: "GT-Walsheim-Pro-Regular";
+  src: url("../../../assets/fonts/GT-Walsheim-Pro-Regular.woff2") format("woff2");
+  font-display: swap;
 }
 @font-face {
-  font-family: 'GT-Walsheim-Pro-Medium';
-  src: url('../../../assets/fonts/GT-Walsheim-Pro-Medium.woff2') format('woff2'); /* Super Modern Browsers */
+  font-family: "GT-Walsheim-Pro-Medium";
+  src: url("../../../assets/fonts/GT-Walsheim-Pro-Medium.woff2") format("woff2");
+  font-display: swap;
 }
 @font-face {
-  font-family: 'GT-Walsheim-Pro-Bold';
-  src: url('../../../assets/fonts/GT-Walsheim-Pro-Bold.woff2') format('woff2'); /* Super Modern Browsers */
+  font-family: "GT-Walsheim-Pro-Bold";
+  src: url("../../../assets/fonts/GT-Walsheim-Pro-Bold.woff2") format("woff2");
+  font-display: swap;
 }
 @font-face {
-  font-family: 'PermanentMarker-Regular';
-  src: url('../../../assets/fonts/PermanentMarker-Regular.ttf'); /* Super Modern Browsers */
+  font-family: "IBM Plex Mono";
+  src: url("../../../assets/fonts/IBMPlexMono-Regular-latin.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "IBM Plex Mono";
+  src: url("../../../assets/fonts/IBMPlexMono-Medium-latin.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "IBM Plex Mono";
+  src: url("../../../assets/fonts/IBMPlexMono-SemiBold-latin.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
 }

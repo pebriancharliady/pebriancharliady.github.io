@@ -1,118 +1,56 @@
 import React from "react"
-import PropTypes from "prop-types"
-import { Link, graphql } from "gatsby"
-import { Calendar, Clock } from 'react-feather'
-import Img from "gatsby-image"
-import CategoriesTags from '../../components/CategoriesTags/categoriesTags';
-import {ContainerLayout, WorkPost, Intro, SubTitle, Title, Text, HeaderIntro, SubText, SmallText, UnderLink, ReadMore} from "../../components/common"
+import { graphql } from "gatsby"
 import Layout from "../../components/layout"
 import SEO from "../../components/seo"
+import CategoriesTags from "../../components/CategoriesTags/categoriesTags"
+import { Wrap, PageHead } from "../../components/common"
+import { Reveal } from "../../components/fx"
+import { LogList, LogRow } from "../../components/blog/style"
 
-const Categories = ({ data }) => {
-  const { edges} = data.allMarkdownRemark
-  // const tagHeader = `${totalCount} post${
-  //   totalCount === 1 ? "" : "s"
-  // } tagged with "${category}"`
+const Categories = ({ data, pageContext }) => {
+  const { category } = pageContext
+  const { edges, totalCount } = data.allMarkdownRemark
 
   return (
-    <Layout> 
-      <SEO title="Blog Home Page" />
-      <Intro>
-        <ContainerLayout>
-
-          <SubTitle>
-            Articles
-          </SubTitle>
-          <HeaderIntro>
-            <SubText>
-              Articles on front-end design engineering, focused on HTML, CSS, SVG, accessiblity, and everything in between, with practical tips from real projects. Included here are links to articles published on magazines.
-            </SubText>
-            <CategoriesTags /> 
-          </HeaderIntro>
-
-          <ContainerLayout className="wrapper">
-            {edges.map(({ node }) => {
-              const title = node.frontmatter.title || node.fields.slug
-              return (
-                <WorkPost key={node.fields.slug}>
-                  <div className="media">
-                    <div className="image-wrapper">
-                      <Link to={node.fields.slug}>
-                        <Img fluid={node.frontmatter.image.childImageSharp.fluid} title="work title" />
-                      </Link> 
-                    </div>
-                    <SmallText>
-                      Image Credits : 
-                      <UnderLink href={node.frontmatter.imageCredit} target="_blank" title="image credit">
-                        {node.frontmatter.imageCredit}
-                      </UnderLink>
-                    </SmallText>
-                  </div>
-                  
-                  <div className="content">
-                    <header>
-                      <SmallText> 
-                        <span className="align-middle">{node.frontmatter.categories.map((item, index) => (
-                          <Link to={`/${item}`} key={index}>
-                            <span className="align-middle text-primary text-underline">#{item}</span>
-                            {node.frontmatter.categories.length !== index + 1 ? <span className="align-middle text-primary"> , </span> : ""}
-                          </Link>
-                        ))} </span>
-                      </SmallText>
-                      <Title>
-                        <Link className="text-primary" style={{ boxShadow: `none` }} to={node.fields.slug}>
-                          {title}
-                        </Link>
-                      </Title>
-                      <SmallText> 
-                        <Calendar className="align-middle text-primary" width="18" height="18" /> 
-                        <span className="align-middle"> date published : {node.frontmatter.date} </span>
-                      </SmallText>
-                      <SmallText> 
-                        <Clock className="align-middle text-primary" width="18" height="18" /> 
-                        <span className="align-middle"> read time : {node.frontmatter.time} </span>
-                      </SmallText>
-                    </header>
-                    <Text
-                      dangerouslySetInnerHTML={{
-                        __html: node.frontmatter.description || node.excerpt,
-                      }}
-                    />
-                    <Link to={node.fields.slug}>
-                      <ReadMore className="lined-link"> read more &#8594; </ReadMore>
-                    </Link>
-                  </div>
-                </WorkPost>
-              )
-            })}
-          </ContainerLayout>
-        </ContainerLayout>
-      </Intro>
+    <Layout>
+      <SEO title={`Entries tagged #${category}`} />
+      <Wrap>
+        <Reveal>
+          <PageHead
+            jp="記事"
+            kicker="Field notes"
+            title={`#${category}`}
+            aside={`${String(totalCount).padStart(2, "0")} ${
+              totalCount === 1 ? "entry" : "entries"
+            } with this tag`}
+          />
+        </Reveal>
+        <Reveal delay={100}>
+          <CategoriesTags active={category} />
+        </Reveal>
+        <LogList>
+          {edges.map(({ node }, i) => {
+            const f = node.frontmatter
+            return (
+              <Reveal key={node.fields.slug} delay={i * 70}>
+                <LogRow to={node.fields.slug}>
+                  <span className="date">{f.date}</span>
+                  <span>
+                    <span className="title">{f.title}</span>
+                    <p className="desc">{f.description || node.excerpt}</p>
+                  </span>
+                  <span className="meta">
+                    <span>{f.categories.slice(0, 2).join(" · ")}</span>
+                    <span className="time">{f.time} min read</span>
+                  </span>
+                </LogRow>
+              </Reveal>
+            )
+          })}
+        </LogList>
+      </Wrap>
     </Layout>
   )
-}
-
-Categories.propTypes = {
-  pageContext: PropTypes.shape({
-    category: PropTypes.string.isRequired,
-  }),
-  data: PropTypes.shape({
-    allMarkdownRemark: PropTypes.shape({
-      totalCount: PropTypes.number.isRequired,
-      edges: PropTypes.arrayOf(
-        PropTypes.shape({
-          node: PropTypes.shape({
-            frontmatter: PropTypes.shape({
-              title: PropTypes.string.isRequired,
-            }),
-            fields: PropTypes.shape({
-              slug: PropTypes.string.isRequired,
-            }),
-          }),
-        }).isRequired
-      ),
-    }),
-  }),
 }
 
 export default Categories
@@ -127,23 +65,16 @@ export const pageQuery = graphql`
       totalCount
       edges {
         node {
+          excerpt
           fields {
             slug
           }
           frontmatter {
-            date(formatString: "MMMM DD, YYYY")
-            time
             title
-            image {
-              childImageSharp {
-                fluid(maxWidth: 600, quality: 100) {
-                  ...GatsbyImageSharpFluid
-                }
-              }
-            }
+            time
             categories
-            imageCredit
             description
+            date(formatString: "YYYY.MM.DD")
           }
         }
       }

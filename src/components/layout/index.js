@@ -1,37 +1,20 @@
 import React from "react"
 import PropTypes from "prop-types"
-import { useStaticQuery, graphql } from "gatsby"
-import Navbar from "./navbar"
+import { GlobalStyle } from "../common"
+import Frame from "./frame"
 import Footer from "./footer"
+import { Shell } from "./style"
 
-import {GlobalStyle, ContainerLayout, MainContent} from '../common';
-
-const Layout = ({ children }) => {
-  const data = useStaticQuery(graphql`
-    query SiteTitleQuery {
-      site {
-        siteMetadata {
-          title
-        }
-      }
-    }
-  `)
-
-  return (
-    <>
-      <GlobalStyle />
-      <MainContent>
-        <ContainerLayout>
-          <Navbar siteTitle={data.site.siteMetadata.title} />
-        </ContainerLayout>
-        <ContainerLayout>
-          <main>{children}</main>
-        </ContainerLayout>
-      </MainContent>
+const Layout = ({ children }) => (
+  <>
+    <GlobalStyle />
+    <Frame />
+    <Shell>
+      <main>{children}</main>
       <Footer />
-    </>
-  )
-}
+    </Shell>
+  </>
+)
 
 Layout.propTypes = {
   children: PropTypes.node.isRequired,

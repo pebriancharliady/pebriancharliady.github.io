@@ -16,6 +16,8 @@ npm run deploy         # gatsby build && push public/ to the `main` branch via g
 
 There is **no test framework** — `npm test` is the Gatsby placeholder and exits 1.
 
+**Node version matters:** use Node 16 (see `.nvmrc`). Gatsby 2 uses webpack 4, which breaks on Node 17+ (OpenSSL md4 error). On this machine the installed `node_modules` contains **darwin-x64** native binaries (sharp, node-sass), so run under the x64 Node at `~/.nvm/versions/node/v16.20.2/bin` (executes via Rosetta on Apple Silicon). If you reinstall `node_modules` with an arm64 Node, sharp 0.26 has no arm64 prebuilds and will try to compile libvips from source.
+
 Prettier config is minimal and intentional: `arrowParens: avoid`, `semi: false` (no semicolons). Match this in new code.
 
 ## Environment

@@ -63,11 +63,11 @@ module.exports = {
     {
       resolve: `gatsby-plugin-manifest`,
       options: {
-        name: `gatsby-starter-default`,
-        short_name: `starter`,
+        name: `Pebrian Charliady — Software Developer`,
+        short_name: `PEB`,
         start_url: `/`,
-        background_color: `#000`,
-        theme_color: `#000`,
+        background_color: `#050507`,
+        theme_color: `#050507`,
         display: `minimal-ui`,
         icon: `src/assets/img/portfolio-icon.png`, // This path is relative to the root of the site.
       },

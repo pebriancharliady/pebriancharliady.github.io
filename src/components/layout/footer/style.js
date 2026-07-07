@@ -1,71 +1,76 @@
 import styled from "styled-components"
-import variables from "../../../data/variables"
+import v from "../../../data/variables"
 
-export const FooterStyle = styled.footer`
-  padding-top: 1rem;
-  padding-bottom: 8rem;
-  z-index: 0;
+export const FooterRoot = styled.footer`
   position: relative;
-  text-align: left;
-  background: linear-gradient(to top, #fff0f0, #ecebeb 50%);
-  @media (max-width: ${variables.breakpointPhone}) {
-    padding-bottom: 2rem;
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
-    text-align: center;
+  padding: clamp(3.5rem, 9vh, 6rem) 0 2.5rem;
+`
+
+export const ContactBlock = styled.div`
+  padding-top: clamp(2rem, 5vh, 3rem);
+`
+
+export const BigMail = styled.a`
+  display: inline-block;
+  margin-top: 1.75rem;
+  font-family: ${v.fontDisplay};
+  font-size: clamp(1.3rem, 4.6vw, 3.4rem);
+  line-height: 1.05;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  color: ${v.text};
+  overflow-wrap: anywhere;
+  position: relative;
+  transition: color 0.25s ease;
+
+  &::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -6px;
+    height: 2px;
+    background: ${v.crimson};
+    transform: scaleX(0);
+    transform-origin: right center;
+    transition: transform 0.6s var(--ease-out);
   }
-  .quote {
-    font-size: 2rem;
-    font-family: "GT-Walsheim-Pro-Bold";
-    line-height: 1.2;
-    color: ${variables.primary};
-    @media (max-width: ${variables.breakpointPhone}) {
-      font-size: 2rem;
+
+  &:hover,
+  &:focus-visible {
+    color: ${v.signal};
+
+    &::after {
+      transform: scaleX(1);
+      transform-origin: left center;
     }
   }
 `
 
-export const SubRight = styled.p`
-  font-size: 1rem;
-  line-height: 1.8;
-  letter-spacing: 2px;
-  text-transform: capitalize;
-  margin-bottom: 20px;
-  font-family: "GT-Walsheim-Pro-Bold";
+export const FooterMeta = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1.25rem 2rem;
+  margin-top: clamp(2.5rem, 6vh, 4rem);
+  padding-top: 1.5rem;
+  border-top: 1px solid ${v.lineFaint};
 `
-export const CopyRight = styled.p`
-  font-size: 11px;
-  line-height: 1.8;
-  letter-spacing: 1px;
-  text-transform: capitalize;
-`
-export const FooterBody = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  align-items: center;
-  @media (max-width: ${variables.breakpointPhone}) {
-    grid-template-columns: 1fr;
-  }
-`
-export const FooterSocialMedia = styled.ul`
+
+export const SocialRow = styled.ul`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.75rem;
+  margin: 0;
+  padding: 0;
   list-style: none;
-  padding-left: 0;
-  @media (max-width: ${variables.breakpointPhone}) {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 1rem;
-  }
-  li {
-    margin-bottom: 1.5rem;
-  }
 `
-export const MediaLink = styled.a`
-  padding: 1rem 0rem;
-  padding-bottom: 0.5rem;
-  line-height: 1;
-  font-size: 1rem;
-  text-transform: capitalize;
-  font-family: "GT-Walsheim-Pro-Bold";
-  color: ${variables.primary};
+
+export const CopyLine = styled.p`
+  font-family: ${v.fontMono};
+  font-size: var(--text-mono-s);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: ${v.faint};
 `

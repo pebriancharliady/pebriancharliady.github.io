@@ -1,103 +1,77 @@
-import styled, { css } from "styled-components"
-import variables from "../../../data/variables"
+import styled from "styled-components"
+import v from "../../../data/variables"
 
-const insetZero = css`
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-`
 export const OverlayBody = styled.div`
   position: fixed;
-  ${insetZero}
-  height: 100vh;
-  z-index: 50;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  padding: clamp(1rem, 4vw, 3rem);
 
-  &.overlay {
-    /* transition-property: all; */
-    /* transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); */
-    /* transition-duration: 500ms; */
-  }
   &.overlay-enter {
     opacity: 0;
   }
-
   &.overlay-enter-active {
     opacity: 1;
+    transition: opacity 0.25s ease;
   }
-
   &.overlay-exit {
     opacity: 1;
   }
-
   &.overlay-exit-active {
     opacity: 0;
-  }
-
-  &.overlay-enter-done {
-    opacity: 1;
+    transition: opacity 0.25s ease;
   }
 `
 
 export const OverlayBackground = styled.div`
   position: absolute;
-  background-color: ${variables.black};
-  opacity: 0.25;
-  ${insetZero}
-  z-index: 10;
+  inset: 0;
+  background: rgba(2, 2, 4, 0.9);
+  backdrop-filter: blur(6px);
 `
 
 export const ModalContainer = styled.div`
-  position: absolute;
-  z-index: 20;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  ${insetZero}
+  position: relative;
+  max-width: min(1100px, 94vw);
 `
 
 export const ModalContent = styled.div`
-  background-color: white;
-  width: auto;
-  max-width: fit-content;
-  @media (max-width: ${variables.breakpointPhone}) {
-    width: 100%;
+  position: relative;
+  border: 1px solid ${v.line};
+  background: ${v.panel};
+  padding: 0;
+
+  img {
+    display: block;
     max-width: 100%;
-    & > img {
-      width: 100%;
-    }
+    max-height: 80vh;
+    width: auto;
+    margin: 0 auto;
   }
 `
 
 export const ModalCloseButton = styled.div`
-  position: relative;
-  & > div.modal-close {
-    /* @apply absolute right-0 cursor-pointer inline-block; */
-    position: absolute;
+  position: absolute;
+  top: -2.4rem;
+  right: 0;
+
+  .modal-close {
     cursor: pointer;
-    display: inline-block;
-    right: 0;
-    width: 30px;
-    height: 30px;
+    font-family: ${v.fontMono};
+    font-size: var(--text-mono-s);
+    letter-spacing: var(--track-mid);
+    color: ${v.dim};
+    transition: color 0.2s ease;
 
-    &:before {
-      transform: rotate(45deg);
+    &::before {
+      content: "[ CLOSE ]";
     }
 
-    &:after {
-      transform: rotate(-45deg);
-    }
-
-    &:before,
-    :after {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 15px;
-      height: 2px;
-      content: "";
-      background-color: black;
-      margin-left: -25%;
+    &:hover,
+    &:focus-visible {
+      color: ${v.signal};
     }
   }
 `
