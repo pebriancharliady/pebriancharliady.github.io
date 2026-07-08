@@ -114,7 +114,7 @@ export const SmoothScroll = ({ children }) => {
   }, [])
 
   return (
-    <div ref={wrapRef}>
+    <div ref={wrapRef} className="smooth-wrap">
       <div ref={contentRef}>{children}</div>
     </div>
   )

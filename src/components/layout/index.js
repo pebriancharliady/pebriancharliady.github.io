@@ -1,7 +1,7 @@
 import React from "react"
 import PropTypes from "prop-types"
 import { GlobalStyle } from "../common"
-import { ScrollVars, SmoothScroll, CursorLens } from "../fx"
+import { ScrollVars, SmoothScroll, CursorLens, AnalogTV } from "../fx"
 import Frame from "./frame"
 import Footer from "./footer"
 import { Shell } from "./style"
@@ -11,6 +11,7 @@ const Layout = ({ children }) => (
     <GlobalStyle />
     <ScrollVars />
     <CursorLens />
+    <AnalogTV />
     <Frame />
     <SmoothScroll>
       <Shell>

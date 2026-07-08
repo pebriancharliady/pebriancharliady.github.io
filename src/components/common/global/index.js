@@ -69,6 +69,30 @@ export const GlobalStyle = createGlobalStyle`
     overflow: hidden;
   }
 
+  /* persistent TV grain — static crawling over the whole picture */
+  body::after {
+    content: "";
+    position: fixed;
+    inset: -80px;
+    z-index: 74;
+    pointer-events: none;
+    opacity: 0.085;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)' opacity='0.7'/%3E%3C/svg%3E");
+    background-size: 260px 260px;
+    animation: grainCrawl 0.7s steps(1) infinite;
+  }
+
+  @keyframes grainCrawl {
+    0% { transform: translate(0, 0); }
+    14% { transform: translate(-34px, 18px); }
+    28% { transform: translate(22px, -42px); }
+    42% { transform: translate(-48px, -12px); }
+    56% { transform: translate(30px, 36px); }
+    70% { transform: translate(-14px, 48px); }
+    84% { transform: translate(44px, -24px); }
+    100% { transform: translate(0, 0); }
+  }
+
   /* CRT glass — scanlines and a corner vignette over everything */
   body::before {
     content: "";
@@ -206,6 +230,80 @@ export const GlobalStyle = createGlobalStyle`
   [data-reveal="stamp"].is-in {
     opacity: 1;
     transform: scale(1) rotate(0deg);
+  }
+
+  /* ------------------------------------------------------------------
+     analog TV — the page renders through warped tube glass, and the
+     signal occasionally loses lock (html.glitching, see AnalogTV)
+  ------------------------------------------------------------------ */
+  html.crt-on .smooth-wrap {
+    filter: url(#crt-warp);
+    will-change: filter;
+  }
+  html.crt-on.glitching .smooth-wrap {
+    filter: url(#crt-warp) saturate(1.35) contrast(1.12);
+    animation: glitchJitter 0.24s steps(3) 1;
+  }
+
+  @keyframes glitchJitter {
+    0% { transform: translate(-6px, 1px) skewX(-1.2deg); }
+    33% { transform: translate(5px, -2px); }
+    66% { transform: translate(-3px, 1px) skewX(0.8deg); }
+    100% { transform: none; }
+  }
+
+  .crt-glitch-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 77;
+    pointer-events: none;
+    opacity: 0;
+  }
+  html.glitching .crt-glitch-overlay {
+    opacity: 1;
+  }
+
+  .crt-glitch-overlay .tear {
+    position: absolute;
+    left: -5%;
+    right: -5%;
+    height: 3px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(225, 49, 72, 0.85) 30%,
+      rgba(237, 238, 243, 0.9) 55%,
+      transparent
+    );
+    mix-blend-mode: screen;
+    animation: tearShift 0.12s steps(3) infinite;
+  }
+  .crt-glitch-overlay .t1 {
+    top: var(--tear1, 30%);
+  }
+  .crt-glitch-overlay .t2 {
+    top: var(--tear2, 64%);
+    height: 2px;
+    animation-direction: reverse;
+  }
+
+  @keyframes tearShift {
+    0% { transform: translateX(-14px); }
+    50% { transform: translateX(10px); }
+    100% { transform: translateX(-5px); }
+  }
+
+  .crt-glitch-overlay .noise {
+    position: absolute;
+    inset: 0;
+    opacity: 0.13;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.6'/%3E%3C/svg%3E");
+    animation: noiseJump 0.09s steps(2) infinite;
+  }
+
+  @keyframes noiseJump {
+    0% { background-position: 0 0; }
+    100% { background-position: 130px 90px; }
   }
 
   /* true-fullscreen reels: the HUD frame yields the stage */
