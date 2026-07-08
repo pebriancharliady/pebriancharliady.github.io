@@ -21,6 +21,13 @@ export const ServicePanel = styled.div`
     padding-bottom: 7.5rem;
   }
 
+  @media (max-width: ${v.breakpointPhone}) {
+    .is-h & {
+      padding: 0 ${v.gutter} 5.5rem;
+      overflow: hidden;
+    }
+  }
+
   .bg {
     position: absolute;
     inset: 0;

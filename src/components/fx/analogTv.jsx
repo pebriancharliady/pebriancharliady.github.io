@@ -35,14 +35,16 @@ export const AnalogTV = () => {
   useEffect(() => {
     if (typeof window === "undefined") return undefined
     const mm = q => window.matchMedia && window.matchMedia(q).matches
-    if (mm("(prefers-reduced-motion: reduce)") || mm("(max-width: 850px)")) {
-      return undefined
-    }
+    if (mm("(prefers-reduced-motion: reduce)")) return undefined
+
+    /* the displacement warp is desktop-only (SVG filters are heavy on
+       phone GPUs) — glitch bursts run everywhere */
+    const isMobile = mm("(max-width: 850px)")
 
     const root = document.documentElement
-    root.classList.add("crt-on")
-    const disp = document.getElementById("crt-disp")
-    const turb = document.getElementById("crt-turb")
+    if (!isMobile) root.classList.add("crt-on")
+    const disp = isMobile ? null : document.getElementById("crt-disp")
+    const turb = isMobile ? null : document.getElementById("crt-turb")
 
     let alive = true
     let timer = null

@@ -133,7 +133,7 @@ export const pageQuery = graphql`
   query {
     allMarkdownRemark(
       filter: { fileAbsolutePath: { regex: "/(works)/" } }
-      sort: { fields: [frontmatter___date], order: DESC }
+      sort: { fields: [frontmatter___date, frontmatter___title], order: DESC }
     ) {
       edges {
         node {

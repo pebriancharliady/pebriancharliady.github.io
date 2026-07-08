@@ -76,6 +76,14 @@ export const ReelWindow = styled.div`
   .is-h & {
     height: 100vh;
   }
+
+  /* touch devices pin natively — no smoother there to kill sticky */
+  .is-touch & {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    height: 100svh;
+  }
 `
 
 export const ReelChrome = styled.div`
@@ -246,6 +254,20 @@ export const ReelChrome = styled.div`
     top: 16%;
     right: 1vw;
     z-index: 0;
+  }
+
+  @media (max-width: ${v.breakpointPhone}) {
+    .is-h & {
+      .reel-progress {
+        display: none;
+      }
+      .reel-head {
+        top: 78px;
+      }
+      .reel-rec {
+        top: 78px;
+      }
+    }
   }
 `
 
@@ -463,6 +485,35 @@ export const Panel = styled(Link)`
 
       &::after {
         display: none;
+      }
+    }
+  }
+
+  /* compact page layout while leafing horizontally on a phone */
+  @media (max-width: ${v.breakpointPhone}) {
+    .is-h & {
+      grid-template-columns: 1fr;
+      align-items: start;
+      gap: 1.1rem;
+      padding: 8rem ${v.gutter} 5rem;
+      overflow: hidden;
+
+      .media {
+        order: 2;
+        padding-bottom: 52%;
+      }
+
+      .title {
+        font-size: clamp(1.7rem, 7.5vw, 2.6rem);
+      }
+
+      .desc {
+        font-size: 0.95rem;
+        -webkit-line-clamp: 3;
+      }
+
+      .open {
+        margin-top: 1.25rem;
       }
     }
   }

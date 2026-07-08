@@ -31,9 +31,12 @@ export const useReel = ({
   useEffect(() => {
     if (typeof window === "undefined") return undefined
     const mm = q => window.matchMedia && window.matchMedia(q).matches
-    if (mm("(prefers-reduced-motion: reduce)") || mm("(max-width: 850px)")) {
-      return undefined
-    }
+    if (mm("(prefers-reduced-motion: reduce)")) return undefined
+
+    /* on touch/small screens the window pins via position: sticky (no
+       smoother there, so sticky works natively and never jitters) and
+       snapping is skipped so it can't fight touch momentum */
+    const isTouch = mm("(max-width: 850px)")
 
     const wrap = wrapRef.current
     const win = windowRef.current
@@ -43,6 +46,7 @@ export const useReel = ({
     if (!wrap || !win || !track || count < 2) return undefined
 
     wrap.classList.add("is-h")
+    if (isTouch) wrap.classList.add("is-touch")
 
     let raf = null
     let pinDist = 0
@@ -71,7 +75,9 @@ export const useReel = ({
       const wrapTop = wrap.getBoundingClientRect().top + y
 
       const off = Math.max(0, Math.min(y - wrapTop, pinDist))
-      win.style.transform = `translate3d(0, ${off.toFixed(2)}px, 0)`
+      if (!isTouch) {
+        win.style.transform = `translate3d(0, ${off.toFixed(2)}px, 0)`
+      }
 
       const progress = pinDist > 0 ? off / pinDist : 0
       track.style.transform = `translate3d(${(
@@ -95,6 +101,10 @@ export const useReel = ({
       }
 
       const native = window.pageYOffset
+      if (isTouch) {
+        raf = window.requestAnimationFrame(loop)
+        return
+      }
       if (snapAnim) {
         const t = Math.min(1, (now - snapAnim.t0) / snapMs)
         const next = Math.round(
@@ -142,7 +152,7 @@ export const useReel = ({
       window.removeEventListener("touchmove", cancelSnap)
       window.removeEventListener("keydown", cancelSnap)
       if (engaged) document.body.classList.remove("reel-active")
-      wrap.classList.remove("is-h")
+      wrap.classList.remove("is-h", "is-touch")
       wrap.style.height = ""
       win.style.transform = ""
       track.style.transform = ""

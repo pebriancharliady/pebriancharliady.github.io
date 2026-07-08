@@ -26,7 +26,10 @@ export const GlobalStyle = createGlobalStyle`
     background: ${v.ground};
     scroll-behavior: smooth;
     -webkit-text-size-adjust: 100%;
+    /* clip, not hidden: hidden creates a scroll container and kills
+       position: sticky (the mobile hero wipe and reel pins) */
     overflow-x: hidden;
+    overflow-x: clip;
   }
 
   /* CRT refresh band rolling down the screen */
@@ -51,6 +54,7 @@ export const GlobalStyle = createGlobalStyle`
   body {
     margin: 0;
     overflow-x: hidden;
+    overflow-x: clip;
     background-color: ${v.ground};
     background-image: radial-gradient(
       rgba(237, 238, 243, 0.05) 1px,
@@ -241,9 +245,11 @@ export const GlobalStyle = createGlobalStyle`
     filter: url(#crt-warp);
     will-change: filter;
   }
+  html.glitching .smooth-wrap {
+    animation: glitchJitter 0.24s steps(3) 1;
+  }
   html.crt-on.glitching .smooth-wrap {
     filter: url(#crt-warp) saturate(1.35) contrast(1.12);
-    animation: glitchJitter 0.24s steps(3) 1;
   }
 
   @keyframes glitchJitter {
