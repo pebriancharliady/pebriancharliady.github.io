@@ -1,0 +1,115 @@
+import styled from "styled-components"
+import v from "../../../data/variables"
+
+/*
+  A service scene: full-bleed background photograph (noir-graded),
+  scrimmed dark, with the offer written over it.
+*/
+export const ServicePanel = styled.div`
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  min-height: 76vh;
+  padding: 6rem ${v.gutter} 5rem;
+  overflow: hidden;
+
+  .is-h & {
+    flex: none;
+    width: 100vw;
+    height: 100%;
+    min-height: 0;
+    padding-bottom: 7.5rem;
+  }
+
+  .bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+
+    .gatsby-image-wrapper {
+      position: absolute !important;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      filter: grayscale(1) contrast(1.15) brightness(0.55);
+    }
+  }
+
+  .scrim {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: linear-gradient(
+        to top,
+        rgba(3, 3, 4, 0.94) 0%,
+        rgba(3, 3, 4, 0.55) 45%,
+        rgba(3, 3, 4, 0.25) 100%
+      ),
+      linear-gradient(to right, rgba(3, 3, 4, 0.6), transparent 60%);
+  }
+
+  .inner {
+    position: relative;
+    z-index: 2;
+    max-width: 64rem;
+  }
+
+  .svc-meta {
+    display: flex;
+    align-items: baseline;
+    gap: 1.4em;
+    font-family: ${v.fontMono};
+    font-size: var(--text-mono-s);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: ${v.faint};
+
+    .code {
+      color: ${v.signal};
+      font-weight: 600;
+    }
+
+    .jp {
+      font-family: ${v.fontJa};
+      letter-spacing: 0.25em;
+      color: ${v.dim};
+    }
+  }
+
+  .svc-title {
+    margin: 1.1rem 0 0;
+    font-family: ${v.fontDisplay};
+    font-weight: normal;
+    font-size: clamp(2.4rem, 5.6vw, 5rem);
+    line-height: 0.95;
+    text-transform: uppercase;
+    color: ${v.inverse};
+  }
+
+  .svc-body {
+    margin: 1.5rem 0 0;
+    max-width: 52ch;
+    font-size: 1.05rem;
+    line-height: 1.85;
+    color: rgba(237, 238, 243, 0.82);
+  }
+
+  .svc-tech {
+    margin-top: 1.75rem;
+    max-width: 72ch;
+    font-family: ${v.fontMono};
+    font-size: var(--text-mono);
+    line-height: 2;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: ${v.dim};
+
+    .k {
+      color: ${v.signal};
+      font-weight: 600;
+      letter-spacing: var(--track-mid);
+      margin-right: 1em;
+    }
+  }
+`

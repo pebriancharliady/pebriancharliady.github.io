@@ -1,4 +1,5 @@
-import React, { useEffect, useRef } from "react"
+import { useEffect } from "react"
+import { getScrollY } from "../fx/scrollfx"
 
 const SIZE = 360
 
@@ -11,9 +12,11 @@ const SIZE = 360
 const ORDER = ["portrait", "works", "caps", "footer"]
 
 const TARGETS = {
+  /* docked just off the portrait's top-right corner — the sphere lives
+     behind the content plane, so it peeks out past the image edge */
   portrait: (r, vw) => ({
-    x: Math.min(r.right - 44, vw - SIZE / 3),
-    y: r.top + 26,
+    x: Math.min(r.right + 30, vw - SIZE / 3),
+    y: r.top - 10,
     s: 1,
     ink: 0,
   }),
@@ -48,14 +51,27 @@ const clamp01 = t => Math.max(0, Math.min(1, t))
  * pins it at the portrait.
  */
 const ShellVoyager = () => {
-  const mountRef = useRef(null)
-
   useEffect(() => {
-    const mount = mountRef.current
-    if (!mount || typeof window === "undefined") return undefined
+    if (typeof window === "undefined") return undefined
     if (window.matchMedia && window.matchMedia("(max-width: 850px)").matches) {
       return undefined
     }
+
+    /* mounted directly on <body> so position: fixed survives the
+       transformed ScrollSmoother content */
+    const mount = document.createElement("div")
+    mount.setAttribute("aria-hidden", "true")
+    Object.assign(mount.style, {
+      position: "fixed",
+      top: "0",
+      left: "0",
+      width: `${SIZE}px`,
+      height: `${SIZE}px`,
+      zIndex: "-1",
+      pointerEvents: "none",
+      willChange: "transform",
+    })
+    document.body.appendChild(mount)
 
     let disposed = false
     let raf = null
@@ -139,11 +155,11 @@ const ShellVoyager = () => {
           if (!anchors.length) {
             return { x: vw * 0.8, y: vh * 0.3, s: 1, ink: 0 }
           }
-          const centerDoc = window.pageYOffset + vh / 2
+          const centerDoc = getScrollY() + vh / 2
           const marks = anchors.map(a => {
             const r = a.el.getBoundingClientRect()
             return {
-              doc: window.pageYOffset + r.top + r.height / 2,
+              doc: getScrollY() + r.top + r.height / 2,
               t: TARGETS[a.name](r, vw, vh),
             }
           })
@@ -215,25 +231,13 @@ const ShellVoyager = () => {
           mount.removeChild(renderer.domElement)
         }
       }
+      if (mount.parentNode === document.body) {
+        document.body.removeChild(mount)
+      }
     }
   }, [])
 
-  return (
-    <div
-      ref={mountRef}
-      aria-hidden="true"
-      style={{
-        position: "fixed",
-        top: 0,
-        left: 0,
-        width: SIZE,
-        height: SIZE,
-        zIndex: 30,
-        pointerEvents: "none",
-        willChange: "transform",
-      }}
-    />
-  )
+  return null
 }
 
 export default ShellVoyager

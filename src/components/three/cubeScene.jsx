@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from "react"
+import { getScrollY } from "../fx/scrollfx"
 
 /**
  * A large wireframe cube drifting behind the hero copy. Its rotation is
@@ -48,9 +49,9 @@ const CubeScene = ({ className }) => {
         const boxGeo = new THREE.BoxGeometry(1.28, 1.28, 1.28)
         const boxEdges = new THREE.EdgesGeometry(boxGeo)
         const boxMat = new THREE.LineBasicMaterial({
-          color: 0xedeef3,
+          color: 0xffffff,
           transparent: true,
-          opacity: 0.14,
+          opacity: 0.38,
         })
         const box = new THREE.LineSegments(boxEdges, boxMat)
 
@@ -59,7 +60,7 @@ const CubeScene = ({ className }) => {
         const coreMat = new THREE.LineBasicMaterial({
           color: 0xe13148,
           transparent: true,
-          opacity: 0.22,
+          opacity: 0.5,
         })
         const core = new THREE.LineSegments(coreEdges, coreMat)
 
@@ -82,7 +83,7 @@ const CubeScene = ({ className }) => {
         }
 
         const loop = t => {
-          if (!document.hidden) renderFrame(t, window.pageYOffset)
+          if (!document.hidden) renderFrame(t, getScrollY())
           raf = window.requestAnimationFrame(loop)
         }
         raf = window.requestAnimationFrame(loop)

@@ -2,7 +2,7 @@ import React from "react"
 import { useStaticQuery, graphql } from "gatsby"
 import Img from "gatsby-image"
 import data from "../../../data/data"
-import { Wrap, Eyebrow, ButtonLink, ButtonA } from "../../common"
+import { Wrap, Eyebrow, ButtonA } from "../../common"
 import { Decode, Reveal } from "../../fx"
 import ShellScene from "../../three/shellScene"
 import CubeScene from "../../three/cubeScene"
@@ -18,6 +18,18 @@ import {
 } from "./style"
 
 const MRZ_BASE_DELAY = 1000
+
+/* fragment scrolling dies inside the smoother's fixed wrapper — write
+   the native scroll position instead; the smoother glides to it */
+const scrollToWorks = e => {
+  e.preventDefault()
+  const el = document.querySelector("#selected-work")
+  if (!el) return
+  const y =
+    el.getBoundingClientRect().top +
+    (window.__SMOOTH_Y != null ? window.__SMOOTH_Y : window.pageYOffset)
+  window.scrollTo(0, Math.round(y))
+}
 
 const Hero = () => {
   const { portrait } = useStaticQuery(graphql`
@@ -72,7 +84,9 @@ const Hero = () => {
           </Reveal>
           <Reveal delay={750}>
             <CtaRow>
-              <ButtonLink to="/works">View selected work</ButtonLink>
+              <ButtonA href="#selected-work" onClick={scrollToWorks}>
+                View selected work
+              </ButtonA>
               <ButtonA href={`mailto:${data.SiteContact.email}`}>
                 Make contact
               </ButtonA>

@@ -7,6 +7,14 @@ const reduced = () =>
   window.matchMedia &&
   window.matchMedia("(prefers-reduced-motion: reduce)").matches
 
+/* the smoothed scroll position when GSAP ScrollSmoother is active */
+export const getScrollY = () =>
+  typeof window === "undefined"
+    ? 0
+    : window.__SMOOTH_Y != null
+    ? window.__SMOOTH_Y
+    : window.pageYOffset
+
 /* ------------------------------------------------------------------
    Parallax — child drifts against the scroll direction
 ------------------------------------------------------------------ */
@@ -100,7 +108,7 @@ export const Ticker = ({
       raf = null
       const w = chunk.offsetWidth
       if (!w) return
-      const base = window.pageYOffset * speed
+      const base = getScrollY() * speed
       const x = reverse ? (base % w) - w : -(base % w)
       track.style.transform = `translateX(${x.toFixed(1)}px)`
     }
@@ -142,6 +150,86 @@ export const Ticker = ({
 }
 
 /* ------------------------------------------------------------------
+   ScrollScale — element breathes larger as it crosses viewport center
+------------------------------------------------------------------ */
+export const ScrollScale = ({ amp = 0.12, children, ...rest }) => {
+  const ref = useRef(null)
+
+  useEffect(() => {
+    const el = ref.current
+    if (!el || reduced()) return undefined
+    let raf = null
+    const update = () => {
+      raf = null
+      const r = el.getBoundingClientRect()
+      const vh = window.innerHeight
+      const delta = Math.abs(r.top + r.height / 2 - vh / 2)
+      const t = Math.max(0, 1 - delta / (vh * 0.85))
+      el.style.transform = `scale(${(1 - amp / 2 + t * amp).toFixed(4)})`
+    }
+    const onScroll = () => {
+      if (raf === null) raf = requestAnimationFrame(update)
+    }
+    update()
+    window.addEventListener("scroll", onScroll, { passive: true })
+    window.addEventListener("resize", onScroll, { passive: true })
+    return () => {
+      if (raf) cancelAnimationFrame(raf)
+      window.removeEventListener("scroll", onScroll)
+      window.removeEventListener("resize", onScroll)
+    }
+  }, [amp])
+
+  return (
+    <div ref={ref} style={{ willChange: "transform" }} {...rest}>
+      {children}
+    </div>
+  )
+}
+
+/* ------------------------------------------------------------------
+   ScrollVars — one rAF loop feeding CSS custom properties on <html>:
+   --scroll-y (px, unitless) · --scroll-skew (deg, unitless, velocity
+   with decay) · --hero-exit (0..1 over the first ~560px)
+------------------------------------------------------------------ */
+export const ScrollVars = () => {
+  useEffect(() => {
+    if (typeof window === "undefined" || reduced()) return undefined
+    const root = document.documentElement
+    let raf = null
+    let last = getScrollY()
+    let skew = 0
+    let idle = 0
+    const loop = () => {
+      const y = getScrollY()
+      const vel = y - last
+      last = y
+      skew = skew * 0.86 + Math.max(-16, Math.min(16, vel)) * 0.14
+      if (Math.abs(vel) < 0.1 && Math.abs(skew) < 0.02) {
+        idle += 1
+      } else {
+        idle = 0
+      }
+      if (idle < 12) {
+        root.style.setProperty("--scroll-y", y.toFixed(0))
+        root.style.setProperty("--scroll-skew", (skew * 0.05).toFixed(3))
+        root.style.setProperty(
+          "--hero-exit",
+          Math.max(0, Math.min(1, y / 560)).toFixed(3)
+        )
+      }
+      raf = window.requestAnimationFrame(loop)
+    }
+    raf = window.requestAnimationFrame(loop)
+    return () => {
+      if (raf) window.cancelAnimationFrame(raf)
+    }
+  }, [])
+
+  return null
+}
+
+/* ------------------------------------------------------------------
    useScrollProgress — 0..100 page scroll, rAF-throttled
 ------------------------------------------------------------------ */
 export const useScrollProgress = () => {
@@ -153,7 +241,7 @@ export const useScrollProgress = () => {
       raf = null
       const doc = document.documentElement
       const max = doc.scrollHeight - window.innerHeight
-      setPct(max > 0 ? Math.min(100, Math.round((window.pageYOffset / max) * 100)) : 0)
+      setPct(max > 0 ? Math.min(100, Math.round((getScrollY() / max) * 100)) : 0)
     }
     const onScroll = () => {
       if (raf === null) raf = requestAnimationFrame(update)

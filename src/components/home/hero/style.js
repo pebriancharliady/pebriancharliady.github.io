@@ -35,6 +35,8 @@ export const PortraitZone = styled.div`
   right: 0;
   width: min(430px, 42%);
   z-index: 1;
+  transform: translateY(calc(var(--hero-exit, 0) * 68px));
+  opacity: calc(1 - var(--hero-exit, 0) * 0.45);
 
   @media (max-width: ${v.breakpointTablet}) {
     position: static;
@@ -43,9 +45,12 @@ export const PortraitZone = styled.div`
   }
 `
 
+/* hero layers peel apart as the title card slides over (--hero-exit) */
 export const HeroCopy = styled.div`
   position: relative;
   z-index: 2;
+  transform: translateY(calc(var(--hero-exit, 0) * -48px));
+  opacity: calc(1 - var(--hero-exit, 0) * 0.6);
 `
 
 export const HeroName = styled.h1`
@@ -107,6 +112,7 @@ export const Redaction = styled.div`
     letter-spacing: var(--track-mid);
     text-transform: uppercase;
     color: ${v.dim};
+    white-space: nowrap;
 
     &::before {
       content: "[";
@@ -121,6 +127,14 @@ export const Redaction = styled.div`
 
   @media (max-width: ${v.breakpointTablet}) {
     max-width: 34em;
+  }
+
+  @media (max-width: ${v.breakpointPhone}) {
+    .note {
+      font-size: 0.6rem;
+      letter-spacing: 0.07em;
+      gap: 0.45em;
+    }
   }
 `
 
@@ -144,7 +158,7 @@ export const ScanPortrait = styled.div`
     right: -16%;
     width: min(320px, 64vw);
     height: min(320px, 64vw);
-    z-index: 2;
+    z-index: 0;
     pointer-events: none;
   }
 
@@ -275,6 +289,8 @@ export const Mrz = styled.dl`
   z-index: 2;
   background: rgba(5, 5, 7, 0.55);
   backdrop-filter: blur(10px);
+  transform: translateY(calc(var(--hero-exit, 0) * 34px));
+  opacity: calc(1 - var(--hero-exit, 0) * 0.85);
 
   > div {
     padding: 0.95rem 1.2rem 1.05rem;

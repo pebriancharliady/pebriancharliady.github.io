@@ -14,6 +14,7 @@ export const LogRow = styled(Link)`
   padding: 1.55rem 0;
   border-bottom: 1px solid ${v.lineFaint};
   color: inherit;
+  transform: skewY(calc(var(--scroll-skew, 0) * 1deg));
 
   .date {
     font-family: ${v.fontMono};

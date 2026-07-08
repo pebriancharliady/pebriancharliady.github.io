@@ -1,20 +1,10 @@
 import React from "react"
 import { Link } from "gatsby"
 import data from "../../../data/data"
-import { useScrollProgress } from "../../fx"
-import StatusClock from "./clock"
-import {
-  FrameRoot,
-  TopBar,
-  BottomBar,
-  LogoLink,
-  NavList,
-  Rail,
-  Tick,
-} from "./style"
+import { FrameRoot, TopBar, LogoLink, NavList, Rail, Tick } from "./style"
 
 const Frame = () => (
-  <FrameRoot>
+  <FrameRoot className="hud-frame">
     <TopBar>
       <LogoLink>
         <Link to="/" aria-label={`${data.SiteAuthor} — home`}>
@@ -61,31 +51,7 @@ const Frame = () => (
     <Tick $pos="tr" aria-hidden="true" />
     <Tick $pos="bl" aria-hidden="true" />
     <Tick $pos="br" aria-hidden="true" />
-
-    <BottomBar>
-      <span className="loc">
-        LOC {data.SiteDossier.coordinates} — {data.SiteDossier.base}
-      </span>
-      <span className="status">
-        <ScrollReadout />
-        <span className="dot" aria-hidden="true" />
-        {data.SiteDossier.status} ·{" "}
-        <StatusClock
-          utcOffset={data.SiteDossier.utcOffset}
-          zone={data.SiteDossier.timezone}
-        />
-      </span>
-    </BottomBar>
   </FrameRoot>
 )
-
-const ScrollReadout = () => {
-  const pct = useScrollProgress()
-  return (
-    <span className="scr" aria-hidden="true">
-      SCR {String(pct).padStart(3, "0")}% ·
-    </span>
-  )
-}
 
 export default Frame

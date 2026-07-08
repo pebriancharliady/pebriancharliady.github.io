@@ -132,6 +132,19 @@ export const HairRule = styled.hr`
   margin: 0;
 `
 
+/* emergency-screen hazard stripes — they crawl with the page scroll */
+export const HazardBar = styled.div`
+  height: 13px;
+  background-image: repeating-linear-gradient(
+    45deg,
+    ${p => (p.$dark ? "rgba(2, 2, 4, 0.35)" : v.crimson)} 0,
+    ${p => (p.$dark ? "rgba(2, 2, 4, 0.35)" : v.crimson)} 13px,
+    transparent 13px,
+    transparent 26px
+  );
+  background-position-x: calc(var(--scroll-y, 0) * -0.55px);
+`
+
 /* [ ▪ 作品 / SELECTED WORK ] — the recurring bilingual label */
 export const EyebrowRoot = styled.div`
   display: flex;

@@ -50,59 +50,6 @@ export const TopBar = styled.header`
   }
 `
 
-export const BottomBar = styled.div`
-  ${barBase};
-  bottom: ${v.frameInset};
-  height: 40px;
-  align-items: center;
-  padding: 0 1.1rem;
-  gap: 1rem;
-  font-size: var(--text-mono-s);
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: ${v.faint};
-  transform-origin: right center;
-  animation: ${drawX} 0.7s var(--ease-out) both;
-
-  .status {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.65em;
-    color: ${v.dim};
-    white-space: nowrap;
-  }
-
-  .dot {
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: ${v.signal};
-    animation: pulse 2.4s ease-out infinite;
-  }
-
-  .clock {
-    color: ${v.faint};
-  }
-
-  .scr {
-    color: ${v.faint};
-  }
-
-  @media (max-width: ${v.breakpointPhone}) {
-    bottom: ${v.frameInsetMobile};
-
-    .loc {
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
-    .scr {
-      display: none;
-    }
-  }
-`
-
 export const LogoLink = styled.span`
   display: flex;
 
@@ -213,7 +160,7 @@ export const NavList = styled.nav`
 export const Rail = styled.div`
   position: absolute;
   top: calc(${v.frameInset} + 52px + 26px);
-  bottom: calc(${v.frameInset} + 40px + 26px);
+  bottom: calc(${v.frameInset} + 26px);
   ${p => (p.$side === "right" ? "right" : "left")}: ${v.frameInset};
   width: 1px;
   background: ${v.lineFaint};

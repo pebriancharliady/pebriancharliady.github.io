@@ -29,6 +29,25 @@ export const GlobalStyle = createGlobalStyle`
     overflow-x: hidden;
   }
 
+  /* CRT refresh band rolling down the screen */
+  html::after {
+    content: "";
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 18vh;
+    z-index: 76;
+    pointer-events: none;
+    background: linear-gradient(
+      to bottom,
+      rgba(237, 238, 243, 0),
+      rgba(237, 238, 243, 0.028) 50%,
+      rgba(237, 238, 243, 0)
+    );
+    animation: crtRoll 11s linear infinite;
+  }
+
   body {
     margin: 0;
     overflow-x: hidden;
@@ -48,6 +67,27 @@ export const GlobalStyle = createGlobalStyle`
 
   body.modal-open {
     overflow: hidden;
+  }
+
+  /* CRT glass — scanlines and a corner vignette over everything */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 75;
+    pointer-events: none;
+    background-image: repeating-linear-gradient(
+        0deg,
+        rgba(2, 2, 4, 0.06) 0px,
+        rgba(2, 2, 4, 0.06) 1px,
+        transparent 1px,
+        transparent 3px
+      ),
+      radial-gradient(
+        ellipse at center,
+        transparent 62%,
+        rgba(2, 2, 4, 0.22) 100%
+      );
   }
 
   main {
@@ -168,6 +208,18 @@ export const GlobalStyle = createGlobalStyle`
     transform: scale(1) rotate(0deg);
   }
 
+  /* true-fullscreen reels: the HUD frame yields the stage */
+  .hud-frame {
+    transition: opacity 0.45s ease;
+  }
+  body.reel-active .hud-frame {
+    opacity: 0;
+  }
+  body.reel-active .hud-frame,
+  body.reel-active .hud-frame * {
+    pointer-events: none !important;
+  }
+
   /* clip wipe driven by the nearest revealed ancestor */
   .clip-on-reveal {
     clip-path: inset(0 100% 0 0);
@@ -195,11 +247,44 @@ export const GlobalStyle = createGlobalStyle`
     100% { transform: translateY(102%); }
   }
   @keyframes glitchShift {
-    0%, 86%, 100% { transform: none; opacity: 1; }
-    87% { transform: translate(-3px, 1px) skewX(-4deg); opacity: 0.85; }
-    89% { transform: translate(3px, -1px); }
-    91% { transform: translate(-2px, 2px) skewX(3deg); opacity: 0.9; }
-    93% { transform: none; }
+    0%, 86%, 100% { transform: none; opacity: 1; text-shadow: none; }
+    87% {
+      transform: translate(-3px, 1px) skewX(-4deg);
+      opacity: 0.85;
+      text-shadow: 3px 0 ${v.signal}, -3px 0 rgba(237, 238, 243, 0.7);
+    }
+    89% {
+      transform: translate(3px, -1px);
+      text-shadow: -2px 0 ${v.signal}, 2px 0 rgba(237, 238, 243, 0.6);
+    }
+    91% {
+      transform: translate(-2px, 2px) skewX(3deg);
+      opacity: 0.9;
+      text-shadow: 2px 0 ${v.signal}, -2px 0 rgba(237, 238, 243, 0.5);
+    }
+    93% { transform: none; text-shadow: none; }
+  }
+  @keyframes rgbSplit {
+    0% {
+      text-shadow: -3px 0 ${v.signal}, 3px 0 rgba(237, 238, 243, 0.65);
+      transform: translateX(2px);
+    }
+    35% {
+      text-shadow: 2px 0 ${v.signal}, -2px 0 rgba(237, 238, 243, 0.5);
+      transform: translateX(-1px);
+    }
+    70% {
+      text-shadow: -1px 0 ${v.signal}, 1px 0 rgba(237, 238, 243, 0.35);
+      transform: none;
+    }
+    100% {
+      text-shadow: none;
+      transform: none;
+    }
+  }
+  @keyframes crtRoll {
+    from { transform: translateY(-20vh); }
+    to { transform: translateY(120vh); }
   }
 
   /* ------------------------------------------------------------------

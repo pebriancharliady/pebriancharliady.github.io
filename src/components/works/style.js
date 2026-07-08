@@ -76,6 +76,7 @@ export const FileRow = styled(Link)`
     gap: clamp(1.5rem, 4vw, 4.5rem);
     align-items: start;
     margin-top: clamp(1.4rem, 3.5vh, 2.25rem);
+    transform: skewY(calc(var(--scroll-skew, 0) * 1deg));
   }
 
   .desc {
@@ -151,6 +152,7 @@ export const FileRow = styled(Link)`
   &:focus-visible {
     .title {
       color: ${v.signal};
+      animation: rgbSplit 0.4s ease-out 1;
     }
     .arrow {
       opacity: 1;

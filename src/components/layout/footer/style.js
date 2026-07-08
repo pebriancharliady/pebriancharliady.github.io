@@ -16,6 +16,24 @@ export const FooterRoot = styled.footer`
     background: ${v.ink};
     color: ${v.inverse};
   }
+
+  /* hazard edging along the top of the crimson field */
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 12px;
+    background-image: repeating-linear-gradient(
+      45deg,
+      rgba(2, 2, 4, 0.32) 0,
+      rgba(2, 2, 4, 0.32) 13px,
+      transparent 13px,
+      transparent 26px
+    );
+    background-position-x: calc(var(--scroll-y, 0) * -0.55px);
+  }
 `
 
 export const FooterEyebrow = styled.div`

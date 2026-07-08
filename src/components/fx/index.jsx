@@ -96,3 +96,7 @@ export const Reveal = ({
 }
 
 export * from "./scrollfx"
+export * from "./smoothScroll"
+export * from "./cursorLens"
+export * from "./useReel"
+export { default as Sigil } from "./sigil"
