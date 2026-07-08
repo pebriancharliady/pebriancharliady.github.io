@@ -69,15 +69,16 @@ export const GlobalStyle = createGlobalStyle`
     overflow: hidden;
   }
 
-  /* persistent TV grain — static crawling over the whole picture */
-  body::after {
-    content: "";
+  /* persistent TV grain — the noise texture itself is set inline by
+     AnalogTV (data-URIs must stay out of this stylesheet: one mangled
+     rule aborts styled-components' runtime injection of everything
+     after it — see the doubled-text incident) */
+  .crt-grain {
     position: fixed;
     inset: -80px;
     z-index: 74;
     pointer-events: none;
     opacity: 0.085;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)' opacity='0.7'/%3E%3C/svg%3E");
     background-size: 260px 260px;
     animation: grainCrawl 0.7s steps(1) infinite;
   }
@@ -297,7 +298,6 @@ export const GlobalStyle = createGlobalStyle`
     position: absolute;
     inset: 0;
     opacity: 0.13;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.6'/%3E%3C/svg%3E");
     animation: noiseJump 0.09s steps(2) infinite;
   }
 

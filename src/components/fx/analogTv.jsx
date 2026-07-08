@@ -12,6 +12,17 @@ import React, { useEffect } from "react"
 */
 
 /* resting warp strength (center of the breathing oscillation) */
+/* noise textures as inline styles — kept OUT of styled-components: a
+   data-URI mangled by the css minifier aborts runtime style injection */
+const noiseUri = (size, freq, alpha) =>
+  `url("data:image/svg+xml,${encodeURIComponent(
+    `<svg xmlns='http://www.w3.org/2000/svg' width='${size}' height='${size}'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='${freq}' numOctaves='2'/></filter><rect width='100%' height='100%' filter='url(#n)' opacity='${alpha}'/></svg>`
+  )}")`
+
+const GRAIN_BG = noiseUri(260, 0.8, 0.7)
+const NOISE_BG = noiseUri(300, 0.9, 0.6)
+
+/* resting warp strength (center of the breathing oscillation) */
 const WARP_SCALE = 18
 /* slow amplitude swell — the tube breathing */
 const WARP_BREATHE = 6
@@ -139,10 +150,11 @@ export const AnalogTV = () => {
           />
         </filter>
       </svg>
+      <div className="crt-grain" style={{ backgroundImage: GRAIN_BG }} aria-hidden="true" />
       <div className="crt-glitch-overlay" aria-hidden="true">
         <span className="tear t1" />
         <span className="tear t2" />
-        <span className="noise" />
+        <span className="noise" style={{ backgroundImage: NOISE_BG }} />
       </div>
     </>
   )
