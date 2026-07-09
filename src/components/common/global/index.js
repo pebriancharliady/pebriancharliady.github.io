@@ -24,7 +24,11 @@ export const GlobalStyle = createGlobalStyle`
   html {
     color-scheme: dark;
     background: ${v.ground};
-    scroll-behavior: smooth;
+    /* NO scroll-behavior: smooth here — it turns Gatsby's scroll-to-top
+       on navigation into an animation, and the ScrollSmoother setup then
+       samples the animation at its start and pins the page at the OLD
+       scroll offset (you land at the bottom of the new page). Smoothing
+       is the smoother's job on desktop; native scroll stays instant. */
     -webkit-text-size-adjust: 100%;
     /* clip, not hidden: hidden creates a scroll container and kills
        position: sticky (the mobile hero wipe and reel pins) */

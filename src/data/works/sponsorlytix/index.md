@@ -2,15 +2,14 @@
 title: Sponsorlytix
 tags: ['React JS', 'Typescript', 'Material UI']
 category: Frontend Development
-image: './salty_egg.jpg'
+image: './image.png'
 date: "2021-10-04T22:12:03.284Z"
-description: "Breakthrough R&D in sports analytics throgh AI, Web Robotics, Machine Learning, Deep Learning with Predictive Modeling and Computer Vision technologies."
+description: "Breakthrough R&D in sports analytics through AI, web robotics, machine learning, and computer vision with predictive modeling."
 projectLink: "https://sponsorlytix.io"
 ---
 
-**Sponsorlytix** is a breakthrough R&D in sports analytics throgh AI, Web Robotics, Machine Learning, Deep Learning with Predictive Modeling and Computer Vision technologies..
+## Project Description
+**Sponsorlytix** is a breakthrough R&D platform for sports analytics — AI, web robotics, machine learning, and deep learning with predictive modeling and computer vision.
 
 ## What I did
--   Develop Frontend Web Dashboard using React JS, Typescript & Material UI
-
-## Project Screenshots
+- Developed the frontend web dashboard with React JS, Typescript & Material UI

@@ -75,6 +75,10 @@ export const SmoothScroll = ({ children }) => {
         const ScrollTrigger = st.ScrollTrigger || st.default
         const ScrollSmoother = ss.ScrollSmoother || ss.default
         gsap.registerPlugin(ScrollTrigger, ScrollSmoother)
+        /* ScrollTrigger's module-global scroll cache survives kill()
+           across page navigations; clear it so a refresh on this page
+           can never restore the previous page's offset. */
+        ScrollTrigger.clearScrollMemory()
         /* [data-pin-smooth] elements are counter-translated by the
            smoothed scroll — the content moves -y, they move +y, so they
            stay visually pinned (the sticky-hero wipe). */
@@ -96,6 +100,22 @@ export const SmoothScroll = ({ children }) => {
             window.__SMOOTH_Y = y
             applyPins(y)
           },
+        })
+        /* create() schedules its own ScrollTrigger.refresh in a rAF, and
+           GSAP's module-global scroller cache still holds the PREVIOUS
+           page's offset — that refresh restores it, landing the new page
+           mid/bottom. By now Gatsby's ScrollHandler has positioned this
+           page (top on navigation, the saved offset on back/forward):
+           pin the smoother to the LIVE native position (which also
+           rewrites the stale cache through the scroller setter) and once
+           more after the deferred refresh has fired. */
+        const pinScroll = () => {
+          smoother.scrollTop(window.pageYOffset)
+          ScrollTrigger.clearScrollMemory()
+        }
+        pinScroll()
+        requestAnimationFrame(() => {
+          killed || pinScroll()
         })
         window.__SMOOTH_Y = smoother.scrollTop()
         applyPins(window.__SMOOTH_Y)

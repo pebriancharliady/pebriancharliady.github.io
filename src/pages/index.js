@@ -101,9 +101,12 @@ const IndexPage = ({ data: query }) => {
         {/* the noir showcase: fullscreen, HUD yields the stage */}
         <WorksReel works={works} totalCount={query.works.totalCount} />
 
-        {/* [more] featured works — the rest of the archive, on paper */}
+        {/* [more] featured works — the rest of the archive, on paper.
+            The -100vh pulls the slab up over the works reel's holdAfter
+            tail so it wipes over the frozen final frame (pairs with
+            holdAfter: 1 on WorksReel). */}
         {featured.length > 0 && (
-          <PaperSlab>
+          <PaperSlab style={{ marginTop: "-100vh" }}>
             <SectionInner>
               <Reveal>
                 <SectionHead
@@ -145,16 +148,12 @@ const IndexPage = ({ data: query }) => {
           </PaperSlab>
         )}
 
-        {/* episode 02 — services. The -100vh pulls the card up over the
-            works reel's holdAfter tail: it wipes over the frozen final
-            frame and fully covers exactly as the pin releases. Keep
-            this margin paired with holdAfter: 1 on WorksReel. */}
-        <EpisodeCard
-          ep="第弐話"
-          big="業務内容"
-          sub="Episode 02 — Services"
-          style={{ marginTop: "-100vh" }}
-        />
+        {/* episode 02 — services. With the featured grid live, the GRID
+            is what wipes over the works reel's holdAfter tail; the card
+            plays its pinned scene in normal flow after it. (If the grid
+            is ever removed, restore marginTop: "-100vh" here so the
+            card rides the reel's hold again.) */}
+        <EpisodeCard ep="第弐話" big="業務内容" sub="Episode 02 — Services" />
 
         <ServicesReel services={services} />
 
