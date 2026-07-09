@@ -10,11 +10,22 @@ export const SectionInner = styled(Wrap)`
   z-index: 1;
 `
 
-/* the hero pins here while the paper slab slides over it */
+/* the hero pins here while the episode card slides over it */
 export const StickyHero = styled.div`
   position: sticky;
   top: calc(${v.frameInset} + 52px);
   z-index: 0;
+
+  /* the overridden scene fades to dark as the card rises */
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 5;
+    background: #020203;
+    opacity: calc(var(--hero-exit, 0) * 0.85);
+    pointer-events: none;
+  }
 
   @media (max-width: ${v.breakpointPhone}) {
     top: calc(${v.frameInsetMobile} + 48px);
@@ -64,21 +75,40 @@ export const HankoSpot = styled.div`
 `
 
 /* ------------------------------------------------------------------
-   episode title card — hard black cut in the wipe sequence
+   episode title card — a pinned 100vh scene (see useEpisode): the
+   title fades in, holds through the middle scrolls, fades back out,
+   then the pin releases into the section content
 ------------------------------------------------------------------ */
 export const EvaCardRoot = styled.section`
   position: relative;
   z-index: 2; /* rides over pinned reels/hero during the wipe */
-  min-height: 88vh;
-  display: grid;
-  place-items: center;
-  overflow: hidden;
-  background: radial-gradient(
-      ellipse at center,
-      rgba(237, 238, 243, 0.025),
-      transparent 62%
-    ),
-    #020203;
+
+  .ep-window {
+    position: relative;
+    height: 100vh;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    background: radial-gradient(
+        ellipse at center,
+        rgba(237, 238, 243, 0.025),
+        transparent 62%
+      ),
+      #020203;
+  }
+
+  /* touch devices pin natively */
+  &.is-touch .ep-window {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    height: 100svh;
+  }
+
+  .ep-content {
+    position: relative;
+    will-change: opacity, transform;
+  }
 
   .ep {
     position: absolute;

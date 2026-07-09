@@ -71,6 +71,7 @@ const WorksReel = ({ works, totalCount }) => {
           </div>
         </ReelChrome>
 
+        <span className="reel-dim" aria-hidden="true" />
         <ReelTrack ref={trackRef}>
           {works.map(({ node }, i) => {
             const f = node.frontmatter

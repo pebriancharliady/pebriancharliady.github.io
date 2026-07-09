@@ -6,15 +6,15 @@ import SEO from "../components/seo"
 import Hero from "../components/home/hero"
 import WorksReel from "../components/home/worksReel"
 import ServicesReel from "../components/home/servicesReel"
+import EpisodeCard from "../components/home/episodeCard"
 import data from "../data/data"
 import {
   Section,
   SectionHead,
   ButtonLink,
-  HazardBar,
   PaperSlab,
 } from "../components/common"
-import { Reveal, ScrollScale, Sigil } from "../components/fx"
+import { Reveal, Sigil } from "../components/fx"
 import ShellVoyager from "../components/three/shellVoyager"
 import {
   SectionInner,
@@ -24,7 +24,6 @@ import {
   StickyHero,
   PageBody,
   EndTicker,
-  EvaCardRoot,
   SigilSpot,
   FeatGrid,
   FeatCard,
@@ -92,19 +91,12 @@ const IndexPage = ({ data: query }) => {
       </StickyHero>
 
       <PageBody>
-        {/* episode 01 — hard black cut before the case files open */}
-        <EvaCardRoot>
-          <ScrollScale amp={0.16} style={{ position: "relative" }}>
-            <span className="ep" lang="ja" aria-hidden="true">
-              第壱話
-            </span>
-            <h2 className="big" lang="ja">
-              作品資料
-            </h2>
-            <span className="sub">Episode 01 — Selected work</span>
-          </ScrollScale>
-          <HazardBar className="haz" aria-hidden="true" />
-        </EvaCardRoot>
+        {/* episode 01 — pinned title scene before the case files open */}
+        <EpisodeCard
+          ep="第壱話"
+          big="作品資料"
+          sub="Episode 01 — Selected work"
+        />
 
         {/* the noir showcase: fullscreen, HUD yields the stage */}
         <WorksReel works={works} totalCount={query.works.totalCount} />
@@ -157,18 +149,12 @@ const IndexPage = ({ data: query }) => {
             works reel's holdAfter tail: it wipes over the frozen final
             frame and fully covers exactly as the pin releases. Keep
             this margin paired with holdAfter: 1 on WorksReel. */}
-        <EvaCardRoot style={{ marginTop: "-100vh" }}>
-          <ScrollScale amp={0.16} style={{ position: "relative" }}>
-            <span className="ep" lang="ja" aria-hidden="true">
-              第弐話
-            </span>
-            <h2 className="big" lang="ja">
-              業務内容
-            </h2>
-            <span className="sub">Episode 02 — Services</span>
-          </ScrollScale>
-          <HazardBar className="haz" aria-hidden="true" />
-        </EvaCardRoot>
+        <EpisodeCard
+          ep="第弐話"
+          big="業務内容"
+          sub="Episode 02 — Services"
+          style={{ marginTop: "-100vh" }}
+        />
 
         <ServicesReel services={services} />
 

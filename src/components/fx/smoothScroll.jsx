@@ -89,8 +89,8 @@ export const SmoothScroll = ({ children }) => {
         smoother = ScrollSmoother.create({
           wrapper: wrapRef.current,
           content: contentRef.current,
-          smooth: 1.1,
-          effects: false,
+          smooth: 2,
+          effects: true,
           onUpdate: self => {
             const y = self.scrollTop()
             window.__SMOOTH_Y = y

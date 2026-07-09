@@ -84,6 +84,17 @@ export const ReelWindow = styled.div`
     height: 100vh;
     height: 100svh;
   }
+
+  /* darkens the frozen final frame while the next section wipes over
+     it (driven by useReel during the holdAfter tail) */
+  .reel-dim {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    background: #020203;
+    opacity: 0;
+    pointer-events: none;
+  }
 `
 
 export const ReelChrome = styled.div`

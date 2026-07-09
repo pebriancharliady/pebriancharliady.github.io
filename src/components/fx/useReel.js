@@ -59,6 +59,8 @@ export const useReel = ({
     let snapAnim = null
     let snapDone = -1
     let engaged = false
+    let shownP = null // lerped display progress — the leafing eases
+    const dimEl = win.querySelector(".reel-dim")
 
     const layout = () => {
       leafDist = (count - 1) * window.innerHeight * panelScroll
@@ -86,14 +88,26 @@ export const useReel = ({
 
       const progress =
         leafDist > 0 ? Math.min(1, off / leafDist) : 0
+
+      /* the shown position trails the scroll — fluid leafing */
+      if (shownP === null) shownP = progress
+      shownP += (progress - shownP) * 0.085
+      if (Math.abs(progress - shownP) < 0.0004) shownP = progress
+
       track.style.transform = `translate3d(${(
-        -progress *
+        -shownP *
         (count - 1) *
         window.innerWidth
       ).toFixed(2)}px, 0, 0)`
 
-      if (fill) fill.style.transform = `scaleX(${progress.toFixed(4)})`
-      const idx = Math.min(count, Math.round(progress * (count - 1)) + 1)
+      /* the frozen frame dims as the next section wipes over it */
+      if (dimEl && pinDist > leafDist) {
+        const tail = Math.max(0, (off - leafDist) / (pinDist - leafDist))
+        dimEl.style.opacity = (tail * 0.85).toFixed(3)
+      }
+
+      if (fill) fill.style.transform = `scaleX(${shownP.toFixed(4)})`
+      const idx = Math.min(count, Math.round(shownP * (count - 1)) + 1)
       if (counter && counter.dataset.idx !== String(idx)) {
         counter.dataset.idx = String(idx)
         counter.firstChild.textContent = String(idx).padStart(2, "0")
