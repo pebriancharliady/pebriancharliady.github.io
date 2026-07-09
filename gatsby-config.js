@@ -63,7 +63,7 @@ module.exports = {
     {
       resolve: `gatsby-plugin-manifest`,
       options: {
-        name: `Pebrian Charliady — Software Developer`,
+        name: `Pebrian Charliady — Software Engineer`,
         short_name: `PEB`,
         start_url: `/`,
         background_color: `#050507`,

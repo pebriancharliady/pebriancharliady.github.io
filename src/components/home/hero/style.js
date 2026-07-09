@@ -45,10 +45,13 @@ export const PortraitZone = styled.div`
   }
 `
 
-/* hero layers peel apart as the title card slides over (--hero-exit) */
+/* hero layers peel apart as the title card slides over (--hero-exit).
+   pointer-events pass through so the portrait's tilt can feel the
+   cursor where the name overlaps it (no interactive children here) */
 export const HeroCopy = styled.div`
   position: relative;
   z-index: 2;
+  pointer-events: none;
   transform: translateY(calc(var(--hero-exit, 0) * -48px));
   opacity: calc(1 - var(--hero-exit, 0) * 0.6);
 `
@@ -138,17 +141,10 @@ export const Redaction = styled.div`
   }
 `
 
-export const CtaRow = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.9rem;
-  margin-top: 2.25rem;
-  position: relative;
-  z-index: 2;
-`
-
 export const ScanPortrait = styled.div`
   position: relative;
+  /* the portrait is a floating 3D plane (see useTilt) */
+  perspective: 900px;
 
   /* static orbit is the mobile fallback — desktop gets the voyager */
   .orbit {
@@ -281,7 +277,7 @@ export const ScanPortrait = styled.div`
 ------------------------------------------------------------------ */
 export const Mrz = styled.dl`
   display: grid;
-  grid-template-columns: 1.3fr 1.1fr 1.5fr 1.3fr auto;
+  grid-template-columns: 1.3fr 1.1fr 1.5fr auto;
   margin: clamp(3rem, 8vh, 5rem) 0 0;
   border-top: 1px solid ${v.line};
   border-bottom: 1px solid ${v.line};

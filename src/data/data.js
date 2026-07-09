@@ -4,9 +4,9 @@ module.exports = {
   SiteLogoText: "PEB",
   SiteAuthor: "Pebrian Charliady",
   SiteAuthorJa: "ペブリアン・チャリアディ",
-  SiteRole: "Software Developer",
+  SiteRole: "Software Engineer",
   SiteRoleJa: "ソフトウェア開発者",
-  SiteDescription: "Self Taught Software Developer",
+  SiteDescription: "Self Taught Software Engineer",
   defaultDescription: "Software engineer!",
   SiteDossier: {
     base: "Bandung, Indonesia",

@@ -1,9 +1,9 @@
-import React from "react"
+import React, { useRef } from "react"
 import { useStaticQuery, graphql } from "gatsby"
 import Img from "gatsby-image"
 import data from "../../../data/data"
-import { Wrap, Eyebrow, ButtonA } from "../../common"
-import { Decode, Reveal } from "../../fx"
+import { Wrap, Eyebrow } from "../../common"
+import { Decode, Reveal, useTilt } from "../../fx"
 import ShellScene from "../../three/shellScene"
 import CubeScene from "../../three/cubeScene"
 import {
@@ -11,7 +11,6 @@ import {
   HeroCopy,
   HeroName,
   Redaction,
-  CtaRow,
   PortraitZone,
   ScanPortrait,
   Mrz,
@@ -19,19 +18,10 @@ import {
 
 const MRZ_BASE_DELAY = 1000
 
-/* fragment scrolling dies inside the smoother's fixed wrapper — write
-   the native scroll position instead; the smoother glides to it */
-const scrollToWorks = e => {
-  e.preventDefault()
-  const el = document.querySelector("#selected-work")
-  if (!el) return
-  const y =
-    el.getBoundingClientRect().top +
-    (window.__SMOOTH_Y != null ? window.__SMOOTH_Y : window.pageYOffset)
-  window.scrollTo(0, Math.round(y))
-}
-
 const Hero = () => {
+  const portraitRef = useRef(null)
+  useTilt(portraitRef)
+
   const { portrait } = useStaticQuery(graphql`
     query {
       portrait: file(relativePath: { eq: "header-me.png" }) {
@@ -53,7 +43,6 @@ const Hero = () => {
         data.SiteDossier.coordinates
       } — ${data.SiteDossier.base.toUpperCase()}`,
     ],
-    ["STACK", data.SiteDossier.stack.toUpperCase()],
   ]
 
   return (
@@ -82,23 +71,13 @@ const Hero = () => {
               </span>
             </Redaction>
           </Reveal>
-          <Reveal delay={750}>
-            <CtaRow>
-              <ButtonA href="#selected-work" onClick={scrollToWorks}>
-                View selected work
-              </ButtonA>
-              <ButtonA href={`mailto:${data.SiteContact.email}`}>
-                Make contact
-              </ButtonA>
-            </CtaRow>
-          </Reveal>
         </HeroCopy>
 
         <PortraitZone>
           <Reveal delay={400}>
             <ScanPortrait data-shell-anchor="portrait">
               <ShellScene className="orbit" media="(max-width: 850px)" />
-              <figure className="portrait">
+              <figure className="portrait" ref={portraitRef}>
                 <span className="bk bk-tl" aria-hidden="true" />
                 <span className="bk bk-tr" aria-hidden="true" />
                 <span className="bk bk-bl" aria-hidden="true" />
