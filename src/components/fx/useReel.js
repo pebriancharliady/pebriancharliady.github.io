@@ -27,6 +27,9 @@ export const useReel = ({
   panelScroll = 0.75,
   snapIdleMs = 240,
   snapMs = 480,
+  /* extra viewports of pin AFTER the last panel — the window holds its
+     final frame so the next section wipes over it (episode-card style) */
+  holdAfter = 0,
 }) => {
   useEffect(() => {
     if (typeof window === "undefined") return undefined
@@ -49,6 +52,7 @@ export const useReel = ({
     if (isTouch) wrap.classList.add("is-touch")
 
     let raf = null
+    let leafDist = 0
     let pinDist = 0
     let lastNative = -1
     let stillSince = 0
@@ -57,7 +61,8 @@ export const useReel = ({
     let engaged = false
 
     const layout = () => {
-      pinDist = (count - 1) * window.innerHeight * panelScroll
+      leafDist = (count - 1) * window.innerHeight * panelScroll
+      pinDist = leafDist + holdAfter * window.innerHeight
       wrap.style.height = `${window.innerHeight + pinDist}px`
     }
     layout()
@@ -79,7 +84,8 @@ export const useReel = ({
         win.style.transform = `translate3d(0, ${off.toFixed(2)}px, 0)`
       }
 
-      const progress = pinDist > 0 ? off / pinDist : 0
+      const progress =
+        leafDist > 0 ? Math.min(1, off / leafDist) : 0
       track.style.transform = `translate3d(${(
         -progress *
         (count - 1) *
@@ -130,7 +136,7 @@ export const useReel = ({
           now - stillSince > snapIdleMs &&
           settled &&
           nativeOff > 2 &&
-          nativeOff < pinDist - 2
+          nativeOff < leafDist - 2
         ) {
           const target = Math.round(
             wrapTop + Math.round(nativeOff / step) * step

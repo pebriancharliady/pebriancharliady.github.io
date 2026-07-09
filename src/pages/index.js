@@ -153,8 +153,11 @@ const IndexPage = ({ data: query }) => {
           </PaperSlab>
         )}
 
-        {/* episode 02 — services */}
-        <EvaCardRoot>
+        {/* episode 02 — services. The -100vh pulls the card up over the
+            works reel's holdAfter tail: it wipes over the frozen final
+            frame and fully covers exactly as the pin releases. Keep
+            this margin paired with holdAfter: 1 on WorksReel. */}
+        <EvaCardRoot style={{ marginTop: "-100vh" }}>
           <ScrollScale amp={0.16} style={{ position: "relative" }}>
             <span className="ep" lang="ja" aria-hidden="true">
               第弐話

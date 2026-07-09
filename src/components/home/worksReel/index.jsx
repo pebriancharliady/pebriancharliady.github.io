@@ -20,6 +20,7 @@ const WorksReel = ({ works, totalCount }) => {
     counterRef,
     fillRef,
     count: n,
+    holdAfter: 1, // episode 02 card wipes over the final frame
   })
 
   return (

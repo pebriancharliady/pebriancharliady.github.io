@@ -68,6 +68,7 @@ export const HankoSpot = styled.div`
 ------------------------------------------------------------------ */
 export const EvaCardRoot = styled.section`
   position: relative;
+  z-index: 2; /* rides over pinned reels/hero during the wipe */
   min-height: 88vh;
   display: grid;
   place-items: center;
