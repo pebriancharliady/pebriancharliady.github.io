@@ -139,7 +139,7 @@ export const ArticleBody = styled.div`
   max-width: 70ch;
   margin-top: clamp(2.5rem, 6vh, 4rem);
   counter-reset: dossier;
-  font-size: 1.0625rem;
+  font-size: 1rem;
   line-height: 1.85;
   color: #c9cbd6;
 
@@ -169,7 +169,7 @@ export const ArticleBody = styled.div`
   }
 
   h2 {
-    font-size: 1.4rem;
+    font-size: 1.25rem;
     letter-spacing: 0.04em;
 
     &::before {
@@ -186,7 +186,7 @@ export const ArticleBody = styled.div`
   }
 
   h3 {
-    font-size: 1.1rem;
+    font-size: 1.05rem;
     letter-spacing: 0.06em;
   }
 

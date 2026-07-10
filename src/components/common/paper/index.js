@@ -101,12 +101,12 @@ export const Hanko = styled.span`
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 84px;
-  height: 84px;
+  width: 68px;
+  height: 68px;
   background: ${v.crimson};
   color: ${v.paper};
   font-family: ${v.fontJa};
-  font-size: 2.5rem;
+  font-size: 2rem;
   line-height: 1;
   transform: rotate(-7deg);
   outline: 2px solid ${v.paper};
@@ -117,9 +117,9 @@ export const Hanko = styled.span`
   pointer-events: none;
 
   @media (max-width: ${v.breakpointPhone}) {
-    width: 64px;
-    height: 64px;
-    font-size: 1.9rem;
+    width: 54px;
+    height: 54px;
+    font-size: 1.6rem;
   }
 `
 

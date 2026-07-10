@@ -18,7 +18,7 @@ const LostSection = styled.section`
 
   .code {
     font-family: ${v.fontDisplay};
-    font-size: clamp(6rem, 22vw, 15rem);
+    font-size: clamp(5rem, 17vw, 11.5rem);
     line-height: 0.9;
     color: ${v.text};
     animation: glitchShift 3.2s infinite;

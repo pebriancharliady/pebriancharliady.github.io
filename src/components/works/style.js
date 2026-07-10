@@ -53,7 +53,7 @@ export const FileRow = styled(Link)`
     margin: 1.15rem 0 0;
     font-family: ${v.fontDisplay};
     font-weight: normal;
-    font-size: clamp(2rem, 5.2vw, 4.25rem);
+    font-size: clamp(1.75rem, 4.2vw, 3.3rem);
     line-height: 0.95;
     text-transform: uppercase;
     color: ${v.text};

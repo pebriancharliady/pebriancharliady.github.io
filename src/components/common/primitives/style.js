@@ -97,7 +97,7 @@ export const SpineBlock = styled.div`
 
   .sp-big {
     font-family: ${v.fontDisplay};
-    font-size: 1.6rem;
+    font-size: 1.4rem;
     letter-spacing: 0.02em;
     text-transform: uppercase;
     color: ${v.signal};
@@ -283,7 +283,7 @@ const buttonBase = css`
   text-transform: uppercase;
   color: ${v.text};
   border: 1px solid ${v.line};
-  padding: 1em 1.5em;
+  padding: 0.85em 1.3em;
   cursor: pointer;
   transition: border-color 0.25s ease, color 0.25s ease,
     background-color 0.25s ease;
@@ -375,7 +375,7 @@ export const PageHeadRoot = styled.header`
     margin: 1.1rem 0 0;
     font-family: ${v.fontDisplay};
     font-weight: normal;
-    font-size: clamp(2.4rem, 6vw, 4.6rem);
+    font-size: clamp(2rem, 4.8vw, 3.6rem);
     line-height: 0.95;
     letter-spacing: 0;
     text-transform: uppercase;
@@ -408,7 +408,7 @@ export const KanjiMark = styled.span`
   z-index: 0;
   writing-mode: vertical-rl;
   font-family: ${v.fontJa};
-  font-size: clamp(9rem, 20vw, 17rem);
+  font-size: clamp(7rem, 16vw, 13rem);
   line-height: 1;
   color: rgba(237, 238, 243, 0.03);
   -webkit-text-stroke: 1px rgba(237, 238, 243, 0.08);

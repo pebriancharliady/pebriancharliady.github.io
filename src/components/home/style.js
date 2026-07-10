@@ -112,10 +112,10 @@ export const EvaCardRoot = styled.section`
 
   .ep {
     position: absolute;
-    top: -3.4rem;
+    top: -2.9rem;
     left: -0.5rem;
     font-family: ${v.fontJa};
-    font-size: clamp(1.05rem, 2.2vw, 1.75rem);
+    font-size: clamp(0.95rem, 1.8vw, 1.4rem);
     font-weight: 600;
     letter-spacing: 0.55em;
     color: ${v.text};
@@ -125,7 +125,7 @@ export const EvaCardRoot = styled.section`
     margin: 0;
     font-family: ${v.fontJa};
     font-weight: 800;
-    font-size: clamp(4.5rem, 19vw, 15rem);
+    font-size: clamp(3.6rem, 15vw, 11.5rem);
     line-height: 1;
     letter-spacing: 0.02em;
     color: ${v.inverse};
@@ -133,7 +133,7 @@ export const EvaCardRoot = styled.section`
 
   .sub {
     position: absolute;
-    bottom: -2.8rem;
+    bottom: -2.4rem;
     right: 0;
     font-family: ${v.fontMono};
     font-size: var(--text-mono-s);
@@ -158,7 +158,7 @@ export const SigilSpot = styled.div`
   position: absolute;
   top: 4%;
   left: -5%;
-  width: min(320px, 26vw);
+  width: min(260px, 21vw);
   z-index: 0;
   opacity: 0.45;
   pointer-events: none;
@@ -274,7 +274,7 @@ export const FeatCard = styled(Link)`
     .t {
       font-family: ${v.fontDisplay};
       font-weight: normal;
-      font-size: 1.02rem;
+      font-size: 0.95rem;
       letter-spacing: 0.05em;
       text-transform: uppercase;
       color: ${v.ink};
@@ -343,7 +343,7 @@ export const NoteRow = styled(Link)`
 
   .title {
     font-family: ${v.fontMedium};
-    font-size: 1.15rem;
+    font-size: 1.05rem;
     line-height: 1.35;
     color: ${v.text};
     transition: color 0.2s ease;

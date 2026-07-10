@@ -27,7 +27,7 @@ export const LogRow = styled(Link)`
   .title {
     font-family: ${v.fontMedium};
     font-weight: normal;
-    font-size: 1.3rem;
+    font-size: 1.15rem;
     line-height: 1.35;
     color: ${v.text};
     transition: color 0.2s ease;
@@ -90,7 +90,7 @@ export const LogSpineHead = styled.div`
     margin: 0.9rem 0 0;
     font-family: ${v.fontDisplay};
     font-weight: normal;
-    font-size: clamp(2.2rem, 4vw, 3.2rem);
+    font-size: clamp(1.9rem, 3.3vw, 2.6rem);
     line-height: 0.95;
     text-transform: uppercase;
     color: ${v.text};

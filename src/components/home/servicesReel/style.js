@@ -88,7 +88,7 @@ export const ServicePanel = styled.div`
     margin: 1.1rem 0 0;
     font-family: ${v.fontDisplay};
     font-weight: normal;
-    font-size: clamp(2.4rem, 5.6vw, 5rem);
+    font-size: clamp(2rem, 4.5vw, 3.9rem);
     line-height: 0.95;
     text-transform: uppercase;
     color: ${v.inverse};
@@ -97,7 +97,7 @@ export const ServicePanel = styled.div`
   .svc-body {
     margin: 1.5rem 0 0;
     max-width: 52ch;
-    font-size: 1.05rem;
+    font-size: 0.98rem;
     line-height: 1.85;
     color: rgba(237, 238, 243, 0.82);
   }

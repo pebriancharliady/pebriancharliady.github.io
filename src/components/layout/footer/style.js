@@ -73,7 +73,7 @@ export const BigMail = styled.a`
   display: inline-block;
   margin-top: 1.75rem;
   font-family: ${v.fontDisplay};
-  font-size: clamp(1.3rem, 4.6vw, 3.4rem);
+  font-size: clamp(1.15rem, 3.8vw, 2.7rem);
   line-height: 1.05;
   letter-spacing: 0.01em;
   text-transform: uppercase;

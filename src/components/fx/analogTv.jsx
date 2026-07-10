@@ -23,9 +23,9 @@ const GRAIN_BG = noiseUri(260, 0.8, 0.7)
 const NOISE_BG = noiseUri(300, 0.9, 0.6)
 
 /* resting warp strength (center of the breathing oscillation) */
-const WARP_SCALE = 18
+const WARP_SCALE = 10
 /* slow amplitude swell — the tube breathing */
-const WARP_BREATHE = 6
+const WARP_BREATHE = 2
 /* fast small instability — sync flutter */
 const WARP_FLUTTER = 2.5
 const BURST_MIN_GAP = 5000

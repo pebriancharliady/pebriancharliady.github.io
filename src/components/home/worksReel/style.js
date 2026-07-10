@@ -344,7 +344,7 @@ export const Panel = styled(Link)`
     margin: 1.4rem 0 0;
     font-family: ${v.fontDisplay};
     font-weight: normal;
-    font-size: clamp(2.2rem, 4.8vw, 4.5rem);
+    font-size: clamp(1.9rem, 3.8vw, 3.5rem);
     line-height: 0.95;
     text-transform: uppercase;
     color: ${v.ink};
@@ -364,7 +364,7 @@ export const Panel = styled(Link)`
   .desc {
     margin: 1.4rem 0 0;
     max-width: 44ch;
-    font-size: 1.02rem;
+    font-size: 0.95rem;
     line-height: 1.8;
     color: ${v.inkDim};
     display: -webkit-box;
@@ -515,11 +515,11 @@ export const Panel = styled(Link)`
       }
 
       .title {
-        font-size: clamp(1.7rem, 7.5vw, 2.6rem);
+        font-size: clamp(1.5rem, 6.5vw, 2.2rem);
       }
 
       .desc {
-        font-size: 0.95rem;
+        font-size: 0.9rem;
         -webkit-line-clamp: 3;
       }
 

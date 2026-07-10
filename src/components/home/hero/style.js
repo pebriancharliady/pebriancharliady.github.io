@@ -60,7 +60,7 @@ export const HeroName = styled.h1`
   margin: clamp(1.25rem, 4vh, 2.5rem) 0 0;
   font-family: ${v.fontDisplay};
   font-weight: normal;
-  font-size: clamp(3rem, 10.5vw, 8.75rem);
+  font-size: clamp(2.6rem, 8.5vw, 7rem);
   line-height: 0.9;
   letter-spacing: -0.005em;
   text-transform: uppercase;
@@ -72,11 +72,11 @@ export const HeroName = styled.h1`
   }
 
   .l2 {
-    margin-left: clamp(1.5rem, 13vw, 11.5rem);
+    margin-left: clamp(1.25rem, 10.5vw, 9rem);
   }
 
   @media (max-width: ${v.breakpointTablet}) {
-    font-size: clamp(2.75rem, 12vw, 5rem);
+    font-size: clamp(2.4rem, 10vw, 4.25rem);
 
     .l2 {
       margin-left: clamp(1rem, 6vw, 3rem);

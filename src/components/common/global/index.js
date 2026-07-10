@@ -10,12 +10,12 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   :root {
-    --text-hero: clamp(2.75rem, 8.5vw, 6.75rem);
-    --text-title: clamp(1.6rem, 3.4vw, 2.9rem);
-    --text-section: clamp(1.5rem, 2.6vw, 2.25rem);
-    --text-body: 1.0625rem;
-    --text-mono: 0.8125rem;
-    --text-mono-s: 0.6875rem;
+    --text-hero: clamp(2.4rem, 7vw, 5.5rem);
+    --text-title: clamp(1.45rem, 2.8vw, 2.35rem);
+    --text-section: clamp(1.25rem, 2.1vw, 1.75rem);
+    --text-body: 1rem;
+    --text-mono: 0.78rem;
+    --text-mono-s: 0.66rem;
     --track-wide: 0.32em;
     --track-mid: 0.18em;
     --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
