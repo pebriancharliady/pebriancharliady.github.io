@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useRef } from "react"
 import { graphql } from "gatsby"
 import Img from "gatsby-image"
 import Layout from "../components/layout"
@@ -14,7 +14,7 @@ import {
   ButtonLink,
   PaperSlab,
 } from "../components/common"
-import { Reveal, Sigil } from "../components/fx"
+import { Reveal, Sigil, useSceneHold } from "../components/fx"
 import ShellVoyager from "../components/three/shellVoyager"
 import {
   SectionInner,
@@ -23,6 +23,7 @@ import {
   NoteRow,
   StickyHero,
   PageBody,
+  HeldStage,
   EndTicker,
   SigilSpot,
   FeatGrid,
@@ -67,6 +68,14 @@ const IndexPage = ({ data: query }) => {
   const works = query.works.edges.slice(0, MAX_WORK_PANELS)
   const posts = query.posts.edges
 
+  /* the featured grid's last frame freezes and dims while the episode
+     02 card wipes over it — same entrance as episode 01 over the hero.
+     The hook pulls the card up by the hold distance itself, so if the
+     grid is absent the card simply stays in normal flow. */
+  const holdWrapRef = useRef(null)
+  const holdStageRef = useRef(null)
+  useSceneHold({ wrapRef: holdWrapRef, stageRef: holdStageRef })
+
   /* only the archive beyond the reel — the section stays hidden until
      more works exist than the reel shows */
   const featured = query.works.edges.slice(
@@ -101,58 +110,55 @@ const IndexPage = ({ data: query }) => {
         {/* the noir showcase: fullscreen, HUD yields the stage */}
         <WorksReel works={works} totalCount={query.works.totalCount} />
 
-        {/* [more] featured works — the rest of the archive, on paper.
-            The -100vh pulls the slab up over the works reel's holdAfter
-            tail so it wipes over the frozen final frame (pairs with
-            holdAfter: 1 on WorksReel). */}
+        {/* [more] featured works — the rest of the archive, on paper */}
         {featured.length > 0 && (
-          <PaperSlab style={{ marginTop: "-100vh" }}>
-            <SectionInner>
-              <Reveal>
-                <SectionHead
-                  $paper
-                  jp="他の作品"
-                  title="[More] featured works"
-                  aside="From the archive"
-                />
-              </Reveal>
-              <FeatGrid>
-                {featured.map(({ node }, i) => {
-                  const f = node.frontmatter
-                  return (
-                    <Reveal key={node.fields.slug} delay={i * 90}>
-                      <FeatCard to={node.fields.slug}>
-                        <span className="img">
-                          <Img
-                            fluid={f.image.childImageSharp.fluid}
-                            alt={f.title}
-                          />
-                        </span>
-                        <span className="cap">
-                          <span className="t">{f.title}</span>
-                          <span className="a" aria-hidden="true">
-                            →
-                          </span>
-                        </span>
-                      </FeatCard>
-                    </Reveal>
-                  )
-                })}
-              </FeatGrid>
-              <SectionFoot>
-                <ButtonLink $paper to="/works">
-                  All work files
-                </ButtonLink>
-              </SectionFoot>
-            </SectionInner>
-          </PaperSlab>
+          <HeldStage ref={holdWrapRef}>
+            <div className="stage" ref={holdStageRef}>
+              <PaperSlab>
+                <SectionInner>
+                  <SectionHead
+                    $paper
+                    jp="他の作品"
+                    title="[More] featured works"
+                    aside="From the archive"
+                  />
+                  <FeatGrid>
+                    {featured.map(({ node }, i) => {
+                      const f = node.frontmatter
+                      return (
+                        <Reveal key={node.fields.slug} delay={i * 90}>
+                          <FeatCard to={node.fields.slug}>
+                            <span className="img">
+                              <Img
+                                fluid={f.image.childImageSharp.fluid}
+                                alt={f.title}
+                              />
+                            </span>
+                            <span className="cap">
+                              <span className="t">{f.title}</span>
+                              <span className="a" aria-hidden="true">
+                                →
+                              </span>
+                            </span>
+                          </FeatCard>
+                        </Reveal>
+                      )
+                    })}
+                  </FeatGrid>
+                  <SectionFoot>
+                    <ButtonLink $paper to="/works">
+                      All work files
+                    </ButtonLink>
+                  </SectionFoot>
+                </SectionInner>
+              </PaperSlab>
+              <span className="scene-dim" aria-hidden="true" />
+            </div>
+          </HeldStage>
         )}
 
-        {/* episode 02 — services. With the featured grid live, the GRID
-            is what wipes over the works reel's holdAfter tail; the card
-            plays its pinned scene in normal flow after it. (If the grid
-            is ever removed, restore marginTop: "-100vh" here so the
-            card rides the reel's hold again.) */}
+        {/* episode 02 — services. useSceneHold pulls this card over the
+            featured grid's held frame — the same wipe as episode 01. */}
         <EpisodeCard ep="第弐話" big="業務内容" sub="Episode 02 — Services" />
 
         <ServicesReel services={services} />
@@ -163,7 +169,11 @@ const IndexPage = ({ data: query }) => {
           </SigilSpot>
           <SectionInner>
             <Reveal>
-              <SectionHead jp="記事" title="Field notes" aside="From the blog" />
+              <SectionHead
+                jp="記事"
+                title="Field notes"
+                aside="From the blog"
+              />
             </Reveal>
             <NoteList>
               {posts.map(({ node }, i) => {

@@ -185,6 +185,35 @@ export const SigilSpot = styled.div`
   }
 `
 
+/* ------------------------------------------------------------------
+   held scene — freezes a static section's last frame while the next
+   section wipes over it (see fx/useSceneHold); the featured grid uses
+   this so the episode 02 card enters exactly like episode 01
+------------------------------------------------------------------ */
+export const HeldStage = styled.div`
+  position: relative;
+
+  .stage {
+    position: relative;
+    will-change: transform;
+  }
+
+  /* touch pins by sticky — top comes from JS (parks the last viewport) */
+  &.is-touch .stage {
+    position: sticky;
+    will-change: auto;
+  }
+
+  .scene-dim {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    background: #020203;
+    opacity: 0;
+    pointer-events: none;
+  }
+`
+
 export const SectionFoot = styled.div`
   display: flex;
   justify-content: flex-start;

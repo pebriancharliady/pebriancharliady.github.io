@@ -3,8 +3,18 @@ import v from "../../../data/variables"
 
 export const HeroSection = styled.section`
   position: relative;
-  min-height: clamp(540px, calc(100vh - 260px), 860px);
+  display: flex;
+  flex-direction: column;
+  /* a full screen minus the sticky offset under the HUD bar — the hero
+     owns the entire first viewport (see StickyHero's top) */
+  min-height: calc(100vh - ${v.frameInset} - 52px);
   padding-top: clamp(2.5rem, 6vh, 4rem);
+  padding-bottom: clamp(1.5rem, 4vh, 2.5rem);
+
+  /* the MRZ band rides the bottom edge of the viewport */
+  > *:last-child {
+    margin-top: auto;
+  }
 
   /* the wireframe cube drifting behind the copy */
   .cube {

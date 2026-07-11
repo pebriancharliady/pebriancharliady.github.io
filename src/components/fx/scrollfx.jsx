@@ -190,7 +190,8 @@ export const ScrollScale = ({ amp = 0.12, children, ...rest }) => {
 /* ------------------------------------------------------------------
    ScrollVars — one rAF loop feeding CSS custom properties on <html>:
    --scroll-y (px, unitless) · --scroll-skew (deg, unitless, velocity
-   with decay) · --hero-exit (0..1 over the first ~560px)
+   with decay) · --hero-exit (0..1 over the first viewport — synced to
+   the episode card's cover of the 100vh hero)
 ------------------------------------------------------------------ */
 export const ScrollVars = () => {
   useEffect(() => {
@@ -215,7 +216,7 @@ export const ScrollVars = () => {
         root.style.setProperty("--scroll-skew", (skew * 0.05).toFixed(3))
         root.style.setProperty(
           "--hero-exit",
-          Math.max(0, Math.min(1, y / 560)).toFixed(3)
+          Math.max(0, Math.min(1, y / window.innerHeight)).toFixed(3)
         )
       }
       raf = window.requestAnimationFrame(loop)

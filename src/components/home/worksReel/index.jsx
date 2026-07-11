@@ -20,7 +20,6 @@ const WorksReel = ({ works, totalCount }) => {
     counterRef,
     fillRef,
     count: n,
-    holdAfter: 1, // episode 02 card wipes over the final frame
   })
 
   return (
@@ -65,9 +64,9 @@ const WorksReel = ({ works, totalCount }) => {
             <span className="reel-progress" aria-hidden="true">
               <span className="reel-progress-fill" ref={fillRef} />
             </span>
-            <ButtonLink $paper to="/works">
+            {/* <ButtonLink $paper to="/works">
               All work files
-            </ButtonLink>
+            </ButtonLink> */}
           </div>
         </ReelChrome>
 
