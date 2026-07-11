@@ -30,8 +30,8 @@ import {
   FeatCard,
 } from "../components/home/style"
 
-/* how many work files the reel leafs through (3–5 works well) */
-const MAX_WORK_PANELS = 3
+/* the works the reel leafs through, in leafing order (3–5 works well) */
+const REEL_SLUGS = ["ifast", "marcon-elmwood", "tartun"]
 /* how many works the [more] featured grid shows */
 const MAX_FEATURED = 4
 
@@ -62,11 +62,31 @@ const SERVICES = imgs => [
       "Android · Java · Kotlin · React Native · Firebase · mPOS · REST APIs",
     image: imgs.mobile,
   },
+  {
+    title: "Custom Software",
+    jp: "カスタム開発",
+    body:
+      "Software that doesn't fit a box — bespoke systems built end to end: integrations between services that were never meant to talk, payment hardware, admin backends, the workflows behind the business.",
+    tech:
+      "Java · Node.js · PostgreSQL · REST APIs · Payment integrations · mPOS · Admin dashboards",
+    image: imgs.custom,
+  },
 ]
 
 const IndexPage = ({ data: query }) => {
-  const works = query.works.edges.slice(0, MAX_WORK_PANELS)
+  const all = query.works.edges
   const posts = query.posts.edges
+
+  /* the reel is curated by REEL_SLUGS; FILE numbers stay tied to the
+     archive (date) order so they match the works page */
+  const reelEdges = REEL_SLUGS.map(slug =>
+    all.find(({ node }) => node.fields.slug.replace(/\//g, "") === slug)
+  ).filter(Boolean)
+
+  const works = reelEdges.map(edge => ({
+    ...edge,
+    fileNo: query.works.totalCount - all.indexOf(edge),
+  }))
 
   /* the featured grid's last frame freezes and dims while the episode
      02 card wipes over it — same entrance as episode 01 over the hero.
@@ -76,17 +96,16 @@ const IndexPage = ({ data: query }) => {
   const holdStageRef = useRef(null)
   useSceneHold({ wrapRef: holdWrapRef, stageRef: holdStageRef })
 
-  /* only the archive beyond the reel — the section stays hidden until
-     more works exist than the reel shows */
-  const featured = query.works.edges.slice(
-    MAX_WORK_PANELS,
-    MAX_WORK_PANELS + MAX_FEATURED
-  )
+  /* the newest of whatever the reel doesn't show */
+  const featured = all
+    .filter(edge => !reelEdges.includes(edge))
+    .slice(0, MAX_FEATURED)
 
   const services = SERVICES({
     web: query.svcWeb && query.svcWeb.childImageSharp.fluid,
     odoo: query.svcOdoo && query.svcOdoo.childImageSharp.fluid,
     mobile: query.svcMobile && query.svcMobile.childImageSharp.fluid,
+    custom: query.svcCustom && query.svcCustom.childImageSharp.fluid,
   })
 
   return (
@@ -216,7 +235,6 @@ export const pageQuery = graphql`
     works: allMarkdownRemark(
       filter: { fileAbsolutePath: { regex: "/(works)/" } }
       sort: { fields: [frontmatter___date, frontmatter___title], order: DESC }
-      limit: 8
     ) {
       totalCount
       edges {
@@ -260,21 +278,28 @@ export const pageQuery = graphql`
         }
       }
     }
-    svcWeb: file(relativePath: { eq: "services/web.jpg" }) {
+    svcWeb: file(relativePath: { eq: "marcon-elmwood/image.png" }) {
       childImageSharp {
         fluid(maxWidth: 1920, quality: 80) {
           ...GatsbyImageSharpFluid
         }
       }
     }
-    svcOdoo: file(relativePath: { eq: "services/odoo.jpg" }) {
+    svcOdoo: file(relativePath: { eq: "ifast/image1.png" }) {
       childImageSharp {
         fluid(maxWidth: 1920, quality: 80) {
           ...GatsbyImageSharpFluid
         }
       }
     }
-    svcMobile: file(relativePath: { eq: "services/mobile.jpg" }) {
+    svcMobile: file(relativePath: { eq: "reapit/image.png" }) {
+      childImageSharp {
+        fluid(maxWidth: 1920, quality: 80) {
+          ...GatsbyImageSharpFluid
+        }
+      }
+    }
+    svcCustom: file(relativePath: { eq: "tartun/image.png" }) {
       childImageSharp {
         fluid(maxWidth: 1920, quality: 80) {
           ...GatsbyImageSharpFluid

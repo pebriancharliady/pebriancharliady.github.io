@@ -72,14 +72,14 @@ const WorksReel = ({ works, totalCount }) => {
 
         <span className="reel-dim" aria-hidden="true" />
         <ReelTrack ref={trackRef}>
-          {works.map(({ node }, i) => {
+          {works.map(({ node, fileNo }) => {
             const f = node.frontmatter
             return (
               <Panel key={node.fields.slug} to={node.fields.slug}>
                 <span>
                   <span className="metaline">
                     <span className="code">
-                      FILE {String(totalCount - i).padStart(2, "0")}
+                      FILE {String(fileNo).padStart(2, "0")}
                     </span>
                     <span>{f.date}</span>
                     <span>{f.category}</span>
