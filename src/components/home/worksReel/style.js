@@ -3,13 +3,14 @@ import { Link } from "gatsby"
 import v from "../../../data/variables"
 
 /*
-  The reel shell, shared by both showcases. Paper by default (the
+  The showcase shell, shared by both stacks. Paper by default (the
   printed file — works), $dark for the noir stage (services). Either
-  way the HUD frame fades out while a reel holds the screen, and the
+  way the HUD frame fades out while a stack holds the screen, and the
   viewfinder corners + REC keep the footage feel.
 
-  Default styling is the vertical-stack fallback (mobile, reduced
-  motion, no-JS); .is-h switches to the pinned horizontal geometry.
+  Default styling is the plain vertical fallback (reduced motion,
+  no-JS); .is-stack switches to the pinned card-pile geometry (see
+  fx/useStack — cards deal one over another as the page scrolls).
 */
 
 export const ReelWrap = styled.div`
@@ -73,7 +74,7 @@ export const ReelWindow = styled.div`
           }
         `}
 
-  .is-h & {
+  .is-stack & {
     height: 100vh;
   }
 
@@ -86,7 +87,7 @@ export const ReelWindow = styled.div`
   }
 
   /* darkens the frozen final frame while the next section wipes over
-     it (driven by useReel during the holdAfter tail) */
+     it (driven by useStack during the holdAfter tail) */
   .reel-dim {
     position: absolute;
     inset: 0;
@@ -117,8 +118,8 @@ export const ReelChrome = styled.div`
     padding: 5.5rem ${v.gutter} 0;
   }
 
-  /* horizontal engine active: full pinned-window chrome */
-  .is-h & {
+  /* stack engine active: full pinned-window chrome */
+  .is-stack & {
     position: absolute;
     inset: 0;
     z-index: 3;
@@ -130,8 +131,7 @@ export const ReelChrome = styled.div`
       top: 26px;
       left: 0;
       right: 0;
-      border-bottom: 1px solid
-        ${p => (p.$dark ? v.lineFaint : v.lineInkFaint)};
+      border-bottom: 1px solid ${p => (p.$dark ? v.lineFaint : v.lineInkFaint)};
     }
 
     .reel-head {
@@ -189,8 +189,7 @@ export const ReelChrome = styled.div`
     width: 30px;
     height: 30px;
     border: 0 solid
-      ${p =>
-        p.$dark ? "rgba(237, 238, 243, 0.45)" : "rgba(16, 17, 24, 0.4)"};
+      ${p => (p.$dark ? "rgba(237, 238, 243, 0.45)" : "rgba(16, 17, 24, 0.4)")};
   }
   .reel-corners .c-tl {
     top: 20px;
@@ -268,7 +267,7 @@ export const ReelChrome = styled.div`
   }
 
   @media (max-width: ${v.breakpointPhone}) {
-    .is-h & {
+    .is-stack & {
       .reel-progress {
         display: none;
       }
@@ -282,16 +281,14 @@ export const ReelChrome = styled.div`
   }
 `
 
-export const ReelTrack = styled.div`
+/* the pile — cards are dealt over one another inside the window */
+export const StackField = styled.div`
   position: relative;
   z-index: 1;
-  display: flex;
-  flex-direction: column;
-  will-change: transform;
 
-  .is-h & {
-    flex-direction: row;
-    height: 100%;
+  .is-stack & {
+    position: absolute;
+    inset: 0;
   }
 `
 
@@ -305,11 +302,30 @@ export const Panel = styled(Link)`
   color: inherit;
   padding: 9.5rem ${v.gutter} 6.5rem;
 
-  .is-h & {
-    flex: none;
-    width: 100vw;
+  /* a card in the pile: opaque page that covers whatever it lands on */
+  .is-stack & {
+    position: absolute;
+    inset: 0;
     height: 100%;
     padding-top: 10.5rem;
+    background-color: ${v.paper};
+    background-image: radial-gradient(
+      rgba(16, 17, 24, 0.06) 1px,
+      transparent 1px
+    );
+    background-size: 56px 56px;
+    box-shadow: 0 -26px 60px rgba(16, 17, 24, 0.35);
+    will-change: transform;
+  }
+
+  /* the card beneath dims as a new file is laid on it */
+  .press {
+    position: absolute;
+    inset: 0;
+    z-index: 6;
+    background: #101118;
+    opacity: 0;
+    pointer-events: none;
   }
 
   .metaline {
@@ -500,9 +516,9 @@ export const Panel = styled(Link)`
     }
   }
 
-  /* compact page layout while leafing horizontally on a phone */
+  /* compact page layout while the pile deals on a phone */
   @media (max-width: ${v.breakpointPhone}) {
-    .is-h & {
+    .is-stack & {
       grid-template-columns: 1fr;
       align-items: start;
       gap: 1.1rem;

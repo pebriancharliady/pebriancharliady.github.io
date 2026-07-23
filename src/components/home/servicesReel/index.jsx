@@ -2,8 +2,13 @@ import React, { useRef } from "react"
 import Img from "gatsby-image"
 import data from "../../../data/data"
 import { Eyebrow, ButtonA, KanjiMark } from "../../common"
-import { Ticker, useReel } from "../../fx"
-import { ReelWrap, ReelWindow, ReelChrome, ReelTrack } from "../worksReel/style"
+import { Ticker, useStack } from "../../fx"
+import {
+  ReelWrap,
+  ReelWindow,
+  ReelChrome,
+  StackField,
+} from "../worksReel/style"
 import { ServicePanel } from "./style"
 
 /*
@@ -12,19 +17,18 @@ import { ServicePanel } from "./style"
 const ServicesReel = ({ services }) => {
   const wrapRef = useRef(null)
   const windowRef = useRef(null)
-  const trackRef = useRef(null)
   const counterRef = useRef(null)
   const fillRef = useRef(null)
 
   const n = services.length
 
-  useReel({
+  useStack({
     wrapRef,
     windowRef,
-    trackRef,
     counterRef,
     fillRef,
     count: n,
+    parallax: 22, // the scene image lags behind its slide — depth
   })
 
   return (
@@ -71,9 +75,9 @@ const ServicesReel = ({ services }) => {
           </div>
         </ReelChrome>
 
-        <ReelTrack ref={trackRef}>
+        <StackField>
           {services.map((svc, i) => (
-            <ServicePanel key={svc.title}>
+            <ServicePanel key={svc.title} data-stack-item>
               <span className="bg" aria-hidden="true">
                 {svc.image && <Img fluid={svc.image} alt="" />}
               </span>
@@ -94,9 +98,10 @@ const ServicesReel = ({ services }) => {
                   {svc.tech}
                 </p>
               </div>
+              <span className="press" aria-hidden="true" />
             </ServicePanel>
           ))}
-        </ReelTrack>
+        </StackField>
       </ReelWindow>
     </ReelWrap>
   )

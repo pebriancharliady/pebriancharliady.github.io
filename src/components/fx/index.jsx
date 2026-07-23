@@ -98,7 +98,7 @@ export const Reveal = ({
 export * from "./scrollfx"
 export * from "./smoothScroll"
 export * from "./cursorLens"
-export * from "./useReel"
+export * from "./useStack"
 export * from "./useTilt"
 export * from "./useEpisode"
 export * from "./useSceneHold"

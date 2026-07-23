@@ -1,18 +1,19 @@
 import React, { useEffect } from "react"
 
 /*
-  The analog TV layer. An SVG displacement filter warps the entire
-  smoothed content like curved tube glass (html.crt-on → .smooth-wrap
-  gets filter: url(#crt-warp)), and a director randomly fires
-  signal-loss bursts: the warp spikes, the picture jitters, tear lines
-  rip across, static flashes (html.glitching + the overlay below).
+  The analog TV layer — a living tube, no signal loss. An SVG
+  displacement filter warps the entire smoothed content like curved
+  tube glass (html.crt-on → .smooth-wrap gets filter: url(#crt-warp)),
+  and the warp gently breathes. The old glitch-burst director is gone —
+  it read as screen flicker and cost frames on weak devices.
 
-  Desktop only, silent under reduced motion. The scanlines and vignette
-  live in GlobalStyle; the HUD frame stays crisp — it's the bezel.
+  Desktop only (phones skip the filter AND the grain — see the media
+  gates in GlobalStyle), silent under reduced motion. The scanlines
+  and vignette live in GlobalStyle; the HUD frame stays crisp — it's
+  the bezel.
 */
 
-/* resting warp strength (center of the breathing oscillation) */
-/* noise textures as inline styles — kept OUT of styled-components: a
+/* noise texture as an inline style — kept OUT of styled-components: a
    data-URI mangled by the css minifier aborts runtime style injection */
 const noiseUri = (size, freq, alpha) =>
   `url("data:image/svg+xml,${encodeURIComponent(
@@ -20,7 +21,6 @@ const noiseUri = (size, freq, alpha) =>
   )}")`
 
 const GRAIN_BG = noiseUri(260, 0.8, 0.7)
-const NOISE_BG = noiseUri(300, 0.9, 0.6)
 
 /* resting warp strength (center of the breathing oscillation) */
 const WARP_SCALE = 10
@@ -28,8 +28,6 @@ const WARP_SCALE = 10
 const WARP_BREATHE = 2
 /* fast small instability — sync flutter */
 const WARP_FLUTTER = 2.5
-const BURST_MIN_GAP = 5000
-const BURST_MAX_GAP = 14000
 
 export const AnalogTV = () => {
   useEffect(() => {
@@ -37,25 +35,19 @@ export const AnalogTV = () => {
     const mm = q => window.matchMedia && window.matchMedia(q).matches
     if (mm("(prefers-reduced-motion: reduce)")) return undefined
 
-    /* the displacement warp is desktop-only (SVG filters are heavy on
-       phone GPUs) — glitch bursts run everywhere */
-    const isMobile = mm("(max-width: 850px)")
+    /* the displacement warp is desktop-only — SVG filters are heavy on
+       phone GPUs, and phones get the plain unfiltered page */
+    if (mm("(max-width: 850px)")) return undefined
 
     const root = document.documentElement
-    if (!isMobile) root.classList.add("crt-on")
-    const disp = isMobile ? null : document.getElementById("crt-disp")
-    const turb = isMobile ? null : document.getElementById("crt-turb")
+    root.classList.add("crt-on")
+    const disp = document.getElementById("crt-disp")
 
-    let alive = true
-    let timer = null
     let raf = null
-    let bursting = false
-    const timeouts = []
 
     /* the tube breathes: warp amplitude swells and flutters */
     const wobble = t => {
-      if (!alive) return
-      if (!bursting && disp) {
+      if (disp) {
         const s =
           WARP_SCALE +
           Math.sin(t * 0.0011) * WARP_BREATHE +
@@ -66,53 +58,9 @@ export const AnalogTV = () => {
     }
     raf = window.requestAnimationFrame(wobble)
 
-    const later = (fn, ms) => {
-      const id = setTimeout(() => alive && fn(), ms)
-      timeouts.push(id)
-    }
-
-    const burst = () => {
-      if (!alive) return
-      root.style.setProperty("--tear1", `${8 + Math.random() * 70}%`)
-      root.style.setProperty("--tear2", `${12 + Math.random() * 78}%`)
-      root.classList.add("glitching")
-      bursting = true
-
-      /* new wave pattern every burst, then the signal loses lock */
-      if (turb) turb.setAttribute("seed", String(Math.floor(Math.random() * 99)))
-      if (disp) {
-        const seq = [
-          [0, 75],
-          [60, 24],
-          [120, 90],
-          [190, 16],
-          [260, WARP_SCALE],
-        ]
-        seq.forEach(([d, s]) =>
-          later(() => disp.setAttribute("scale", String(s)), d)
-        )
-      }
-
-      later(() => {
-        root.classList.remove("glitching")
-        bursting = false
-        if (disp) disp.setAttribute("scale", String(WARP_SCALE))
-      }, 300)
-
-      timer = setTimeout(
-        burst,
-        BURST_MIN_GAP + Math.random() * (BURST_MAX_GAP - BURST_MIN_GAP)
-      )
-    }
-
-    timer = setTimeout(burst, 3500 + Math.random() * 4500)
-
     return () => {
-      alive = false
-      clearTimeout(timer)
       if (raf) window.cancelAnimationFrame(raf)
-      timeouts.forEach(clearTimeout)
-      root.classList.remove("crt-on", "glitching")
+      root.classList.remove("crt-on")
       if (disp) disp.setAttribute("scale", String(WARP_SCALE))
     }
   }, [])
@@ -152,12 +100,11 @@ export const AnalogTV = () => {
           />
         </filter>
       </svg>
-      <div className="crt-grain" style={{ backgroundImage: GRAIN_BG }} aria-hidden="true" />
-      <div className="crt-glitch-overlay" aria-hidden="true">
-        <span className="tear t1" />
-        <span className="tear t2" />
-        <span className="noise" style={{ backgroundImage: NOISE_BG }} />
-      </div>
+      <div
+        className="crt-grain"
+        style={{ backgroundImage: GRAIN_BG }}
+        aria-hidden="true"
+      />
     </>
   )
 }

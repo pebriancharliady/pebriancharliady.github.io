@@ -197,6 +197,13 @@ export const ScrollVars = () => {
   useEffect(() => {
     if (typeof window === "undefined" || reduced()) return undefined
     const root = document.documentElement
+
+    /* on touch devices only --hero-exit runs — the decorative vars
+       (hazard-stripe crawl, velocity skew) invalidate styles across
+       the page every frame, which janks scrolling on weak phones */
+    const lite =
+      window.matchMedia && window.matchMedia("(max-width: 850px)").matches
+
     let raf = null
     let last = getScrollY()
     let skew = 0
@@ -212,8 +219,10 @@ export const ScrollVars = () => {
         idle = 0
       }
       if (idle < 12) {
-        root.style.setProperty("--scroll-y", y.toFixed(0))
-        root.style.setProperty("--scroll-skew", (skew * 0.05).toFixed(3))
+        if (!lite) {
+          root.style.setProperty("--scroll-y", y.toFixed(0))
+          root.style.setProperty("--scroll-skew", (skew * 0.05).toFixed(3))
+        }
         root.style.setProperty(
           "--hero-exit",
           Math.max(0, Math.min(1, y / window.innerHeight)).toFixed(3)
@@ -242,7 +251,9 @@ export const useScrollProgress = () => {
       raf = null
       const doc = document.documentElement
       const max = doc.scrollHeight - window.innerHeight
-      setPct(max > 0 ? Math.min(100, Math.round((getScrollY() / max) * 100)) : 0)
+      setPct(
+        max > 0 ? Math.min(100, Math.round((getScrollY() / max) * 100)) : 0
+      )
     }
     const onScroll = () => {
       if (raf === null) raf = requestAnimationFrame(update)

@@ -294,7 +294,12 @@ export const Mrz = styled.dl`
   position: relative;
   z-index: 2;
   background: rgba(5, 5, 7, 0.55);
-  backdrop-filter: blur(10px);
+
+  /* the blur is desktop garnish — backdrop-filter is one of the most
+     expensive things a weak phone GPU can composite */
+  @media (min-width: 851px) {
+    backdrop-filter: blur(10px);
+  }
   transform: translateY(calc(var(--hero-exit, 0) * 34px));
   opacity: calc(1 - var(--hero-exit, 0) * 0.85);
 

@@ -36,25 +36,6 @@ export const GlobalStyle = createGlobalStyle`
     overflow-x: clip;
   }
 
-  /* CRT refresh band rolling down the screen */
-  html::after {
-    content: "";
-    position: fixed;
-    left: 0;
-    right: 0;
-    top: 0;
-    height: 18vh;
-    z-index: 76;
-    pointer-events: none;
-    background: linear-gradient(
-      to bottom,
-      rgba(237, 238, 243, 0),
-      rgba(237, 238, 243, 0.028) 50%,
-      rgba(237, 238, 243, 0)
-    );
-    animation: crtRoll 11s linear infinite;
-  }
-
   body {
     margin: 0;
     overflow-x: hidden;
@@ -91,6 +72,14 @@ export const GlobalStyle = createGlobalStyle`
     animation: grainCrawl 0.7s steps(1) infinite;
   }
 
+  /* phones get the plain picture — the fixed grain/scanline overlays
+     cost real frames on weak mobile GPUs */
+  @media (max-width: 850px) {
+    .crt-grain {
+      display: none;
+    }
+  }
+
   @keyframes grainCrawl {
     0% { transform: translate(0, 0); }
     14% { transform: translate(-34px, 18px); }
@@ -102,25 +91,28 @@ export const GlobalStyle = createGlobalStyle`
     100% { transform: translate(0, 0); }
   }
 
-  /* CRT glass — scanlines and a corner vignette over everything */
-  body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    z-index: 75;
-    pointer-events: none;
-    background-image: repeating-linear-gradient(
-        0deg,
-        rgba(2, 2, 4, 0.06) 0px,
-        rgba(2, 2, 4, 0.06) 1px,
-        transparent 1px,
-        transparent 3px
-      ),
-      radial-gradient(
-        ellipse at center,
-        transparent 62%,
-        rgba(2, 2, 4, 0.22) 100%
-      );
+  /* CRT glass — scanlines and a corner vignette (desktop only; a
+     full-screen fixed blend layer janks scrolling on weak phones) */
+  @media (min-width: 851px) {
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: 75;
+      pointer-events: none;
+      background-image: repeating-linear-gradient(
+          0deg,
+          rgba(2, 2, 4, 0.06) 0px,
+          rgba(2, 2, 4, 0.06) 1px,
+          transparent 1px,
+          transparent 3px
+        ),
+        radial-gradient(
+          ellipse at center,
+          transparent 62%,
+          rgba(2, 2, 4, 0.22) 100%
+        );
+    }
   }
 
   main {
@@ -242,81 +234,15 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   /* ------------------------------------------------------------------
-     analog TV — the page renders through warped tube glass, and the
-     signal occasionally loses lock (html.glitching, see AnalogTV)
+     analog TV — the page renders through warped tube glass that
+     gently breathes (no glitch bursts; they read as screen flicker)
   ------------------------------------------------------------------ */
   html.crt-on .smooth-wrap {
     filter: url(#crt-warp);
     will-change: filter;
   }
-  html.glitching .smooth-wrap {
-    animation: glitchJitter 0.24s steps(3) 1;
-  }
-  html.crt-on.glitching .smooth-wrap {
-    filter: url(#crt-warp) saturate(1.35) contrast(1.12);
-  }
 
-  @keyframes glitchJitter {
-    0% { transform: translate(-6px, 1px) skewX(-1.2deg); }
-    33% { transform: translate(5px, -2px); }
-    66% { transform: translate(-3px, 1px) skewX(0.8deg); }
-    100% { transform: none; }
-  }
-
-  .crt-glitch-overlay {
-    position: fixed;
-    inset: 0;
-    z-index: 77;
-    pointer-events: none;
-    opacity: 0;
-  }
-  html.glitching .crt-glitch-overlay {
-    opacity: 1;
-  }
-
-  .crt-glitch-overlay .tear {
-    position: absolute;
-    left: -5%;
-    right: -5%;
-    height: 3px;
-    background: linear-gradient(
-      90deg,
-      transparent,
-      rgba(225, 49, 72, 0.85) 30%,
-      rgba(237, 238, 243, 0.9) 55%,
-      transparent
-    );
-    mix-blend-mode: screen;
-    animation: tearShift 0.12s steps(3) infinite;
-  }
-  .crt-glitch-overlay .t1 {
-    top: var(--tear1, 30%);
-  }
-  .crt-glitch-overlay .t2 {
-    top: var(--tear2, 64%);
-    height: 2px;
-    animation-direction: reverse;
-  }
-
-  @keyframes tearShift {
-    0% { transform: translateX(-14px); }
-    50% { transform: translateX(10px); }
-    100% { transform: translateX(-5px); }
-  }
-
-  .crt-glitch-overlay .noise {
-    position: absolute;
-    inset: 0;
-    opacity: 0.13;
-    animation: noiseJump 0.09s steps(2) infinite;
-  }
-
-  @keyframes noiseJump {
-    0% { background-position: 0 0; }
-    100% { background-position: 130px 90px; }
-  }
-
-  /* true-fullscreen reels: the HUD frame yields the stage */
+  /* true-fullscreen stacks: the HUD frame yields the stage */
   .hud-frame {
     transition: opacity 0.45s ease;
   }
@@ -354,24 +280,6 @@ export const GlobalStyle = createGlobalStyle`
     0% { transform: translateY(-102%); }
     100% { transform: translateY(102%); }
   }
-  @keyframes glitchShift {
-    0%, 86%, 100% { transform: none; opacity: 1; text-shadow: none; }
-    87% {
-      transform: translate(-3px, 1px) skewX(-4deg);
-      opacity: 0.85;
-      text-shadow: 3px 0 ${v.signal}, -3px 0 rgba(237, 238, 243, 0.7);
-    }
-    89% {
-      transform: translate(3px, -1px);
-      text-shadow: -2px 0 ${v.signal}, 2px 0 rgba(237, 238, 243, 0.6);
-    }
-    91% {
-      transform: translate(-2px, 2px) skewX(3deg);
-      opacity: 0.9;
-      text-shadow: 2px 0 ${v.signal}, -2px 0 rgba(237, 238, 243, 0.5);
-    }
-    93% { transform: none; text-shadow: none; }
-  }
   @keyframes rgbSplit {
     0% {
       text-shadow: -3px 0 ${v.signal}, 3px 0 rgba(237, 238, 243, 0.65);
@@ -390,11 +298,6 @@ export const GlobalStyle = createGlobalStyle`
       transform: none;
     }
   }
-  @keyframes crtRoll {
-    from { transform: translateY(-20vh); }
-    to { transform: translateY(120vh); }
-  }
-
   /* ------------------------------------------------------------------
      prism — monochrome + crimson, matches the HUD
   ------------------------------------------------------------------ */

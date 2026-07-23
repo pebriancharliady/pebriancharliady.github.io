@@ -21,7 +21,6 @@ const LostSection = styled.section`
     font-size: clamp(5rem, 17vw, 11.5rem);
     line-height: 0.9;
     color: ${v.text};
-    animation: glitchShift 3.2s infinite;
   }
 
   .jp-lost {

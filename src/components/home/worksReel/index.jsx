@@ -1,25 +1,24 @@
 import React, { useRef } from "react"
 import Img from "gatsby-image"
 import { Chip, ChipRow, Eyebrow, ButtonLink, KanjiMark } from "../../common"
-import { Ticker, useReel } from "../../fx"
-import { ReelWrap, ReelWindow, ReelChrome, ReelTrack, Panel } from "./style"
+import { Ticker, useStack } from "../../fx"
+import { ReelWrap, ReelWindow, ReelChrome, StackField, Panel } from "./style"
 
 const WorksReel = ({ works, totalCount }) => {
   const wrapRef = useRef(null)
   const windowRef = useRef(null)
-  const trackRef = useRef(null)
   const counterRef = useRef(null)
   const fillRef = useRef(null)
 
   const n = works.length
 
-  useReel({
+  useStack({
     wrapRef,
     windowRef,
-    trackRef,
     counterRef,
     fillRef,
     count: n,
+    tilt: -1.6, // each file lands with a settling sheet-of-paper tilt
   })
 
   return (
@@ -71,11 +70,15 @@ const WorksReel = ({ works, totalCount }) => {
         </ReelChrome>
 
         <span className="reel-dim" aria-hidden="true" />
-        <ReelTrack ref={trackRef}>
+        <StackField>
           {works.map(({ node, fileNo }) => {
             const f = node.frontmatter
             return (
-              <Panel key={node.fields.slug} to={node.fields.slug}>
+              <Panel
+                key={node.fields.slug}
+                to={node.fields.slug}
+                data-stack-item
+              >
                 <span>
                   <span className="metaline">
                     <span className="code">
@@ -101,10 +104,11 @@ const WorksReel = ({ works, totalCount }) => {
                 <span className="media">
                   <Img fluid={f.image.childImageSharp.fluid} alt={f.title} />
                 </span>
+                <span className="press" aria-hidden="true" />
               </Panel>
             )
           })}
-        </ReelTrack>
+        </StackField>
       </ReelWindow>
     </ReelWrap>
   )

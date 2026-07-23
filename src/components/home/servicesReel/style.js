@@ -13,16 +13,28 @@ export const ServicePanel = styled.div`
   padding: 6rem ${v.gutter} 5rem;
   overflow: hidden;
 
-  .is-h & {
-    flex: none;
-    width: 100vw;
+  /* a slide in the pile: opaque scene that covers the one beneath */
+  .is-stack & {
+    position: absolute;
+    inset: 0;
     height: 100%;
     min-height: 0;
     padding-bottom: 7.5rem;
+    background: #030304;
+    box-shadow: 0 -26px 60px rgba(0, 0, 0, 0.55);
+    will-change: transform;
+
+    /* bleed above the frame so the parallax lag never shows a gap —
+       useStack slides .bg from +22% (of the bg's own 130% height ≈
+       28.6% of the panel) back to 0 as the card lands */
+    .bg {
+      top: -30%;
+      will-change: transform;
+    }
   }
 
   @media (max-width: ${v.breakpointPhone}) {
-    .is-h & {
+    .is-stack & {
       padding: 0 ${v.gutter} 5.5rem;
       overflow: hidden;
     }
@@ -41,6 +53,16 @@ export const ServicePanel = styled.div`
       left: 0;
       filter: grayscale(1) contrast(1.15) brightness(0.55);
     }
+  }
+
+  /* the slide beneath dims as the next one covers it */
+  .press {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    background: #020203;
+    opacity: 0;
+    pointer-events: none;
   }
 
   .scrim {
