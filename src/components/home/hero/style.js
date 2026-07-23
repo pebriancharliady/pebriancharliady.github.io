@@ -68,7 +68,8 @@ export const HeroCopy = styled.div`
 
 export const HeroName = styled.h1`
   margin: clamp(1.25rem, 4vh, 2.5rem) 0 0;
-  font-family: ${v.fontDisplay};
+  /* the name is the one place the dossier voice breaks — a signature */
+  font-family: "Extros Backstage", ${v.fontDisplay};
   font-weight: normal;
   font-size: clamp(2.6rem, 8.5vw, 7rem);
   line-height: 0.9;

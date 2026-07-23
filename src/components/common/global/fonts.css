@@ -34,3 +34,8 @@
   font-style: normal;
   font-display: swap;
 }
+@font-face {
+  font-family: "Extros Backstage";
+  src: url("../../../assets/fonts/Extros Backstage.ttf") format("truetype");
+  font-display: swap;
+}
